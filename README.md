@@ -1,4 +1,12 @@
-# mysocialapp-ts-client
-Typescript SDK client for MysocialApp API
+### npm with docker
 
-Coming soon
+````
+docker run -v $PWD:/mnt -it --entrypoint /bin/sh node:9-alpine
+````
+
+### Generate lib
+ ````
+./node_modules/.bin/tsc
+````
+
+pre alpha version
