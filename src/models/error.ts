@@ -1,5 +1,4 @@
 
-module "msa";
 export class ErrorResponse {
-    message: string;
+    message: string = "";
 }

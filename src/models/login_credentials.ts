@@ -1,8 +1,6 @@
 import {Model} from "./model";
 
-module "msa";
-
 export class LoginCredentials extends Model{
-    username: string;
-    password: string;
+    username: string = "";
+    password: string = "";
 }

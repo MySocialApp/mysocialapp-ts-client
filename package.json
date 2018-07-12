@@ -22,7 +22,9 @@
     "@types/jest": "^23.1.1",
     "jest": "^23.1.0",
     "ts-jest": "^22.4.6",
-    "typescript": "^2.9.2"
+    "ts-node": "^3.3.0",
+    "typescript": "^2.9.2",
+    "lodash": "^4.17.4"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -34,5 +36,8 @@
     },
     "testRegex": "/src/.*\\.spec\\.ts$"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "axios": "^0.17.1"
+  }
 }

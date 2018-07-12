@@ -1,31 +1,31 @@
 import {ClientConfiguration} from "./client_configuration";
 import {Configuration} from "./configuration";
-import {LoginRest} from "./rest/login";
-import {Rest} from "./rest/rest";
-
-module "msa"
+import {RestLogin} from "./rest/login";
+import {RestFeed} from "./rest/feed";
 
 export class ClientService {
-    clientConfiguration: ClientConfiguration;
+    clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
 
-    rest: { [key: string]: Rest };
+    private restFeed?: RestFeed;
+    private restLogin?: RestLogin;
 
     /**
      *
      * @param {Configuration} configuration
-     * @param {ClientConfiguration} configuration
+     * @param {ClientConfiguration} clientConf
      */
-    constructor(configuration: Configuration, configuration?: ClientConfiguration) {
+    constructor(configuration: Configuration, clientConf?: ClientConfiguration) {
         this.configuration = configuration;
+        this.clientConfiguration = clientConf;
     }
 
-    get login(): LoginRest {
-        return this.getService<LoginRest>("login");
+    get login(): RestLogin {
+        return this.restLogin !== undefined ? this.restLogin : this.restLogin = new RestLogin(this.configuration);
     }
 
-    private getService<T>(name: string): T {
-        return this.rest[name] !== undefined ? this.rest[name] : this.rest[name] = new T(this.configuration);
+    get feed(): RestFeed {
+        return this.restFeed !== undefined ? this.restFeed : this.restFeed = new RestFeed(this.configuration);
     }
 
 }

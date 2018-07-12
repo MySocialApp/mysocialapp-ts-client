@@ -2,7 +2,6 @@ import {ClientService} from './client_service'
 import {ClientConfiguration} from "./client_configuration";
 import {Configuration} from "./configuration";
 
-module "msa";
 
 describe("new client", () => {
     let clientConf = new ClientConfiguration({
@@ -16,7 +15,7 @@ describe("new client", () => {
         expect(client.configuration.appId).toEqual(conf.appId);
     });
     it("readTimeout has been override", () => {
-        expect(client.clientConfiguration.readTimeout).toEqual(clientConf.readTimeout);
+        expect(client.clientConfiguration ? client.clientConfiguration.readTimeout : null).toEqual(clientConf.readTimeout);
     });
     it("endpoint contains appId", () => {
         expect(client.configuration.apiEndpointUrl).toContain(conf.appId);

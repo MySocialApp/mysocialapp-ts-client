@@ -1,4 +1,4 @@
-module 'msa'
+
 
 export class ClientConfiguration {
     readTimeout: number = 10000;
