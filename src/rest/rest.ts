@@ -1,6 +1,4 @@
 import {Configuration} from "../configuration";
-import {AxiosPromise, AxiosRequestConfig, AxiosResponse} from "axios";
-import {Model, ModelInterface} from "../models/model";
 
 export class Rest {
     protected conf: Configuration;
@@ -9,28 +7,18 @@ export class Rest {
         this.conf = conf;
     }
 
-    protected async Get(model: Model, path: string, options?: any): Promise<ModelInterface> {
-        try {
-            const resp = await this.conf.httpClient.get(path, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
-            model.load(resp.data);
-            return model
-        } catch (error) {
-            return error
+    static params(path: string, params: {}): string {
+        for (let index in params) {
+            let search = '{' + index + '}';
+            path = path.replace(search, params[index]);
         }
+        return path;
     }
 
-    protected async GetList(model: Model, path: string, options?: any): Promise<ModelInterface[]> {
-        try {
-            const resp = await this.conf.httpClient.get(path, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface[]>;
-            const list: ModelInterface[] = [];
-            for (let m of resp.data) {
-                let o = Object.create(model) as ModelInterface;
-                o.load(m);
-                list.push(o);
-            }
-            return list
-        } catch (error) {
-            return error
-        }
+    static encodeQueryData(data: {}): {} {
+        let ret = [];
+        for (let d in data)
+            ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+        return ret.join('&');
     }
 }
