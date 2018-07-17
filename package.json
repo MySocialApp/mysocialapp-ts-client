@@ -21,10 +21,10 @@
   "devDependencies": {
     "@types/jest": "^23.1.1",
     "jest": "^23.1.0",
+    "lodash": "^4.17.10",
     "ts-jest": "^22.4.6",
     "ts-node": "^3.3.0",
-    "typescript": "^2.9.2",
-    "lodash": "^4.17.4"
+    "typescript": "^2.9.2"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@types/es6-promise": "^3.3.0",
-    "axios": "^0.17.1"
+    "axios": "^0.17.1",
+    "moment": "^2.22.2"
   }
 }

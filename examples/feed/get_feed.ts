@@ -7,10 +7,12 @@ export function run() {
     let appId = "u470584465854a194805"; // MySocialApp demo app Id
     let config = new Configuration(appId);
     let client = new ClientService(config);
-    client.configuration.httpClient.defaults.baseURL = "https://nousmotards.com/api/v1/"
 
-    client.feed.get().then(r => {
-        console.log(r);
+    client.feed.list().then(r => {
+        console.info("object", r[0].object);
+        console.info("actor", r[0].actor);
+        console.info("target", r[0].target);
+        console.info("comments", r[0].object.comments.samples);
     })
 }
 
