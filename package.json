@@ -27,6 +27,7 @@
     "typescript": "^2.9.2"
   },
   "jest": {
+    "testEnvironment": "node",
     "moduleFileExtensions": [
       "ts",
       "js"
@@ -34,7 +35,7 @@
     "transform": {
       "\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "/src/.*\\.spec\\.ts$"
+    "testRegex": "(/src/.*\\.spec\\.ts)|(/test/.*\\.test\\.ts)$"
   },
   "dependencies": {
     "@types/es6-promise": "^3.3.0",

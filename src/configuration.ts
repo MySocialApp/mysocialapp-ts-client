@@ -1,11 +1,14 @@
 import {AuthenticationToken} from "./models/authentication_token";
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {Model, ModelInterface, Serializable} from "./models/model";
+import {ErrorResponse} from "./rest/error";
+import {DefaultInterfaceLanguage, InterfaceLanguage} from "./models/user_settings";
 
 export class Configuration {
     appId: string;
     apiEndpointUrl: string;
     httpClient: AxiosInstance;
+    interfaceLanguage: InterfaceLanguage = DefaultInterfaceLanguage;
 
     constructor(appId: string, apiEndpointUrl?: string) {
         this.appId = appId;
@@ -27,7 +30,7 @@ export class Configuration {
             model.load(resp.data, this);
             return model
         } catch (error) {
-            return error
+            throw new ErrorResponse(error);
         }
     }
 
@@ -42,7 +45,7 @@ export class Configuration {
             }
             return list
         } catch (error) {
-            return error
+            throw new ErrorResponse(error);
         }
     }
 
@@ -55,7 +58,21 @@ export class Configuration {
             model.load(resp.data, this);
             return model
         } catch (error) {
-            return error
+            throw new ErrorResponse(error);
+        }
+    }
+
+    public async postMultipart(model: Model, path: string, body: FormData, options?: {}): Promise<ModelInterface> {
+        try {
+            options = options !== options ? undefined : {};
+            options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
+            options['headers']['content-type'] = "multipart/form-data";
+            // TODO check
+            const resp = await this.httpClient.post(path, body, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
+            model.load(resp.data, this);
+            return model
+        } catch (error) {
+            throw new ErrorResponse(error);
         }
     }
 
@@ -68,7 +85,7 @@ export class Configuration {
             model.load(resp.data, this);
             return model
         } catch (error) {
-            return error
+            throw new ErrorResponse(error);
         }
     }
 
@@ -77,7 +94,7 @@ export class Configuration {
             const resp = await this.httpClient.delete(path, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
             return
         } catch (error) {
-            return error
+            throw new ErrorResponse(error);
         }
     }
 }

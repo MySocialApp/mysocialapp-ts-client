@@ -2,16 +2,11 @@ import {Model} from "./model";
 import {User} from "./user";
 import {BaseWall} from "./base_wall";
 import moment = require('moment');
+import {AccessControl} from "./access_control";
 
 export enum ActionType {
     Publish = 'PUBLISH',
 
-}
-
-export enum AccessControl {
-    Private = 'PRIVATE',
-    Friend = 'FRIEND',
-    Public = 'PUBLIC'
 }
 
 export class Feed extends Model {

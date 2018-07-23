@@ -17,7 +17,12 @@ cd /mnt && ./node_modules/.bin/tsc -p .
 
 # exec example file
 cd mnt && node lib/examples/feed/xxx.js
+
+# exec tests
+cd /mnt && ./node_modules/.bin/jest test
 ```
+
+
 
 
 ### Generate lib

@@ -1,7 +1,7 @@
-import {ClientService} from "../../src/client_service";
-import {Gender, User} from "../../src/models/user";
-import {Configuration} from "../../src/configuration";
-import {Session} from "../../src/session";
+import {ClientService} from "../src/client_service";
+import {Gender, User} from "../src/models/user";
+import {Configuration} from "../src/configuration";
+import {Session} from "../src/session";
 
 
 export function banner(title: string): void {
@@ -28,7 +28,7 @@ export async function createAccountAndGetSession(): Promise<Session> {
     const createdUser = await client.register.post(user);
     console.info('Created user:', createdUser.id_str);
 
-    await sleep(5000);
+    await sleep(1000);
     let session = new Session(client);
     console.info("Connect with", user);
     await session.connect(user.email, user.password);

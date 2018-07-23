@@ -14,8 +14,7 @@ export class Model implements ModelInterface, Serializable {
 
     load(o: any, conf: Configuration) {
         this.conf = conf;
-        _.forOwn(o, (value, key) => //This binds `this`
-        {
+        _.forOwn(o, (value, key) => {
             this[key] = value
         });
     }

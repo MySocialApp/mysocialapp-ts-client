@@ -6,15 +6,15 @@ import {Model} from "../models/model";
 
 export class RestFeedLike extends Rest {
 
-    async get(id: string): Promise<Like[]> {
+    get(id: string): Promise<Like[]> {
         return this.conf.getList(new Feed(),Rest.params("feed/{id}/like", {id: id})) as Promise<Like[]>;
     }
 
-    async addLike(id: string): Promise<Like> {
+    addLike(id: string): Promise<Like> {
         return this.conf.post(new Feed(),Rest.params("feed/{id}/like", {id: id}), new Model()) as Promise<Like>;
     }
 
-    async deleteLike(id: string): Promise<void> {
+    deleteLike(id: string): Promise<void> {
         return this.conf.delete(Rest.params("feed/{id}/like", {id: id})) as Promise<void>;
     }
 }

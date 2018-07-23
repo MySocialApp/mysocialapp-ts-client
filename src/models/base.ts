@@ -1,8 +1,8 @@
 import moment = require('moment');
 import {Model} from "./model";
-import {AccessControl} from "./feed";
 import {User} from "./user";
 import {Photo} from "./photo";
+import {AccessControl} from "./access_control";
 
 export class Base extends Model {
     id?: number;
