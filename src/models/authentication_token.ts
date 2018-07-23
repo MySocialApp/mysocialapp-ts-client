@@ -1,6 +1,6 @@
-import {Model} from "./model";
+import {Model, ModelInterface} from "./model";
 
-export class AuthenticationToken extends Model {
-    nickname: string = "";
-    access_token: string = "";
+export class AuthenticationToken extends Model{
+    nickname?: string = "";
+    access_token?: string = "";
 }

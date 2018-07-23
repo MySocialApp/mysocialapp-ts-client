@@ -15,7 +15,7 @@ export class Rest {
         return path;
     }
 
-    static encodeQueryData(data: {}): {} {
+    static encodeQueryData(data: {}): string {
         let ret = [];
         for (let d in data)
             ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));

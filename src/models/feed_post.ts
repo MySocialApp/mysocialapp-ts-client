@@ -1,4 +1,4 @@
-import {AccessControl} from "./feed";
+import {AccessControl} from "./access_control";
 import {Serializable} from "./model";
 
 export class FeedPost implements Serializable{

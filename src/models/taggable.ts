@@ -1,5 +1,5 @@
 import {TagEntities} from "./tag_entities";
 
-export class Taggable {
-    tag_entities: TagEntities;
+export interface Taggable {
+    tag_entities?: TagEntities;
 }
