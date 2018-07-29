@@ -4,6 +4,7 @@ import {Likable} from "./likable";
 import {LikeBlob} from "./like_blob";
 import {Like} from "./like";
 import {Commentable} from "./commentable";
+import {RestFeed} from "../rest/feed";
 import {RestFeedLike} from "../rest/feed_like";
 import {CommentPost} from "./comment_post";
 import {CommentBlob} from "./comment_blob";
@@ -67,6 +68,10 @@ export class BaseWall extends Base implements Likable, Commentable {
     addComment(comment: CommentPost): Promise<Comment> {
         return (new RestFeedComment(this.conf)).add(this.id_str, comment);
     }
+
+    delete(): Promise<void>{
+        return (new RestFeed(this.conf)).delete(this.id_str);
+    } 
 
     get commentsTotal(): number {
         return this.comments ? this.comments.total : 0;

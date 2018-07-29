@@ -9,6 +9,7 @@ export class Configuration {
     apiEndpointUrl: string;
     httpClient: AxiosInstance;
     interfaceLanguage: InterfaceLanguage = DefaultInterfaceLanguage;
+    private token: string;
 
     constructor(appId: string, apiEndpointUrl?: string) {
         this.appId = appId;
@@ -16,17 +17,30 @@ export class Configuration {
         this.httpClient = axios.create(<AxiosRequestConfig>{
             baseURL: this.apiEndpointUrl,
             maxRedirects: 5,
+            headers: {'content-type': 'application/json'},
         });
     }
 
     setAuth(token: AuthenticationToken) {
-        this.httpClient.defaults.headers["Authorization"] = token.access_token;
+        this.httpClient.defaults.headers["authorization"] = this.token = token.access_token;
     }
+
+    setDefaultOptions(options:{}, contentType?: string): AxiosRequestConfig {
+        options = options == undefined ? {} : options;
+        options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
+        if (contentType !== undefined){
+            options['headers']['content-type'] = contentType;
+        } 
+        if(this.token !== undefined) {
+            options['headers']['authorization'] = this.token;
+        }
+        return <AxiosRequestConfig>options;
+    } 
 
 
     public async get(model: Model, path: string, options?: any): Promise<ModelInterface> {
         try {
-            const resp = await this.httpClient.get(path, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
+            const resp = await this.httpClient.get(path, this.setDefaultOptions(options)) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);
             return model
         } catch (error) {
@@ -36,7 +50,7 @@ export class Configuration {
 
     public async getList(model: Model, path: string, options?: any): Promise<ModelInterface[]> {
         try {
-            const resp = await this.httpClient.get(path, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface[]>;
+            const resp = await this.httpClient.get(path, this.setDefaultOptions(options)) as AxiosResponse<ModelInterface[]>;
             const list: ModelInterface[] = [];
             for (let m of resp.data) {
                 let o = Object.create(model) as ModelInterface;
@@ -51,10 +65,7 @@ export class Configuration {
 
     public async post(model: Model, path: string, body: Serializable, options?: {}): Promise<ModelInterface> {
         try {
-            options = options !== options ? undefined : {};
-            options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
-            options['headers']['content-type'] = "application/json";
-            const resp = await this.httpClient.post(path, body.toJson(), <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
+            const resp = await this.httpClient.post(path, body.toJson(), this.setDefaultOptions(options, "application/json")) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);
             return model
         } catch (error) {
@@ -64,11 +75,8 @@ export class Configuration {
 
     public async postMultipart(model: Model, path: string, body: FormData, options?: {}): Promise<ModelInterface> {
         try {
-            options = options !== options ? undefined : {};
-            options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
-            options['headers']['content-type'] = "multipart/form-data";
             // TODO check
-            const resp = await this.httpClient.post(path, body, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
+            const resp = await this.httpClient.post(path, body, this.setDefaultOptions(options, "multipart/form-data")) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);
             return model
         } catch (error) {
@@ -78,10 +86,7 @@ export class Configuration {
 
     public async put(model: Model, path: string, body: Serializable, options?: {}): Promise<ModelInterface> {
         try {
-            options = options !== options ? undefined : {};
-            options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
-            options['headers']['content-type'] = "application/json";
-            const resp = await this.httpClient.put(path, body.toJson(), <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
+            const resp = await this.httpClient.put(path, body.toJson(), this.setDefaultOptions(options, "application/json")) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);
             return model
         } catch (error) {
@@ -91,7 +96,7 @@ export class Configuration {
 
     public async delete(path: string, options?: {}): Promise<void> {
         try {
-            const resp = await this.httpClient.delete(path, <AxiosRequestConfig>options) as AxiosResponse<ModelInterface>;
+            const resp = await this.httpClient.delete(path, this.setDefaultOptions(options)) as AxiosResponse<ModelInterface>;
             return
         } catch (error) {
             throw new ErrorResponse(error);

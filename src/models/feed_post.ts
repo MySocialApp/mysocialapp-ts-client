@@ -24,7 +24,7 @@ export class FeedPost implements Serializable{
     toJson(): string {
         return JSON.stringify({
             message: this.mMessage,
-            visibility: this.mVisibility !== undefined? this.mVisibility : AccessControl.Friend
+            access_control: this.mVisibility !== undefined? this.mVisibility : AccessControl.Friend
         });
     }
 }

@@ -4,28 +4,30 @@ import {AuthenticationToken} from "./models/authentication_token";
 import {LoginCredentials} from "./models/login_credentials";
 import {FluentAccount} from "./fluent_account";
 import {FluentFeed} from "./fluent_feed";
-import {ErrorResponse} from "./rest/error";
 
 export class Session {
     clientService: ClientService;
     auth?: AuthenticationToken;
 
-    _account?: FluentAccount;
-    _feed?: FluentFeed;
+    private _account?: FluentAccount;
+    private _feed?: FluentFeed;
 
     constructor(clientService: ClientService) {
         this.clientService = clientService;
     }
 
     async connect(username: string, password: string): Promise<User> {
-        return new Promise<User>(((resolve, reject) => {
-            let p = this.clientService.login.post(new LoginCredentials({username: username, password: password}));
-            p.then(auth => {
-                this.auth = auth;
+        return new Promise<User>((async (resolve, reject) => {
+            try {
+                this.auth = await this.clientService.login.post(new LoginCredentials({
+                    username: username,
+                    password: password
+                }));
+                this.clientService.configuration.setAuth(this.auth);
                 this.account.get().then(user => resolve(user));
-            }).catch(err => {
-                reject(err)
-            })
+            } catch (err) {
+                reject(err);
+            }
         }));
     }
 
