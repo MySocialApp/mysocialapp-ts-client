@@ -1,0 +1,30 @@
+import { User } from "./user";
+import { Base } from "./base";
+import { Likable } from "./likable";
+import { LikeBlob } from "./like_blob";
+import { Like } from "./like";
+import { Commentable } from "./commentable";
+import { CommentPost } from "./comment_post";
+import { CommentBlob } from "./comment_blob";
+import { Comment } from "./comment";
+export declare class BaseWall extends Base implements Likable, Commentable {
+    id: number;
+    id_str: string;
+    message: string;
+    _likes: LikeBlob;
+    owner: User;
+    target: BaseWall;
+    comments?: CommentBlob;
+    bodyMessage: string;
+    likes: LikeBlob;
+    getLikes(): Promise<Like[]>;
+    getLikersTotal(): number;
+    setLikersTotal(i: number): void;
+    isLiked(): boolean;
+    addLike(): Promise<Like>;
+    deleteLike(): Promise<void>;
+    getComments(): Promise<Comment[]>;
+    addComment(comment: CommentPost): Promise<Comment>;
+    readonly commentsTotal: number;
+    readonly commentsSamples: Comment[];
+}

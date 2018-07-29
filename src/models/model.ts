@@ -12,14 +12,16 @@ export interface Serializable {
 export class Model implements ModelInterface, Serializable {
     protected conf: Configuration;
 
-    load(o: any, conf: Configuration) {
-        this.conf = conf;
+    load(o: any, conf?: Configuration) {
+        if (conf !== undefined) {
+            this.conf = conf;
+        }
         _.forOwn(o, (value, key) => {
             this[key] = value
         });
     }
 
-    constructor(o?: object, conf?: Configuration) {
+    constructor(o?: {}, conf?: Configuration) {
         if (o !== undefined) {
             this.load(o, conf);
         }

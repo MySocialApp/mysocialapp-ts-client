@@ -4,24 +4,19 @@ import {CustomField} from "./models/custom_field";
 
 export class FluentAccount {
     private session: Session;
-    private account?: User;
+    account?: User;
 
     constructor(session: Session) {
         this.session = session;
     }
 
     async get(useCache?: boolean): Promise<User> {
-        try {
-            if (useCache && this.account !== undefined) {
-                return this.account;
-            }
-            const resp = await this.session.clientService.account.get();
-            this.account = resp;
-            return resp;
+        if (useCache && this.account !== undefined) {
+            return this.account;
         }
-        catch (err) {
-            return err
-        }
+        const resp = await this.session.clientService.account.get();
+        this.account = resp;
+        return resp;
     }
 
     async getAvailableCustomFields(): Promise<CustomField[]> {
