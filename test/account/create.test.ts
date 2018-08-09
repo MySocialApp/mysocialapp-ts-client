@@ -6,8 +6,8 @@ describe("addMessage account", () => {
         try {
             const client = await createAccountAndGetSession();
             const userAccount = await client.account.get();
-            expect(userAccount.id_str).toBeGreaterThan(10);
-            expect(userAccount.displayed_name).toBeGreaterThan(10);
+            expect(userAccount.id != "").toBeTruthy();
+            expect(userAccount.displayed_name != "").toBeTruthy();
         } catch (err) {
             err = err as ErrorResponse;
             console.info("error", {message: err.message, exception: err.exception, status: err.status, path: err.path});
