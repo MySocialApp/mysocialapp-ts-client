@@ -13,7 +13,6 @@ describe("addMessage account", () => {
             const session = await createAccountAndGetSession();
             const account = await session.account.get();
             const createdPost = await session.feed.sendWallPost(post);
-            console.info('created post', createdPost);
             expect(createdPost.object.id_str != "").toBeTruthy();
             expect(createdPost.object.displayed_name != "").toBeTruthy();
 
