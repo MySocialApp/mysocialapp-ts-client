@@ -50,6 +50,9 @@ export class Feed extends Model implements Wallable {
         return this.object.created_date;
     }
 
+    set created_date(s: string) {
+    }
+
     get createdDate(): moment.Moment {
         return this.object ? this.object.createdDate : null;
     }
