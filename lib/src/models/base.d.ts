@@ -3,16 +3,22 @@ import { Model } from "./model";
 import { User } from "./user";
 import { Photo } from "./photo";
 import { AccessControl } from "./access_control";
-export declare class Base extends Model {
-    id?: number;
+import { BaseImpl } from "./base_impl";
+export declare class Base extends Model implements BaseImpl {
     id_str?: string;
     type?: string;
     created_date: string;
     displayed_name: string;
     _displayed_photo: Photo;
-    access_control: AccessControl;
+    access_control?: AccessControl;
+    body_message?: string;
+    body_image_url?: string;
+    body_image_text?: string;
     private _owner?;
+    id: any;
     owner: User;
     displayed_photo: Photo;
     readonly createdDate: moment.Moment;
+    save(): Promise<any>;
+    delete(): Promise<any>;
 }

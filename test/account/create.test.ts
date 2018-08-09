@@ -1,7 +1,7 @@
 import {ErrorResponse} from "../../src/rest/error";
 import {createAccountAndGetSession} from "../common";
 
-describe("create account", () => {
+describe("addMessage account", () => {
     it("user creation api", async () => {
         try {
             const client = await createAccountAndGetSession();

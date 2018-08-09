@@ -1,5 +1,7 @@
 import { Comment } from "./comment";
-export declare class CommentBlob {
+import { Model } from "./model";
+export declare class CommentBlob extends Model {
     total: number;
+    _samples: Comment[];
     samples: Comment[];
 }

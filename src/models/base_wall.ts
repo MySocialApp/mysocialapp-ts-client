@@ -12,21 +12,15 @@ import {RestFeedComment} from "../rest/feed_comment";
 import {Comment} from "./comment";
 
 export class BaseWall extends Base implements Likable, Commentable {
-    id: number;
-    id_str: string;
-    message: string;
-    _likes: LikeBlob;
-    owner: User;
-    target: BaseWall;
+    private _likes: LikeBlob;
+    private _comments?: CommentBlob;
 
-    comments?: CommentBlob;
-
-    set bodyMessage(msg: string) {
-        this.message = msg;
+    get comments(): CommentBlob {
+        return this._comments;
     }
 
-    get bodyMessage(): string {
-        return this.message;
+    set comments(c: CommentBlob) {
+        this._comments = new CommentBlob(c, this.conf);
     }
 
     set likes(likes: LikeBlob) {
@@ -54,11 +48,11 @@ export class BaseWall extends Base implements Likable, Commentable {
     }
 
     addLike(): Promise<Like> {
-        return (new RestFeedLike(this.conf)).addLike(this.id_str);
+        return (new RestFeedLike(this.conf)).create(this.id_str);
     }
 
     deleteLike(): Promise<void> {
-        return (new RestFeedLike(this.conf)).deleteLike(this.id_str);
+        return (new RestFeedLike(this.conf)).delete(this.id_str);
     }
 
     getComments(): Promise<Comment[]> {
@@ -66,7 +60,7 @@ export class BaseWall extends Base implements Likable, Commentable {
     }
 
     addComment(comment: CommentPost): Promise<Comment> {
-        return (new RestFeedComment(this.conf)).add(this.id_str, comment);
+        return (new RestFeedComment(this.conf)).create(this.id_str, comment);
     }
 
     delete(): Promise<void>{

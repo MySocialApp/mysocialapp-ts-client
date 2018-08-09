@@ -19,7 +19,7 @@ export class Session {
     async connect(username: string, password: string): Promise<User> {
         return new Promise<User>((async (resolve, reject) => {
             try {
-                this.auth = await this.clientService.login.post(new LoginCredentials({
+                this.auth = await this.clientService.login.create(new LoginCredentials({
                     username: username,
                     password: password
                 }));

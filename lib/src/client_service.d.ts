@@ -2,11 +2,11 @@ import { ClientConfiguration } from "./client_configuration";
 import { Configuration } from "./configuration";
 import { RestLogin } from "./rest/login";
 import { RestFeed } from "./rest/feed";
-import { RestUserWallMessage } from "./rest/user_wall_message";
 import { RestAccount } from "./rest/account";
 import { RestLogout } from "./rest/logout";
 import { RestConversationMessage } from "./rest/conversation_message";
 import { RestRegister } from "./rest/register";
+import { RestUserWall } from "./rest/user_wall";
 export declare class ClientService {
     clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
@@ -14,7 +14,7 @@ export declare class ClientService {
     private restLogin?;
     private restRegister?;
     private restLogout?;
-    private restUserWallMessage?;
+    private restUserWall?;
     private restAccount?;
     private restConversationMessage?;
     /**
@@ -28,6 +28,6 @@ export declare class ClientService {
     readonly register: RestRegister;
     readonly account: RestAccount;
     readonly feed: RestFeed;
-    readonly userWallMessage: RestUserWallMessage;
+    readonly userWall: RestUserWall;
     readonly conversationMessage: RestConversationMessage;
 }
