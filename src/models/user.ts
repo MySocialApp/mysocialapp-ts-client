@@ -1,48 +1,60 @@
 import {Photo} from "./photo";
 import {Base} from "./base";
 import {CustomField} from "./custom_field";
-import {UserSettings} from "./user_settings";
+import {UserStat} from "./user_stat";
+import {Status} from "./status";
+import {Flag} from "./flag";
+import {Location} from "./location";
 
 export class User extends Base {
-    private updated_date?: string;
     private _profile_photo?: Photo;
     private _custom_fields?: CustomField[] = [];
-    //private living_location: Location; TODO
-    //private currentStatus: Status; TODO
-    // private _flag: Flag; TODO
-    private _user_settings?: UserSettings;
-    // private user_stat: UserStat; TODO
+    private _living_location: Location;
+    private _current_status: Status;
+    private _flag: Flag;
+    private _user_stat: UserStat;
+    updated_date?: string;
     first_name?: string;
     last_name?: string;
     password?: string;
     email?: string;
-    validated_email?: boolean;
     gender?: Gender;
     date_of_birth?: string;
     presentation?: string;
-    authorities?: string[]; // TODO
-    account_enabled?: boolean;
-    account_expired?: boolean;
-    facebook_id?: string;
-    facebook_access_token?: string;
+    authorities?: string[];
     is_friend?: boolean;
     is_requested_as_friend?: boolean;
-    external_id?: string;
 
     set profile_photo(p: Photo) {
-        this._profile_photo = p;
+        this._profile_photo = new Photo(p, this.conf);
     }
 
     get profile_photo(): Photo {
         return this._profile_photo;
     }
 
-    set user_settings(u: UserSettings) {
-        this._user_settings = new UserSettings(u, this.conf);
+    set flag(p: Flag) {
+        this._flag = new Flag(p, this.conf);
     }
 
-    get user_settings(): UserSettings {
-        return this._user_settings;
+    get flag(): Flag {
+        return this._flag;
+    }
+
+    set living_location(p: Location) {
+        this._living_location = new Location(p, this.conf);
+    }
+
+    get living_location(): Location {
+        return this._living_location;
+    }
+
+    set current_status(p: Status) {
+        this._current_status = new Status(p, this.conf);
+    }
+
+    get current_status(): Status {
+        return this._current_status;
     }
 
     set custom_fields(list: CustomField[]) {

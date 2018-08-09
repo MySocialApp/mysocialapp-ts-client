@@ -11,7 +11,7 @@ export class RestConversationMessage extends Rest {
         return this.conf.getList(new ConversationMessage(), path) as Promise<ConversationMessage[]>;
     }
 
-    post(id: string, message: ConversationMessage): Promise<ConversationMessage> {
+    create(id: string, message: ConversationMessage): Promise<ConversationMessage> {
         let path = Rest.params("/conversation/{id}/message", {id: id});
         return this.conf.post(new ConversationMessage(), path, message) as Promise<ConversationMessage>;
     }

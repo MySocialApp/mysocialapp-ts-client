@@ -1,7 +1,6 @@
 import {Session} from "./session";
-import {User} from "./models/user";
 import {Feed} from "./models/feed";
-import {FeedPost} from "./models/feed_post";
+import {TextWallMessage} from "./models/text_wall_message";
 
 export class FluentFeed {
     private session: Session;
@@ -9,7 +8,8 @@ export class FluentFeed {
     constructor(session: Session) {
         this.session = session;
     }
-    async sendWallPost(feedPost: FeedPost): Promise<Feed> {
-        return this.session.clientService.feed.create(feedPost, this.session.account.account.id_str);
+
+    async sendWallPost(feedPost: TextWallMessage): Promise<Feed> {
+        return this.session.clientService.feed.addMessage(feedPost);
     }
 }

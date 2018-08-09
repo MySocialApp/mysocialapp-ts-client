@@ -11,11 +11,11 @@ export class RestFeedLike extends Rest {
         return this.conf.getList(new Feed(),Rest.params("feed/{id}/like", {id: id})) as Promise<Like[]>;
     }
 
-    addLike(id: string): Promise<Like> {
+    create(id: string): Promise<Like> {
         return this.conf.post(new Feed(),Rest.params("feed/{id}/like", {id: id}), new Empty()) as Promise<Like>;
     }
 
-    deleteLike(id: string): Promise<void> {
+    delete(id: string): Promise<void> {
         return this.conf.delete(Rest.params("feed/{id}/like", {id: id})) as Promise<void>;
     }
 }

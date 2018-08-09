@@ -7,6 +7,7 @@ import {RestAccount} from "./rest/account";
 import {RestLogout} from "./rest/logout";
 import {RestConversationMessage} from "./rest/conversation_message";
 import {RestRegister} from "./rest/register";
+import {RestUserWall} from "./rest/user_wall";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
@@ -16,7 +17,7 @@ export class ClientService {
     private restLogin?: RestLogin;
     private restRegister?: RestRegister;
     private restLogout?: RestLogout;
-    private restUserWallMessage?: RestUserWallMessage;
+    private restUserWall?: RestUserWall;
     private restAccount?: RestAccount;
     private restConversationMessage?: RestConversationMessage;
 
@@ -50,8 +51,8 @@ export class ClientService {
         return this.restFeed !== undefined ? this.restFeed : this.restFeed = new RestFeed(this.configuration);
     }
 
-    get userWallMessage(): RestUserWallMessage {
-        return this.restUserWallMessage !== undefined ? this.restUserWallMessage : this.restUserWallMessage = new RestUserWallMessage(this.configuration);
+    get userWall(): RestUserWall {
+        return this.restUserWall !== undefined ? this.restUserWall : this.restUserWall = new RestUserWall(this.configuration);
     }
 
     get conversationMessage(): RestConversationMessage {

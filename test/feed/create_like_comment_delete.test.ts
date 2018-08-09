@@ -1,13 +1,13 @@
 import {ErrorResponse} from "../../src/rest/error";
 import {createAccountAndGetSession, sleep} from "../common";
 import {AccessControl} from "../../src/models/access_control";
-import {FeedPost} from "../../src/models/feed_post";
 import { CommentPost } from "../../src/models/comment_post";
+import {TextWallMessage} from "../../src/models/text_wall_message";
 jest.setTimeout(60000);
-describe("create account", () => {
+describe("addMessage account", () => {
     it("user creation api", async () => {
         try {
-            let post = (new FeedPost()).setMessage("Good day").setVisibility(AccessControl.Friend);
+            let post = (new TextWallMessage()).setMessage("Good day").setVisibility(AccessControl.Friend);
 
             const session = await createAccountAndGetSession();
             const account = await session.account.get();

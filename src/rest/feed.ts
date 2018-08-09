@@ -1,6 +1,7 @@
 import {Rest} from "./rest";
 import {Feed} from "../models/feed";
-import {FeedPost} from "../models/feed_post";
+import {Empty} from "../models/empty";
+import {TextWallMessage} from "../models/text_wall_message";
 
 
 export class RestFeed extends Rest {
@@ -19,7 +20,19 @@ export class RestFeed extends Rest {
         return this.conf.delete(Rest.params("/feed/{id}", {id: id})) as Promise<void>;
     }
 
-    create(feedPost: FeedPost, userId: string): Promise<Feed> {
-        return this.conf.post(new Feed(), Rest.params('/user/{userId}/wall/message', {userId: userId}), feedPost) as Promise<Feed>;
+    addMessage(message: TextWallMessage): Promise<Feed> {
+        return this.conf.post(new Feed(), "/feed/message", message) as Promise<Feed>;
+    }
+
+    updateMessage(messageId: string, message: TextWallMessage): Promise<Feed> {
+        return this.conf.post(new Feed(), "/feed/message/" + messageId, message) as Promise<Feed>;
+    }
+
+    abuse(id: string): Promise<void> {
+        return this.conf.postVoid(new Empty(), Rest.params("/feed/{id}/abuse", {id: id}), new Empty()) as Promise<void>;
+    }
+
+    ignore(id: string): Promise<void> {
+        return this.conf.postVoid(new Empty(), Rest.params("/feed/{id}/ignore", {id: id}), new Empty()) as Promise<void>;
     }
 }

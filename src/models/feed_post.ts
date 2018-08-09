@@ -12,6 +12,7 @@ export class FeedPost implements Serializable{
     }
 
     setImage(image: File): FeedPost {
+        // TODO manage photo
         this.mImage = image;
         return this;
     }

@@ -31,8 +31,8 @@ export class Conversation extends Base {
 
     sendMessage(message: ConversationMessagePost): Promise<ConversationMessage> {
         if (!message.isMultipart) {
-            return (new RestConversationMessage(this.conf)).post(this.id_str, message.getConversationMessage());
+            return (new RestConversationMessage(this.conf)).create(this.id, message.getConversationMessage());
         }
-        return (new RestConversationMessage(this.conf)).postFile(this.id_str, message);
+        return (new RestConversationMessage(this.conf)).postFile(this.id, message);
     }
 }

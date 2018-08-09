@@ -73,6 +73,15 @@ export class Configuration {
         }
     }
 
+    public async postVoid(model: Model, path: string, body: Serializable, options?: {}): Promise<void> {
+        try {
+            const resp = await this.httpClient.post(path, body.toJson(), this.setDefaultOptions(options, "application/json")) as AxiosResponse<ModelInterface>;
+            return
+        } catch (error) {
+            throw new ErrorResponse(error);
+        }
+    }
+
     public async postMultipart(model: Model, path: string, body: FormData, options?: {}): Promise<ModelInterface> {
         try {
             // TODO check

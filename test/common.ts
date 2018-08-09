@@ -24,7 +24,7 @@ export async function createAccountAndGetSession(): Promise<Session> {
     user.last_name = randomId();
     user.gender = Gender.Male;
     let client = getClient();
-    const createdUser = await client.register.post(user);
+    const createdUser = await client.register.create(user);
 
     await sleep(1000);
     let session = new Session(client);
