@@ -13,7 +13,10 @@ export class ConversationMessage extends Model implements Serializable, Taggable
 
     toJson(): string {
         // TODO complete serialization
-        return JSON.stringify({});
+        return JSON.stringify({
+            message: this.message,
+            tag_entities: this.tag_entities,
+        });
     }
 
     get tag_entities(): TagEntities {
