@@ -9,9 +9,8 @@ export class RestPhotoAlbum extends Rest {
         })) as Promise<PhotoAlbum[]>;
     }
 
-    get(id: string, params: {}): Promise<PhotoAlbum> {
-        params = params !== undefined ? params : {};
-        let path = Rest.params("/photo/album/{id}/?", {id: id}) + Rest.encodeQueryData(params);
+    get(id: string): Promise<PhotoAlbum> {
+        let path = Rest.params("/photo/album/{id}", {id: id});
         return this.conf.get(new PhotoAlbum(), path) as  Promise<PhotoAlbum>;
     }
 

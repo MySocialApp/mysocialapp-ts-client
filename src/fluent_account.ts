@@ -1,14 +1,11 @@
-import {Session} from "./session";
 import {User} from "./models/user";
 import {CustomField} from "./models/custom_field";
+import {FluentAbstract} from "./fluent_abstract";
+import {Photo} from "./models/photo";
+import {LoginCredentials} from "./models/login_credentials";
 
-export class FluentAccount {
-    private session: Session;
+export class FluentAccount extends FluentAbstract {
     account?: User;
-
-    constructor(session: Session) {
-        this.session = session;
-    }
 
     async get(useCache?: boolean): Promise<User> {
         if (useCache && this.account !== undefined) {
@@ -22,5 +19,17 @@ export class FluentAccount {
     async getAvailableCustomFields(): Promise<CustomField[]> {
         const acc = await this.get();
         return acc.custom_fields;
+    }
+
+    async changeProfilePhoto(photo: File): Promise<Photo> {
+        return this.session.clientService.account.updateProfilePhoto(photo);
+    }
+
+    async changeProfileCoverPhoto(photo: File): Promise<Photo> {
+        return this.session.clientService.account.updateCover(photo);
+    }
+
+    async requestForDeleteAccount(password: string): Promise<void> {
+        return this.session.clientService.account.delete(new LoginCredentials({password: password}))
     }
 }

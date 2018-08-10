@@ -4,10 +4,10 @@ import {ConversationMessage} from "../models/conversation_message";
 import {TagEntities} from "../models/tag_entities";
 
 export class RestConversation extends Rest {
-    list(page: number, size?: number): Promise<Conversation[]> {
+    list(page: number, size: number = 20): Promise<Conversation[]> {
         let params = {
             page: page,
-            size: size !== undefined ? size : 20,
+            size: size,
             messageSamples: 1,
         };
         return this.conf.getList(new Conversation(), "/conversation?" + Rest.encodeQueryData(params)) as Promise<Conversation[]>;

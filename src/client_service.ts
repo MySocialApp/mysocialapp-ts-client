@@ -109,15 +109,15 @@ export class ClientService {
         return this.restFeedLike !== undefined ? this.restFeedLike : this.restFeedLike = new RestFeedLike(this.configuration);
     }
 
-    get feedFriend(): RestFriend {
+    get friend(): RestFriend {
         return this.restFriend !== undefined ? this.restFriend : this.restFriend = new RestFriend(this.configuration);
     }
 
-    get feedGroup(): RestGroup {
+    get group(): RestGroup {
         return this.restGroup !== undefined ? this.restGroup : this.restGroup = new RestGroup(this.configuration);
     }
 
-    get feedGroupWall(): RestGroupWall {
+    get groupWall(): RestGroupWall {
         return this.restGroupWall !== undefined ? this.restGroupWall : this.restGroupWall = new RestGroupWall(this.configuration);
     }
 

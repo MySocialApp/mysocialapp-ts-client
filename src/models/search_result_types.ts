@@ -48,7 +48,7 @@ interface SearchResultValue<T> {
     data: T[];
 }
 
-class UserSearchResult extends Model implements SearchResultValue<User> {
+export class UserSearchResult extends Model implements SearchResultValue<User> {
     matched_count: number;
     _data: User[];
 
@@ -64,7 +64,7 @@ class UserSearchResult extends Model implements SearchResultValue<User> {
     }
 }
 
-class FeedsSearchResult extends Model implements SearchResultValue<Feed> {
+export class FeedsSearchResult extends Model implements SearchResultValue<Feed> {
     matched_count: number;
     _data: Feed[];
 
@@ -80,7 +80,7 @@ class FeedsSearchResult extends Model implements SearchResultValue<Feed> {
     }
 }
 
-class GroupSearchResult extends Model implements SearchResultValue<Group> {
+export class GroupSearchResult extends Model implements SearchResultValue<Group> {
     matched_count: number;
     _data: Group[];
 
@@ -96,7 +96,7 @@ class GroupSearchResult extends Model implements SearchResultValue<Group> {
     }
 }
 
-class EventSearchResult extends Model implements SearchResultValue<Event> {
+export class EventSearchResult extends Model implements SearchResultValue<Event> {
     matched_count: number;
     _data: Event[];
 
