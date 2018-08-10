@@ -4,14 +4,42 @@ import {Base} from "./base";
 import {ConversationMessagePost} from "./conversation_message_post";
 import {ConversationMessage} from "./conversation_message";
 import {RestConversationMessage} from "../rest/conversation_message";
+import {Model} from "./model";
 
 export class Conversation extends Base {
     private _members: User[];
     private _messages: ConversationMessages;
     name?: string;
 
+    getJsonParameters(): {} {
+        return {
+            members: Model.listToParameters(this.members),
+            name: this.name,
+        };
+    }
+
     get members(): User[] {
         return this._members;
+    }
+
+    setName(name: string): Conversation {
+        this.name = name;
+        return this;
+    }
+
+    addMember(user: User): Conversation {
+        if (this.members == undefined) {
+            this.members = [] as User[];
+        }
+        this.members.push(user);
+        return this;
+    }
+
+    addMembers(users: User[]): Conversation {
+        for(let user of users) {
+            this.addMember(user);
+        }
+        return this;
     }
 
     set members(members: User[]) {

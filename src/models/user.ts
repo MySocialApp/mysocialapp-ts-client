@@ -5,6 +5,7 @@ import {UserStat} from "./user_stat";
 import {Status} from "./status";
 import {Flag} from "./flag";
 import {Location} from "./location";
+import {Model} from "./model";
 
 export class User extends Base {
     private _profile_photo?: Photo;
@@ -24,6 +25,19 @@ export class User extends Base {
     authorities?: string[];
     is_friend?: boolean;
     is_requested_as_friend?: boolean;
+
+    getJsonParameters(): {} {
+        return {
+            id: this.id,
+            first_name: this.first_name,
+            last_name: this.last_name,
+            password: this.password,
+            email: this.email,
+            gender: this.gender,
+            date_of_birth: this.date_of_birth,
+            presentation: this.presentation,
+        };
+    }
 
     set profile_photo(p: Photo) {
         this._profile_photo = new Photo(p, this.conf);
