@@ -20,7 +20,7 @@ export declare class Feed extends Model implements Wallable {
     target: BaseWall;
     object: BaseWall;
     actor: User;
-    readonly created_date: string;
+    created_date: string;
     readonly createdDate: moment.Moment;
     readonly body_message: string;
     addLike(): Promise<Like>;

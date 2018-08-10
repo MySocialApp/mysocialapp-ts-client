@@ -10,9 +10,9 @@ export class RestFeed extends Rest {
         return this.conf.get(new Feed(), Rest.params('/feed/{id}', {id: id})) as Promise<Feed>;
     }
 
-    list(page?: number, params?: {}): Promise<Feed[]> {
-        params = params !== undefined ? params : {};
-        params['page'] = page !== undefined ? page : 0;
+    list(page: number = 0, size: number = 10, params: {} = {}): Promise<Feed[]> {
+        params['page'] = page;
+        params['size'] = size;
         return this.conf.getList(new Feed(), '/feed?' + Rest.encodeQueryData(params)) as Promise<Feed[]>;
     }
 

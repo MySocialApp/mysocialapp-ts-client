@@ -1,6 +1,7 @@
 import {Rest} from "./rest";
 import {Photo} from "../models/photo";
 import {TagEntities} from "../models/tag_entities";
+import {Feed} from "../models/feed";
 
 export class RestPhoto extends Rest {
     list(page: number, size?: number): Promise<Photo[]> {
@@ -16,7 +17,7 @@ export class RestPhoto extends Rest {
         return this.conf.delete("/photo/" + photoId);
     }
 
-    create(photo: File, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Photo> {
+    create(photo: File, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Feed> {
         let f = new FormData();
         f.set("file", photo);
         if (message !== undefined) {
@@ -28,7 +29,7 @@ export class RestPhoto extends Rest {
         if (albumName !== undefined) {
             f.set("album", albumName);
         }
-        return this.conf.postMultipart(new Photo(), "/photo", f) as Promise<Photo>;
+        return this.conf.postMultipart(new Photo(), "/photo", f) as Promise<Feed>;
     }
 
     update(photoId: string, photo: Photo): Promise<Photo> {
