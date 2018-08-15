@@ -7,6 +7,8 @@ export interface ModelInterface {
 
 export interface Serializable {
     toJson(): string
+
+    getJsonParameters(): {}
 }
 
 export class Model implements ModelInterface, Serializable {

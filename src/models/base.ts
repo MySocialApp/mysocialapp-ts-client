@@ -41,7 +41,7 @@ export class Base extends Model implements BaseImpl{
         return this._displayed_photo;
     }
 
-    get createdDate(): moment.Moment {
+    get getCreatedDate(): moment.Moment {
         return this.created_date ? moment(this.created_date) : null;
     }
 

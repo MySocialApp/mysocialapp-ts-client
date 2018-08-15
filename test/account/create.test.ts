@@ -1,5 +1,5 @@
 import {ErrorResponse} from "../../src/rest/error";
-import {createAccountAndGetSession} from "../common";
+import {catchErrorFunc, createAccountAndGetSession} from "../common";
 
 describe("addMessage account", () => {
     it("user creation api", async () => {
@@ -9,9 +9,7 @@ describe("addMessage account", () => {
             expect(userAccount.id != "").toBeTruthy();
             expect(userAccount.displayed_name != "").toBeTruthy();
         } catch (err) {
-            err = err as ErrorResponse;
-            console.info("error", {message: err.message, exception: err.exception, status: err.status, path: err.path});
-            expect(err).toBeNull();
+            catchErrorFunc(err);
         }
     });
 });

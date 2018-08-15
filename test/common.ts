@@ -2,6 +2,7 @@ import {ClientService} from "../src/client_service";
 import {Gender, User} from "../src/models/user";
 import {Configuration} from "../src/configuration";
 import {Session} from "../src/session";
+import {ErrorResponse} from "../src/rest/error";
 
 
 export function banner(title: string): void {
@@ -50,4 +51,20 @@ function randomId(): string {
     }
 
     return text;
+}
+
+export function catchErrorFunc(err) {
+    console.info("error", err);
+    err = err as ErrorResponse;
+    if (err.error !== undefined) {
+        if (err.error['response'] !== undefined) {
+            console.info("body error", err.error['response']['data']);
+        }
+        if (err.error['config'] !== undefined) {
+            console.info("headers", err.error['config']['headers']);
+        }
+    } else {
+        console.info("error", err);
+    }
+    expect(err).toBeNull();
 }
