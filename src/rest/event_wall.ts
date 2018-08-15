@@ -1,9 +1,8 @@
-import {Model} from "../models/model";
 import {Rest} from "./rest";
 import {Feed} from "../models/feed";
 import {TextWallMessage} from "../models/text_wall_message";
 
-export class RestEventWall extends Model {
+export class RestEventWall extends Rest {
 
     async list(eventId: string, page: number, size?: number): Feed[] {
         let path = Rest.params("/event/{id}/wall?", {id: eventId}) + Rest.encodeQueryData({

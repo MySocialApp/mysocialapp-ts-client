@@ -1,4 +1,6 @@
-export class SimpleLocation {
+import {Serializable} from "./model";
+
+export class SimpleLocation implements Serializable {
     latitude: number;
     longitude: number;
 
@@ -9,5 +11,16 @@ export class SimpleLocation {
         if (o !== undefined && o['longitude'] !== undefined) {
             this.longitude = o['longitude'];
         }
+    }
+
+    toJson(): string {
+        return JSON.stringify(this.getJsonParameters());
+    }
+
+    getJsonParameters(): {} {
+        return {
+            latitude: this.latitude,
+            longitude: this.longitude,
+        };
     }
 }

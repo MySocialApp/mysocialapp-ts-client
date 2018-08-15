@@ -4,6 +4,12 @@ import {EventMemberAccessControl} from "./event_member_access_control";
 import {Photo} from "./photo";
 import {TagEntities} from "./tag_entities";
 import {Location} from "./location";
+import {dateFormat} from "../constant";
+import {RestEvent} from "../rest/event";
+import moment = require("moment");
+import {TextWallMessage} from "./text_wall_message";
+import {Feed} from "./feed";
+import {RestEventWall} from "../rest/event_wall";
 
 export class Event extends BaseWall {
     private _tag_entities?: TagEntities;
@@ -26,6 +32,34 @@ export class Event extends BaseWall {
     available: boolean;
     remaining_seconds_before_start?: number;
 
+
+    getJsonParameters(): {} {
+        return {
+            name: this.name,
+            description: this.description,
+            max_seats: this.max_seats,
+            start_date: this.start_date,
+            end_date: this.end_date,
+            event_member_access_control: this.event_member_access_control,
+            location: this._location.getJsonParameters()
+        };
+    }
+
+    async join(): void {
+        return (new RestEvent(this.conf)).join(this.id);
+    }
+
+    async leave(): void {
+        return (new RestEvent(this.conf)).leave(this.id);
+    }
+
+    async update(e: Event): Event {
+        return (new RestEvent(this.conf)).update(e);
+    }
+
+    async addMessage(message: TextWallMessage): Feed {
+        return (new RestEventWall(this.conf)).createMessage(this.id, message);
+    }
 
     get tag_entities(): TagEntities {
         return this._tag_entities;
@@ -57,8 +91,43 @@ export class Event extends BaseWall {
 
     set members(members: EventMember[]) {
         let list = [] as EventMember[];
-        for(let m of members) {
+        for (let m of members) {
             list.push(new EventMember(m, this.conf))
         }
+    }
+
+    setStartDate(d: moment.Moment): Event {
+        this.start_date = d.format(dateFormat);
+        return this;
+    }
+
+    setEndDate(d: moment.Moment): Event {
+        this.end_date = d.format(dateFormat);
+        return this;
+    }
+
+    setMaxSeats(m: number): Event {
+        this.max_seats = m;
+        return this;
+    }
+
+    setDescription(d: string): Event {
+        this.description = d;
+        return this;
+    }
+
+    setName(n: string): Event {
+        this.name = n;
+        return this;
+    }
+
+    setLocation(l: Location): Event {
+        this.location = l;
+        return this;
+    }
+
+    setAccessControl(ac: EventMemberAccessControl): Event {
+        this.event_member_access_control = ac;
+        return this;
     }
 }

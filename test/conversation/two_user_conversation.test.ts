@@ -1,8 +1,5 @@
 import {ErrorResponse} from "../../src/rest/error";
-import {createAccountAndGetSession, sleep} from "../common";
-import {AccessControl} from "../../src/models/access_control";
-import {CommentPost} from "../../src/models/comment_post";
-import {TextWallMessage} from "../../src/models/text_wall_message";
+import {catchErrorFunc, createAccountAndGetSession} from "../common";
 import {Conversation} from "../../src/models/conversation";
 import {ConversationMessagePost} from "../../src/models/conversation_message_post";
 
@@ -19,8 +16,6 @@ describe("addMessage account", () => {
             console.info("user id 2", account2.id);
 
             const user2 = await session1.user.get(account2.id);
-
-            await sleep(3000);
 
             // create conversation
             let conversation1 = await session1.conversation.create(new Conversation().setName("test").addMember(user2));
@@ -40,8 +35,6 @@ describe("addMessage account", () => {
             expect(newConversation1.name == conversation1.name).toBeTruthy();
 
 
-
-
             /* NOT YET IMPLEMENTED
             message2.message = "pingpong";
             let message2_2 = await message2.update();
@@ -49,21 +42,8 @@ describe("addMessage account", () => {
             */
 
 
-
         } catch (err) {
-            console.info("error", err);
-            err = err as ErrorResponse;
-            if (err.error !== undefined) {
-                if (err.error['response'] !== undefined) {
-                    console.info("body error", err.error['response']['data']);
-                }
-                if (err.error['config'] !== undefined) {
-                    console.info("headers", err.error['config']['headers']);
-                }
-            } else {
-                console.info("error", err);
-            }
-            expect(err).toBeNull();
+            catchErrorFunc(err);
         }
     });
 });

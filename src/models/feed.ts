@@ -54,7 +54,7 @@ export class Feed extends Model implements Wallable {
     }
 
     get createdDate(): moment.Moment {
-        return this.object ? this.object.createdDate : null;
+        return this.object ? this.object.getCreatedDate : null;
     }
 
     get body_message(): string {

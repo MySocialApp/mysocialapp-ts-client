@@ -1,5 +1,5 @@
 import {ErrorResponse} from "../../src/rest/error";
-import {createAccountAndGetSession, sleep} from "../common";
+import {catchErrorFunc, createAccountAndGetSession, sleep} from "../common";
 import {AccessControl} from "../../src/models/access_control";
 import {CommentPost} from "../../src/models/comment_post";
 import {TextWallMessage} from "../../src/models/text_wall_message";
@@ -13,29 +13,27 @@ describe("addMessage account", () => {
             const session = await createAccountAndGetSession();
             const account = await session.account.get();
             const createdPost = await session.feed.sendWallPost(post);
-            expect(createdPost.object.id_str != "").toBeTruthy();
+            expect(createdPost.object.id != "").toBeTruthy();
             expect(createdPost.object.displayed_name != "").toBeTruthy();
 
             await sleep(1000);
 
             let like = await createdPost.object.addLike();
-            expect(like.id_str != "").toBeTruthy();
+            expect(like.id != "").toBeTruthy();
 
             let comment = await createdPost.object.addComment((new CommentPost()).setMessage("hello world"));
             expect(comment.message == "hello world");
 
+            let likes = await createdPost.getLikes();
+            expect(likes.length).toBeGreaterThan(0);
+
+            let comments = await createdPost.getComments();
+            expect(comments.length).toBeGreaterThan(0);
+
             await createdPost.object.delete();
 
         } catch (err) {
-            console.info("error", err);
-            err = err as ErrorResponse;
-            if (err.error['response'] !== undefined) {
-                console.info("body error", err.error['response']['data']);
-            }
-            if (err.error['config'] !== undefined) {
-                console.info("headers", err.error['config']['headers']);
-            }
-            expect(err).toBeNull();
+            catchErrorFunc(err);
         }
     });
 });
