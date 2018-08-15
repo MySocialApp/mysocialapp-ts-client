@@ -2,15 +2,15 @@ import {FluentAbstract} from "./fluent_abstract";
 import {User} from "./models/user";
 
 export class FluentUser extends FluentAbstract {
-    list(page: number, size: number = 10, params = {}): Promise<User[]> {
+    async list(page: number, size: number = 10, params = {}): User[] {
         return this.session.clientService.user.list(page, undefined, size, undefined, params);
     }
 
-    get(id: string): Promise<User> {
+    async get(id: string): User {
         return this.session.clientService.user.get(id);
     }
 
-    getByExternalId(id: string): Promise<User> {
+    async getByExternalId(id: string): User {
         return this.session.clientService.userExternal.get(id);
     }
 
@@ -21,7 +21,7 @@ export class FluentUser extends FluentAbstract {
      * @param {number} size
      * @returns {Promise<User[]>}
      */
-    search(search: {}, page: number, size: number = 10): Promise<User[]> {
+    async search(search: {}, page: number, size: number = 10): User[] {
         return this.session.clientService.user.list(page, undefined, size);
     }
 }

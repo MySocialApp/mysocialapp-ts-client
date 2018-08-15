@@ -10,7 +10,7 @@ import {Empty} from "../models/empty";
 import {GroupMember} from "../models/group_member";
 
 export class RestGroup extends Rest {
-    list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<Group[]> {
+    async list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Group[] {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['limited'] = limited === true;
@@ -22,8 +22,8 @@ export class RestGroup extends Rest {
         return this.conf.getList(new Group(), "/group?" + Rest.encodeQueryData(params)) as Promise<Group[]>;
     }
 
-    listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
-               upperLatitude: number, upperLongitude: number): Promise<Group[]> {
+    async listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
+               upperLatitude: number, upperLongitude: number): Group[] {
         let params = {
             lower_latitude: lowerLatitude,
             lower_longitude: lowerLongitude,
@@ -33,49 +33,49 @@ export class RestGroup extends Rest {
         return this.list(page, limited, size, undefined, params);
     }
 
-    get(id: string): Promise<Group> {
+    async get(id: string): Group {
         return this.conf.get(new Group(), "/group/" + id) as Promise<Group>;
     }
 
-    create(group: Group): Promise<Group> {
+    async create(group: Group): Group {
         return this.conf.post(new Group(), "/group", group)as Promise<Group>;
     }
 
-    update(group: Group): Promise<Group> {
+    async update(group: Group): Group {
         return this.conf.put(new Group(), "/group", group) as Promise<Group>;
     }
 
-    cancel(id: string): Promise<void> {
+    async cancel(id: string): void {
         return this.conf.delete("/group/" + id);
     }
 
-    getCustomFields(): Promise<CustomField[]> {
+    async getCustomFields(): CustomField[] {
         return this.conf.getList(new CustomField(), "/group/customfield") as Promise<CustomField[]>;
     }
 
-    getGroupCustomFields(id: string): Promise<CustomField[]> {
+    async getGroupCustomFields(id: string): CustomField[] {
         return this.conf.getList(new CustomField(), Rest.params("/group/{id}/customfield", {id: id})) as Promise<CustomField[]>;
     }
 
-    getMembers(id: string): Promise<GroupMember[]> {
+    async getMembers(id: string): GroupMember[] {
         return this.conf.getList(new GroupMember(), Rest.params("/group/{id}/member", {id: id})) as Promise<GroupMember[]>;
     }
 
-    join(eventId: string): Promise<GroupMember> {
+    async join(eventId: string): GroupMember {
         return this.conf.post(new GroupMember(), Rest.params("/group/{id}/member", {id: eventId}), new Empty()) as Promise<GroupMember>;
     }
 
-    leave(eventId: string): Promise<void> {
+    async leave(eventId: string): void {
         return this.conf.delete(Rest.params("/group/{id}/member", {id: eventId}));
     }
 
-    getPhotos(eventId: string, page?: number): Promise<Photo[]> {
+    async getPhotos(eventId: string, page?: number): Photo[] {
         let params = {page: page !== undefined ? page : 0};
         let path = Rest.params("/group/{id}/photo", {id: eventId}) + Rest.encodeQueryData(params);
         return this.conf.getList(new Photo(), path) as Promise<Photo[]>;
     }
 
-    createPhoto(eventId: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
+    async createPhoto(eventId: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Feed {
         let f = new FormData();
         f.set("file", photo);
         if (message !== undefined) {
@@ -90,22 +90,22 @@ export class RestGroup extends Rest {
         return this.conf.postMultipart(new Feed(), Rest.params("/group/{id}/photo", {id: eventId}), f) as Promise<Feed>;
     }
 
-    getProfilePhoto(eventId: string): Promise<Photo> {
+    async getProfilePhoto(eventId: string): Photo {
         return this.conf.get(new Photo(), Rest.params("/group/{id}/profile/photo", {id: eventId})) as Promise<Photo>;
     }
 
-    updateProfilePhoto(eventId: string, photo: File): Promise<Photo> {
+    async updateProfilePhoto(eventId: string, photo: File): Photo {
         let f = new FormData();
         f.set("file", photo);
         return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/photo", {id: eventId}), f) as Promise<Photo>;
 
     }
 
-    getProfileCoverPhoto(eventId: string): Promise<Photo> {
+    async getProfileCoverPhoto(eventId: string): Photo {
         return this.conf.get(new Photo(), Rest.params("/group/{id}/profile/cover/photo", {id: eventId})) as Promise<Photo>;
     }
 
-    updateProfileCoverPhoto(eventId: string, photo: File): Promise<Photo> {
+    async updateProfileCoverPhoto(eventId: string, photo: File): Photo {
         let f = new FormData();
         f.set("file", photo);
         return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/cover/photo", {id: eventId}), f) as Promise<Photo>;

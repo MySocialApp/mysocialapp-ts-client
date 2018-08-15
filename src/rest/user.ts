@@ -3,7 +3,7 @@ import {SimpleLocation} from "../models/simple_location";
 import {User} from "../models/user";
 
 export class RestUser extends Rest {
-    list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<User[]> {
+    async list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): User[] {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['limited'] = limited === true;
@@ -15,8 +15,8 @@ export class RestUser extends Rest {
         return this.conf.getList(new User(), "/user?" + Rest.encodeQueryData(params)) as Promise<User[]>;
     }
 
-    listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
-               upperLatitude: number, upperLongitude: number): Promise<User[]> {
+    async listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
+               upperLatitude: number, upperLongitude: number): User[] {
         let params = {
             lower_latitude: lowerLatitude,
             lower_longitude: lowerLongitude,
@@ -26,11 +26,11 @@ export class RestUser extends Rest {
         return this.list(page, limited, size, undefined, params);
     }
 
-    get(userId: string): Promise<User> {
+    async get(userId: string): User {
         return this.conf.get(new User(), "/user/" + userId) as Promise<User>;
     }
 
-    getActiveUsers(): Promise<User[]> {
+    async getActiveUsers(): User[] {
         return this.conf.getList(new User(), "/user/active") as Promise<User[]>;
     }
 

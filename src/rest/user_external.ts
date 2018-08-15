@@ -1,7 +1,7 @@
 import {User} from "../models/user";
 
 export class RestUserExternal extends User {
-    get(externalId: string): Promise<User> {
+    async get(externalId: string): User {
         return this.conf.get(new User(), "/user/external/" + externalId) as Promise<User>;
     }
 }

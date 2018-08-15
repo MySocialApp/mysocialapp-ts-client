@@ -5,15 +5,15 @@ import {FeedsSearchResult} from "./models/search_result_types";
 
 export class FluentNewsFeed extends FluentAbstract {
 
-    list(page: number, size: number = 10): Promise<Feed[]> {
+    async list(page: number, size: number = 10): Feed[] {
         return this.session.clientService.feed.list(page, size);
     }
 
-    get(id: string): Promise<Feed> {
+    get(id: string): Feed {
         return this.get(id);
     }
 
-    async create(feedPost: FeedPost): Promise<Feed> {
+    async create(feedPost: FeedPost): Feed {
         let account = await this.session.account.get(true);
         if (!feedPost.hasPhoto()) {
             return this.session.clientService.userWallMessage.create(account.id, feedPost.textWallMessage)
@@ -29,7 +29,7 @@ export class FluentNewsFeed extends FluentAbstract {
      * @param {number} size
      * @returns {Promise<FeedsSearchResult>}
      */
-    search(search: {}, page: number, size: number = 10): Promise<FeedsSearchResult> {
+    async search(search: {}, page: number, size: number = 10): FeedsSearchResult {
         return null;
     }
 }

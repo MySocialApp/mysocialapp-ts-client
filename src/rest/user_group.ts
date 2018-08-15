@@ -2,7 +2,7 @@ import {Rest} from "./rest";
 import {Group} from "../models/group";
 
 export class RestUserGroup extends Rest {
-    list(userId: string, page: number, size: number, params?: {}): Promise<Group[]> {
+    async list(userId: string, page: number, size: number, params?: {}): Group[] {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['size'] = size;

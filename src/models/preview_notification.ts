@@ -14,7 +14,7 @@ export class PreviewNotification extends Model {
         return this.id_str;
     }
 
-    consume(): Promise<PreviewNotification> {
+    async consume(): PreviewNotification {
         return (new RestNotification(this.conf)).getUnreadAndConsume(this.id);
     }
 }

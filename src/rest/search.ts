@@ -2,7 +2,7 @@ import {Rest} from "./rest";
 import {SearchResults} from "../models/search_results";
 
 export class RestSearch extends Rest {
-    get(page: number, size?: number, params?: {}): Promise<SearchResults> {
+    async get(page: number, size?: number, params?: {}): SearchResults {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['size'] = size !== undefined ? size: size;

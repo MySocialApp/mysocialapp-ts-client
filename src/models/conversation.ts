@@ -5,6 +5,7 @@ import {ConversationMessagePost} from "./conversation_message_post";
 import {ConversationMessage} from "./conversation_message";
 import {RestConversationMessage} from "../rest/conversation_message";
 import {Model} from "./model";
+import {RestConversation} from "../rest/conversation";
 
 export class Conversation extends Base {
     private _members: User[];
@@ -36,7 +37,7 @@ export class Conversation extends Base {
     }
 
     addMembers(users: User[]): Conversation {
-        for(let user of users) {
+        for (let user of users) {
             this.addMember(user);
         }
         return this;
@@ -57,10 +58,14 @@ export class Conversation extends Base {
         this._messages = new ConversationMessages(o, this.conf);
     }
 
-    sendMessage(message: ConversationMessagePost): Promise<ConversationMessage> {
+    async sendMessage(message: ConversationMessagePost): ConversationMessage {
         if (!message.isMultipart) {
             return (new RestConversationMessage(this.conf)).create(this.id, message.getConversationMessage());
         }
         return (new RestConversationMessage(this.conf)).postFile(this.id, message);
+    }
+
+    async update(): Conversation {
+        return (new RestConversation(this.conf)).update(this.id, this);
     }
 }

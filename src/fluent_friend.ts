@@ -3,16 +3,16 @@ import {User} from "./models/user";
 
 export class FluentFriend extends FluentAbstract {
 
-    async list(page: number, size: number = 10): Promise<User[]> {
+    async list(page: number, size: number = 10): User[] {
         return this.session.clientService.friend.list(page, size);
     }
 
-    async listIncomingFriendRequests(): Promise<User[]> {
+    async listIncomingFriendRequests(): User[] {
         let req = await this.session.clientService.friend.listRequests();
         return req.incoming;
     }
 
-    async listOutgoingFriendRequests(): Promise<User[]> {
+    async listOutgoingFriendRequests(): User[] {
         let req = await this.session.clientService.friend.listRequests();
         return req.outgoing;
     }
