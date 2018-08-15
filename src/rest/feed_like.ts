@@ -7,15 +7,15 @@ import {Model} from "../models/model";
 
 export class RestFeedLike extends Rest {
 
-    get(id: string): Promise<Like[]> {
+    async get(id: string): Like[] {
         return this.conf.getList(new Feed(),Rest.params("feed/{id}/like", {id: id})) as Promise<Like[]>;
     }
 
-    create(id: string): Promise<Like> {
+    async create(id: string): Like {
         return this.conf.post(new Feed(),Rest.params("feed/{id}/like", {id: id}), new Empty()) as Promise<Like>;
     }
 
-    delete(id: string): Promise<void> {
+    async delete(id: string): void {
         return this.conf.delete(Rest.params("feed/{id}/like", {id: id})) as Promise<void>;
     }
 }

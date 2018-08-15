@@ -4,7 +4,7 @@ import {ConversationMessage} from "../models/conversation_message";
 import {TagEntities} from "../models/tag_entities";
 
 export class RestConversation extends Rest {
-    list(page: number, size: number = 20): Promise<Conversation[]> {
+    async list(page: number, size: number = 20): Conversation[] {
         let params = {
             page: page,
             size: size,
@@ -13,23 +13,23 @@ export class RestConversation extends Rest {
         return this.conf.getList(new Conversation(), "/conversation?" + Rest.encodeQueryData(params)) as Promise<Conversation[]>;
     }
 
-    get(id: string): Promise<Conversation> {
+    async get(id: string): Conversation {
         return this.conf.get(new Conversation(), "/conversation/" + id) as Promise<Conversation>;
     }
 
-    create(conversation: Conversation): Promise<Conversation> {
+    async create(conversation: Conversation): Conversation {
         return this.conf.post(new Conversation(), "/conversation", conversation) as Promise<Conversation>;
     }
 
-    update(id: string, conversation: Conversation): Promise<Conversation> {
+    async update(id: string, conversation: Conversation): Conversation {
         return this.conf.put(new Conversation(), "/conversation/" + id, conversation) as Promise<Conversation>;
     }
 
-    delete(id: string): Promise<void> {
+    async delete(id: string): void {
         return this.conf.delete("/conversation/" + id) as Promise<void>;
     }
 
-    consume(id: string, page: number, size: number): Promise<ConversationMessage[]> {
+    async consume(id: string, page: number, size: number): ConversationMessage[] {
         let path = Rest.params("/conversation/{id}/message/consume", {id: id}) + Rest.encodeQueryData({
             page: page,
             size: size,
@@ -37,7 +37,7 @@ export class RestConversation extends Rest {
         return this.conf.getList(new ConversationMessage(), path) as Promise<ConversationMessage[]>;
     }
 
-    addPhoto(id: string, photo: File, message?: string, tagEntities?: TagEntities): Promise<ConversationMessage> {
+    async addPhoto(id: string, photo: File, message?: string, tagEntities?: TagEntities): ConversationMessage {
         let f = new FormData();
         f.set("file", message);
         if (message !== undefined && message != "") {

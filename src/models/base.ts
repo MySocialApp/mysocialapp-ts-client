@@ -46,14 +46,14 @@ export class Base extends Model implements BaseImpl{
     }
 
     // must be override
-    save(): Promise<any> {
+    async save(): any {
         return new Promise(((resolve, reject) => {
             reject()
         }));
     }
 
     // must be override
-    delete(): Promise<any> {
+    async delete(): any {
         return new Promise(((resolve, reject) => {
             reject()
         }));

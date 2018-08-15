@@ -22,12 +22,31 @@ describe("addMessage account", () => {
 
             await sleep(3000);
 
+            // create conversation
             let conversation1 = await session1.conversation.create(new Conversation().setName("test").addMember(user2));
             let message1 = await conversation1.sendMessage(new ConversationMessagePost().setMessage("ping"));
 
+            // get message with user 2 and reply back
             let conversation2 = await session2.conversation.get(conversation1.id);
             expect(conversation2.messages.samples[0].message == "ping").toBeTruthy();
             let message2 = await conversation2.messages.samples[0].replyBack(new ConversationMessagePost().setMessage("pong"));
+
+            // get user 1 notifications, check if
+            let events = await session1.account.getEvents();
+            expect(events.conversation.total_unreads).toBeGreaterThan(0);
+
+            // update title
+            let newConversation1 = await conversation1.setName("changed title").update();
+            expect(newConversation1.name == conversation1.name).toBeTruthy();
+
+
+
+
+            /* NOT YET IMPLEMENTED
+            message2.message = "pingpong";
+            let message2_2 = await message2.update();
+            expect(message2_2.message == message2.message).toBeTruthy();
+            */
 
 
 

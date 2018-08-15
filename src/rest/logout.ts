@@ -5,7 +5,7 @@ import {ErrorResponse} from "./error";
 
 export class RestLogout extends Rest {
 
-    async do(): Promise<void> {
+    async do(): void {
         try {
             await this.conf.httpClient.post<void>('/logout');
             return;

@@ -1,4 +1,3 @@
-import {User} from "./user";
 import {Base} from "./base";
 import {Likable} from "./likable";
 import {LikeBlob} from "./like_blob";
@@ -31,7 +30,7 @@ export class BaseWall extends Base implements Likable, Commentable {
         return this._likes;
     }
 
-    getLikes(): Promise<Like[]> {
+    async getLikes(): Promise<Like[]> {
         return (new RestFeedLike(this.conf)).get(this.id_str);
     }
 
@@ -47,25 +46,25 @@ export class BaseWall extends Base implements Likable, Commentable {
         return this.likes.hasLike === true;
     }
 
-    addLike(): Promise<Like> {
+    async addLike(): Promise<Like> {
         return (new RestFeedLike(this.conf)).create(this.id_str);
     }
 
-    deleteLike(): Promise<void> {
+    async deleteLike(): Promise<void> {
         return (new RestFeedLike(this.conf)).delete(this.id_str);
     }
 
-    getComments(): Promise<Comment[]> {
+    async getComments(): Promise<Comment[]> {
         return (new RestFeedComment(this.conf)).list(this.id_str);
     }
 
-    addComment(comment: CommentPost): Promise<Comment> {
+    async addComment(comment: CommentPost): Promise<Comment> {
         return (new RestFeedComment(this.conf)).create(this.id_str, comment);
     }
 
-    delete(): Promise<void>{
+    async delete(): void {
         return (new RestFeed(this.conf)).delete(this.id_str);
-    } 
+    }
 
     get commentsTotal(): number {
         return this.comments ? this.comments.total : 0;

@@ -19,7 +19,7 @@ export class ConversationMessages extends Model {
         return this._samples;
     }
 
-    list(page: number, size?: number): Promise<ConversationMessage[]> {
+    async list(page: number, size?: number): ConversationMessage[] {
         return (new RestConversationMessage(this.conf)).list(this.conversation_id, page, size);
     }
 }

@@ -4,16 +4,16 @@ import {Event} from "./models/event";
 
 export class FluentGroup extends FluentAbstract {
 
-    list(page: number, size: number = 10, options: {} = {}): Promise<Group[]> {
+    async list(page: number, size: number = 10, options: {} = {}): Group[] {
         return this.session.clientService.group.list(page, undefined, size, undefined, options);
     }
 
-    get(id: string): Promise<Group> {
+    async get(id: string): Group {
         return this.session.clientService.group.get(id);
     }
 
 
-    create(group: Group): Promise<Group> {
+    async create(group: Group): Group {
         return this.session.clientService.group.create(group);
     }
 
@@ -24,7 +24,7 @@ export class FluentGroup extends FluentAbstract {
      * @param {number} size
      * @returns {Promise<Group[]>}
      */
-    search(search: {}, page: number, size: number = 10): Promise<Group[]> {
+    async search(search: {}, page: number, size: number = 10): Group[] {
         return this.session.clientService.group.list(page, undefined, size);
     }
 }

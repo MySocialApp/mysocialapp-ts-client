@@ -61,35 +61,35 @@ export class Feed extends Model implements Wallable {
         return this.object.body_message ? this.object.body_message : '';
     }
 
-    addLike(): Promise<Like> {
+    async addLike(): Promise<Like> {
         return this.object.addLike();
     }
 
-    getLikes(): Promise<Like[]> {
+    async getLikes(): Promise<Like[]> {
         return this.object.getLikes();
     }
 
-    deleteLike(): Promise<void> {
+    async deleteLike(): Promise<void> {
         return this.object.deleteLike();
     }
 
-    addComment(comment: CommentPost): Promise<Comment> {
+    async addComment(comment: CommentPost): Promise<Comment> {
         return this.object.addComment(comment);
     }
 
-    getComments(): Promise<Comment[]> {
+    async getComments(): Promise<Comment[]> {
         return this.object.getComments();
     }
 
-    abuse(): Promise<void> {
+    async abuse(): Promise<void> {
         return (new RestFeed(this.conf)).abuse(this.object.id);
     }
 
-    ignore(): Promise<void> {
+    async ignore(): Promise<void> {
         return (new RestFeed(this.conf)).ignore(this.object.id);
     }
 
-    delete(): Promise<void> {
+    async delete(): Promise<void> {
         return (new RestFeed(this.conf)).delete(this.object.id);
     }
 }

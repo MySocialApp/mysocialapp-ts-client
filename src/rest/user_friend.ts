@@ -3,7 +3,7 @@ import {User} from "../models/user";
 import {Empty} from "../models/empty";
 
 export class RestUserFriend extends Rest {
-    list(userId: string, page: number, size: number, params?: {}): Promise<User[]> {
+    async list(userId: string, page: number, size: number, params?: {}): User[] {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['size'] = size;
@@ -11,11 +11,11 @@ export class RestUserFriend extends Rest {
         return this.conf.getList(new User(), path) as Promise<User[]>;
     }
 
-    create(userId: string): Promise<User> {
+    async create(userId: string): User {
         return this.conf.post(new User(), Rest.params("/user/{userId}/friend?", {userId: userId}), new Empty()) as Promise<User>;
     }
 
-    delete(userId: string): Promise<void> {
+    async delete(userId: string): void {
         return this.conf.delete(Rest.params("/user/{userId}/friend?", {userId: userId}));
     }
 }

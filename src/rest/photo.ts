@@ -4,20 +4,20 @@ import {TagEntities} from "../models/tag_entities";
 import {Feed} from "../models/feed";
 
 export class RestPhoto extends Rest {
-    list(page: number, size?: number): Promise<Photo[]> {
+    async list(page: number, size?: number): Photo[] {
         let params = {page: page, size: size !== undefined ? size : 10};
         return this.conf.getList(new Photo(), "/photo?" + Rest.encodeQueryData(params)) as Promise<Photo[]>;
     }
 
-    get(photoId: string): Promise<Photo> {
+    async get(photoId: string): Photo {
         return this.conf.get(new Photo(), "/photo/" + photoId) as Promise<Photo>;
     }
 
-    delete(photoId: string): Promise<void> {
+    async delete(photoId: string): void {
         return this.conf.delete("/photo/" + photoId);
     }
 
-    create(photo: File, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Feed> {
+    async create(photo: File, message?: string, tagEntities?: TagEntities, albumName?: string): Feed {
         let f = new FormData();
         f.set("file", photo);
         if (message !== undefined) {
@@ -32,7 +32,7 @@ export class RestPhoto extends Rest {
         return this.conf.postMultipart(new Photo(), "/photo", f) as Promise<Feed>;
     }
 
-    update(photoId: string, photo: Photo): Promise<Photo> {
+    async update(photoId: string, photo: Photo): Photo {
         return this.conf.put(new Photo(), "/photo/" + photoId, photo) as Promise<Photo>;
     }
 }

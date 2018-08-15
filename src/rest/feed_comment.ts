@@ -6,15 +6,15 @@ import {TagEntities} from "../models/tag_entities";
 
 export class RestFeedComment extends Rest {
 
-    create(id: string, comment: CommentPost): Promise<Comment> {
+    async create(id: string, comment: CommentPost): Comment {
         return this.conf.post(new Comment(), Rest.params("feed/{id}/comment", {id: id}), comment) as Promise<Comment>;
     }
 
-    list(id: string): Promise<Comment[]> {
+    async list(id: string): Comment[] {
         return this.conf.getList(new Comment(), Rest.params("feed/{id}/comment", {id: id})) as Promise<Comment[]>;
     }
 
-    addPhoto(id: string, photo: File, message?: string, tagEntities?: TagEntities): Promise<Comment> {
+    async addPhoto(id: string, photo: File, message?: string, tagEntities?: TagEntities): Comment {
         let f = new FormData();
         f.set("file", photo);
         if (message !== undefined) {

@@ -2,23 +2,23 @@ import {Rest} from "./rest";
 import {Status} from "../models/status";
 
 export class RestStatus extends Rest {
-    list(page: number): Promise<Status[]> {
+    async list(page: number): Status[] {
         return this.conf.getList(new Status(), "/status?page=" + page) as Promise<Status[]>;
     }
 
-    get(statusId: string): Promise<Status> {
+    async get(statusId: string): Status {
         return this.conf.get(new Status(), "/status/" + statusId) as Promise<Status>;
     }
 
-    create(status: Status): Promise<Status> {
+    async create(status: Status): Status {
         return this.conf.post(new Status(), "/status", status) as Promise<Status>;
     }
 
-    update(statusId: string, status: Status): Promise<Status> {
+    async update(statusId: string, status: Status): Status {
         return this.conf.put(new Status(), "/status/" + statusId, status) as Promise<Status>;
     }
 
-    delete(statusId: string): Promise<void> {
+    async delete(statusId: string): void {
         return this.conf.delete("/status/" + statusId);
     }
 }
