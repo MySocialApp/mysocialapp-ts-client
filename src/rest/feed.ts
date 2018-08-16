@@ -29,10 +29,10 @@ export class RestFeed extends Rest {
     }
 
     async abuse(id: string): void {
-        return this.conf.postVoid(new Empty(), Rest.params("/feed/{id}/abuse", {id: id}), new Empty()) as Promise<void>;
+        return this.conf.postVoid(Rest.params("/feed/{id}/abuse", {id: id}), new Empty()) as Promise<void>;
     }
 
     async ignore(id: string): void {
-        return this.conf.postVoid(new Empty(), Rest.params("/feed/{id}/ignore", {id: id}), new Empty()) as Promise<void>;
+        return this.conf.postVoid(Rest.params("/feed/{id}/ignore", {id: id}), new Empty()) as Promise<void>;
     }
 }

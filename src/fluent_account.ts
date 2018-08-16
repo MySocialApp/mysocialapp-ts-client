@@ -4,6 +4,7 @@ import {FluentAbstract} from "./fluent_abstract";
 import {Photo} from "./models/photo";
 import {LoginCredentials} from "./models/login_credentials";
 import {AccountEvents} from "./models/account_events";
+import {ResetIdentifier} from "./models/reset_identifier";
 
 export class FluentAccount extends FluentAbstract {
     account?: User;
@@ -34,7 +35,11 @@ export class FluentAccount extends FluentAbstract {
         return this.session.clientService.account.delete(new LoginCredentials({password: password}))
     }
 
-    getEvents(): Promise<AccountEvents> {
+    async getEvents(): AccountEvents {
         return this.session.clientService.configuration.get(new AccountEvents(), "/account/event") as Promise<AccountEvents>;
+    }
+
+    async resetPassword(email: string): void {
+        return this.session.clientService.configuration.postVoid("/reset", new ResetIdentifier({email: email}))
     }
 }

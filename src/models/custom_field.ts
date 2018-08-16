@@ -2,10 +2,23 @@ import {AccessControl} from "./access_control";
 import {Model} from "./model";
 import {InterfaceLanguage} from "./user_settings";
 import {SimpleLocation} from "./simple_location";
+import {dateFormat} from "../constant";
+import moment = require("moment");
 
 export class CustomField extends Model {
     _field: Field;
     _data: CustomFieldData;
+
+    getJsonParameters(): {} {
+        let data = {
+            field: this.field.getJsonParameters()
+        };
+        if (this.data != undefined) {
+            data['data'] = this.data.getJsonParameters();
+            data['data']['field_id'] = this.field.id;
+        }
+        return data;
+    }
 
     set field(fields: Field) {
         this._field = new Field(fields, this.conf)
@@ -90,17 +103,24 @@ export class CustomField extends Model {
         this.value = value;
     }
 
-    get location(): SimpleLocation {
+    get locationValue(): SimpleLocation {
         return this.data !== undefined ? new SimpleLocation(this.data.value as {}) : null;
     }
 
-    set location(value: SimpleLocation) {
+    set locationValue(value: SimpleLocation) {
         this.value = value;
+    }
+
+    set dateValue(value: moment.Moment) {
+        this.value = value.format(dateFormat);
+    }
+
+    get dateValue(): moment.Moment {
+        return moment(this.value);
     }
 }
 
 class Field extends Model {
-    id: any;
     id_str: string;
     field_type: CustomFieldType;
     created_date: string;
@@ -113,14 +133,43 @@ class Field extends Model {
     descriptions: Map<InterfaceLanguage, string>;
     placeholders: Map<InterfaceLanguage, string>;
     values: Map<InterfaceLanguage, string[]>;
+
+    getJsonParameters(): {} {
+        return {
+            id: this.id,
+            field_type: this.field_type,
+        };
+    }
+
+    set id(id: any) {
+        // Long type doesn't work with browser
+    }
+
+    get id(): any {
+        return this.id_str;
+    }
 }
 
 export class CustomFieldData extends Model {
-    field_id: any;
     field_id_str: string;
     created_date: string;
     updated_date: string;
     value: any;
+
+    getJsonParameters(): {} {
+        return {
+            field_id: this.field_id,
+            value: this.value,
+        };
+    }
+
+    set field_id(id: any) {
+
+    }
+
+    get field_id(): any {
+        return this.field_id_str;
+    }
 }
 
 export enum CustomFieldType {

@@ -1,4 +1,3 @@
-import {ErrorResponse} from "../../src/rest/error";
 import {catchErrorFunc, createAccountAndGetSession} from "../common";
 
 describe("addMessage account", () => {
@@ -8,6 +7,8 @@ describe("addMessage account", () => {
             const userAccount = await client.account.get();
             expect(userAccount.id != "").toBeTruthy();
             expect(userAccount.displayed_name != "").toBeTruthy();
+
+
         } catch (err) {
             catchErrorFunc(err);
         }
