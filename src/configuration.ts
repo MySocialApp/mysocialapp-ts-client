@@ -73,7 +73,7 @@ export class Configuration {
         }
     }
 
-    public async postVoid(model: Model, path: string, body: Serializable, options?: {}): Promise<void> {
+    public async postVoid(path: string, body: Serializable, options?: {}): Promise<void> {
         try {
             const resp = await this.httpClient.post(path, body.toJson(), this.setDefaultOptions(options, "application/json")) as AxiosResponse<ModelInterface>;
             return

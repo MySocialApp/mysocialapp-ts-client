@@ -23,7 +23,7 @@ export class RestEvent extends Rest {
     }
 
     async listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
-               upperLatitude: number, upperLongitude: number): Event[] {
+                     upperLatitude: number, upperLongitude: number): Event[] {
         let params = {
             lower_latitude: lowerLatitude,
             lower_longitude: lowerLongitude,
@@ -42,11 +42,11 @@ export class RestEvent extends Rest {
     }
 
     async update(event: Event): Event {
-        return this.conf.put(new Event(), "/event", event) as Promise<Event>;
+        return this.conf.put(new Event(), "/event/" + event.id, event) as Promise<Event>;
     }
 
     async cancel(id: string): void {
-        return this.conf.delete("/event/" + id);
+        return this.conf.postVoid(Rest.params("/event/{id}/cancel", {id: id}), new Empty());
     }
 
     async getCustomFields(): CustomField[] {

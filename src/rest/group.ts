@@ -23,7 +23,7 @@ export class RestGroup extends Rest {
     }
 
     async listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
-               upperLatitude: number, upperLongitude: number): Group[] {
+                     upperLatitude: number, upperLongitude: number): Group[] {
         let params = {
             lower_latitude: lowerLatitude,
             lower_longitude: lowerLongitude,
@@ -42,7 +42,7 @@ export class RestGroup extends Rest {
     }
 
     async update(group: Group): Group {
-        return this.conf.put(new Group(), "/group", group) as Promise<Group>;
+        return this.conf.put(new Group(), "/group/" + group.id, group) as Promise<Group>;
     }
 
     async cancel(id: string): void {
