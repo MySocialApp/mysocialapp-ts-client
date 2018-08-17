@@ -1,7 +1,7 @@
 {
   "name": "mysocialapp-ts-client",
-  "version": "1.0.0",
-  "description": "Typescript client SDK for MySocialApp",
+  "version": "0.1.0",
+  "description": " Official Typescript / Javascript client to interact with MySocialApp API - Seamless Social Networking features for your app",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "scripts": {
@@ -13,8 +13,12 @@
     "lib"
   ],
   "keywords": [
+    "activity stream",
+    "news feed",
     "social app",
-    "feed"
+    "social app api",
+    "serverless api",
+    "notification api"
   ],
   "author": "Rémi Demol",
   "license": "MIT",
