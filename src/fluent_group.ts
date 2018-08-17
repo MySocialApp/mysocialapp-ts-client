@@ -8,6 +8,19 @@ export class FluentGroup extends FluentAbstract {
         return this.session.clientService.group.list(page, undefined, size, undefined, options);
     }
 
+    async* stream() {
+        let page = 0;
+        while (true) {
+            let feeds = await this.list(page++);
+            if (!feeds.length) {
+                return;
+            }
+            for (let feed of feeds) {
+                yield feed;
+            }
+        }
+    }
+
     async get(id: string): Group {
         return this.session.clientService.group.get(id);
     }

@@ -14,6 +14,7 @@ describe("addMessage account", () => {
             const createdPost = await session.feed.sendWallPost(post);
             expect(createdPost.object.id != "").toBeTruthy();
             expect(createdPost.object.displayed_name != "").toBeTruthy();
+            sleep(200);
 
             let like = await createdPost.object.addLike();
             expect(like.id != "").toBeTruthy();
@@ -21,7 +22,7 @@ describe("addMessage account", () => {
             let comment = await createdPost.object.addComment((new CommentPost()).setMessage("hello world"));
             expect(comment.message == "hello world");
 
-            await sleep(300);
+            await sleep(1000);
             let likes = await createdPost.getLikes();
             expect(likes.length).toBeGreaterThan(0);
 
