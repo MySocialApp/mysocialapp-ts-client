@@ -30,6 +30,10 @@ import {RestUserEvent} from "./rest/user_event";
 import {RestUserExternal} from "./rest/user_external";
 import {RestUserFriend} from "./rest/user_friend";
 import {RestUserGroup} from "./rest/user_group";
+import {RestShadowEntityFeed} from "./rest/shadow_entity_feed";
+import {RestShadowEntityFeedMessage} from "./rest/shadow_entity_feed_message";
+import {RestShadowEntityProfilePhoto} from "./rest/shadow_entity_profile_photo";
+import {RestShadowEntityProfileCoverPhoto} from "./rest/shadow_entity_profile_cover_photo";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
@@ -65,6 +69,10 @@ export class ClientService {
     private restUserGroup?: RestUserGroup;
     private restUserWall?: RestUserWall;
     private restUserWallMessage?: RestUserWallMessage;
+    private restShadowEntityFeed?: RestShadowEntityFeed;
+    private restShadowEntityFeedMessage?: RestShadowEntityFeedMessage;
+    private restShadowEntityProfilePhoto?: RestShadowEntityProfilePhoto;
+    private restShadowEntityProfileCoverPhoto?: RestShadowEntityProfileCoverPhoto;
 
 
     /**
@@ -196,4 +204,21 @@ export class ClientService {
     get userWallMessage(): RestUserWallMessage {
         return this.restUserWallMessage !== undefined ? this.restUserWallMessage : this.restUserWallMessage = new RestUserWallMessage(this.configuration);
     }
+
+    get shadowEntityFeed(): RestShadowEntityFeed {
+        return this.restShadowEntityFeed !== undefined ? this.restShadowEntityFeed : this.restShadowEntityFeed = new RestShadowEntityFeed(this.configuration);
+    }
+
+    get shadowEntityFeedMessage(): RestShadowEntityFeedMessage {
+        return this.restShadowEntityFeedMessage !== undefined ? this.restShadowEntityFeedMessage : this.restShadowEntityFeedMessage = new RestShadowEntityFeedMessage(this.configuration);
+    }
+
+    get shadowEntityProfilePhoto(): RestShadowEntityProfilePhoto {
+        return this.restShadowEntityProfilePhoto !== undefined ? this.restShadowEntityProfilePhoto : this.restShadowEntityProfilePhoto = new RestShadowEntityProfilePhoto(this.configuration);
+    }
+
+    get shadowEntityProfileCoverPhoto(): RestShadowEntityProfileCoverPhoto {
+        return this.restShadowEntityProfileCoverPhoto !== undefined ? this.restShadowEntityProfileCoverPhoto : this.restShadowEntityProfileCoverPhoto = new RestShadowEntityProfileCoverPhoto(this.configuration);
+    }
+
 }
