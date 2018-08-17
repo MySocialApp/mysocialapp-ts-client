@@ -30,6 +30,11 @@ import { RestUserEvent } from "./rest/user_event";
 import { RestUserExternal } from "./rest/user_external";
 import { RestUserFriend } from "./rest/user_friend";
 import { RestUserGroup } from "./rest/user_group";
+import { RestShadowEntityFeed } from "./rest/shadow_entity_feed";
+import { RestShadowEntityFeedMessage } from "./rest/shadow_entity_feed_message";
+import { RestShadowEntityProfilePhoto } from "./rest/shadow_entity_profile_photo";
+import { RestShadowEntityProfileCoverPhoto } from "./rest/shadow_entity_profile_cover_photo";
+import { RestShadowEntityPhoto } from "./rest/shadow_entity_photo";
 export declare class ClientService {
     clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
@@ -63,6 +68,11 @@ export declare class ClientService {
     private restUserGroup?;
     private restUserWall?;
     private restUserWallMessage?;
+    private restShadowEntityFeed?;
+    private restShadowEntityPhoto?;
+    private restShadowEntityFeedMessage?;
+    private restShadowEntityProfilePhoto?;
+    private restShadowEntityProfileCoverPhoto?;
     /**
      *
      * @param {Configuration} configuration
@@ -99,4 +109,9 @@ export declare class ClientService {
     readonly userGroup: RestUserGroup;
     readonly userWall: RestUserWall;
     readonly userWallMessage: RestUserWallMessage;
+    readonly shadowEntityFeed: RestShadowEntityFeed;
+    readonly shadowEntityPhoto: RestShadowEntityPhoto;
+    readonly shadowEntityFeedMessage: RestShadowEntityFeedMessage;
+    readonly shadowEntityProfilePhoto: RestShadowEntityProfilePhoto;
+    readonly shadowEntityProfileCoverPhoto: RestShadowEntityProfileCoverPhoto;
 }

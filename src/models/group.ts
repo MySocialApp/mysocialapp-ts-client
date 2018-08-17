@@ -37,19 +37,19 @@ export class Group extends BaseWall {
         };
     }
 
-    async join(): void {
+    async join(): Promise<GroupMember> {
         return (new RestGroup(this.conf)).join(this.id);
     }
 
-    async leave(): void {
+    async leave(): Promise<void> {
         return (new RestGroup(this.conf)).leave(this.id);
     }
 
-    async update(): Group {
+    async update(): Promise<Group> {
         return (new RestGroup(this.conf)).update(this);
     }
 
-    async addMessage(message: TextWallMessage): Feed {
+    async addMessage(message: TextWallMessage): Promise<Feed> {
         return (new RestGroupWall(this.conf)).createMessage(this.id, message);
     }
 

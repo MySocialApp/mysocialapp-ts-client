@@ -1,6 +1,7 @@
 import {User} from "./user";
+import {Model} from "./model";
 
-export class Notification {
+export class Notification extends Model{
     config_id?: string;
     type?: string;
     created_date?: string;

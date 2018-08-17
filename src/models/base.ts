@@ -5,7 +5,7 @@ import {Photo} from "./photo";
 import {AccessControl} from "./access_control";
 import {BaseImpl} from "./base_impl";
 
-export class Base extends Model implements BaseImpl{
+export class Base extends Model implements BaseImpl {
     id_str?: string;
     type?: string;
     created_date: string;
@@ -17,7 +17,7 @@ export class Base extends Model implements BaseImpl{
     body_image_text?: string = null;
     private _owner?: User;
 
-    get id(): any{
+    get id(): any {
         return this.id_str
     }
 
@@ -46,14 +46,14 @@ export class Base extends Model implements BaseImpl{
     }
 
     // must be override
-    async save(): any {
+    async save(): Promise<any> {
         return new Promise(((resolve, reject) => {
             reject()
         }));
     }
 
     // must be override
-    async delete(): any {
+    async delete(): Promise<any> {
         return new Promise(((resolve, reject) => {
             reject()
         }));

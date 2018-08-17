@@ -10,13 +10,12 @@ export class TextWallMessage extends BaseWall implements Serializable, Taggable 
     access_control?: AccessControl;
     private _tag_entities?: TagEntities;
 
-    toJson(): string {
-        // TODO complete serialization
-        return JSON.stringify({
+    getJsonParameters(): {} {
+        return {
             message: this.message,
-            tag_entities: this.tag_entities,
+            tag_entities: this.tag_entities ? this.tag_entities.getJsonParameters() : null,
             access_control: this.access_control,
-        });
+        };
     }
 
     get tag_entities(): TagEntities {

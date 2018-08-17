@@ -3,7 +3,7 @@ import {SimpleLocation} from "../models/simple_location";
 import {User} from "../models/user";
 
 export class RestUser extends Rest {
-    async list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): User[] {
+    async list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<User[]> {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['limited'] = limited === true;
@@ -16,7 +16,7 @@ export class RestUser extends Rest {
     }
 
     async listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
-               upperLatitude: number, upperLongitude: number): User[] {
+               upperLatitude: number, upperLongitude: number): Promise<User[]> {
         let params = {
             lower_latitude: lowerLatitude,
             lower_longitude: lowerLongitude,
@@ -26,11 +26,11 @@ export class RestUser extends Rest {
         return this.list(page, limited, size, undefined, params);
     }
 
-    async get(userId: string): User {
+    async get(userId: string): Promise<User> {
         return this.conf.get(new User(), "/user/" + userId) as Promise<User>;
     }
 
-    async getActiveUsers(): User[] {
+    async getActiveUsers(): Promise<User[]> {
         return this.conf.getList(new User(), "/user/active") as Promise<User[]>;
     }
 

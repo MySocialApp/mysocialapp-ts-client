@@ -6,7 +6,7 @@ import {AccessControl} from "../models/access_control";
 
 export class RestShadowEntityPhoto extends Rest {
 
-    async list(id: string, page: number, size: number = 10): Photo[] {
+    async list(id: string, page: number, size: number = 10): Promise<Photo[]> {
         let path = Rest.params("shadow/entity/{id}/photo?", {id: id}) + Rest.encodeQueryData({
             page: page,
             size: size
@@ -14,7 +14,7 @@ export class RestShadowEntityPhoto extends Rest {
         return this.conf.getList(new Feed(), path) as Promise<Photo[]>;
     }
 
-    async create(id: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Feed {
+    async create(id: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
         let f = new FormData();
         f.set("file", photo);
         if (message !== undefined) {

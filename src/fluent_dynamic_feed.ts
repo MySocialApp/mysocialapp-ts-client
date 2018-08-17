@@ -4,14 +4,14 @@ import {FeedPost} from "./models/feed_post";
 
 export class FluentDynamicFeed extends FluentAbstract {
 
-    list(feedId: string, page: number = 0, size: number = 10): Feed[] {
+    async list(feedId: string, page: number = 0, size: number = 10): Promise<Feed[]> {
         return this.session.clientService.shadowEntityFeed.list(feedId, page, size);
     }
 
-    async* stream() {
+    async* stream(feedId: string) {
         let page = 0;
         while (true) {
-            let feeds = await this.list(page++);
+            let feeds = await this.list(feedId, page++);
             if (!feeds.length) {
                 return;
             }
@@ -21,11 +21,11 @@ export class FluentDynamicFeed extends FluentAbstract {
         }
     }
 
-    get(feedId: string): Feed {
+    async get(feedId: string): Promise<Feed> {
         return this.session.clientService.shadowEntityFeed.get(feedId);
     }
 
-    async create(feedId: string, feedPost: FeedPost): Feed {
+    async create(feedId: string, feedPost: FeedPost): Promise<Feed> {
         if (!feedPost.hasPhoto()) {
             return this.session.clientService.shadowEntityFeedMessage.create(feedId, feedPost.textWallMessage)
         }

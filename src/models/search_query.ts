@@ -1,7 +1,7 @@
 import {User} from "./user";
 
 export class SearchQuery {
-    user?: User;
+    _user?: User;
     q?: string;
     name?: string;
     content?: string;
@@ -10,4 +10,12 @@ export class SearchQuery {
     start_date?: string;
     end_date?: string;
     date_field?: string;
+
+    get user(): User {
+        return this._user;
+    }
+
+    set user(u: User) {
+        this._user = new User(u);
+    }
 }

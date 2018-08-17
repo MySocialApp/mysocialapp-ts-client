@@ -6,33 +6,33 @@ import {TextWallMessage} from "../models/text_wall_message";
 
 export class RestFeed extends Rest {
 
-    async get(id: string): Feed {
+    async get(id: string): Promise<Feed> {
         return this.conf.get(new Feed(), Rest.params('/feed/{id}', {id: id})) as Promise<Feed>;
     }
 
-    async list(page: number = 0, size: number = 10, params: {} = {}): Feed[] {
+    async list(page: number = 0, size: number = 10, params: {} = {}): Promise<Feed[]> {
         params['page'] = page;
         params['size'] = size;
         return this.conf.getList(new Feed(), '/feed?' + Rest.encodeQueryData(params)) as Promise<Feed[]>;
     }
 
-    async delete(id: string): void {
+    async delete(id: string): Promise<void> {
         return this.conf.delete(Rest.params("/feed/{id}", {id: id})) as Promise<void>;
     }
 
-    async addMessage(message: TextWallMessage): Feed {
+    async addMessage(message: TextWallMessage): Promise<Feed> {
         return this.conf.post(new Feed(), "/feed/message", message) as Promise<Feed>;
     }
 
-    async updateMessage(messageId: string, message: TextWallMessage): Feed {
+    async updateMessage(messageId: string, message: TextWallMessage): Promise<Feed> {
         return this.conf.post(new Feed(), "/feed/message/" + messageId, message) as Promise<Feed>;
     }
 
-    async abuse(id: string): void {
+    async abuse(id: string): Promise<void> {
         return this.conf.postVoid(Rest.params("/feed/{id}/abuse", {id: id}), new Empty()) as Promise<void>;
     }
 
-    async ignore(id: string): void {
+    async ignore(id: string): Promise<void> {
         return this.conf.postVoid(Rest.params("/feed/{id}/ignore", {id: id}), new Empty()) as Promise<void>;
     }
 }

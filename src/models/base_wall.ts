@@ -30,10 +30,6 @@ export class BaseWall extends Base implements Likable, Commentable {
         return this._likes;
     }
 
-    async getLikes(): Promise<Like[]> {
-        return (new RestFeedLike(this.conf)).get(this.id_str);
-    }
-
     getLikersTotal(): number {
         return this.likes ? this.likes.total : 0;
     }
@@ -44,6 +40,10 @@ export class BaseWall extends Base implements Likable, Commentable {
 
     isLiked(): boolean {
         return this.likes.hasLike === true;
+    }
+
+    async getLikes(): Promise<Like[]> {
+        return (new RestFeedLike(this.conf)).get(this.id_str);
     }
 
     async addLike(): Promise<Like> {
@@ -62,7 +62,7 @@ export class BaseWall extends Base implements Likable, Commentable {
         return (new RestFeedComment(this.conf)).create(this.id_str, comment);
     }
 
-    async delete(): void {
+    async delete(): Promise<void> {
         return (new RestFeed(this.conf)).delete(this.id_str);
     }
 
