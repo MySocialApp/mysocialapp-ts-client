@@ -13,8 +13,12 @@
     "lib"
   ],
   "keywords": [
+    "activity stream",
+    "news feed",
     "social app",
-    "feed"
+    "social app api",
+    "serverless api",
+    "notification api"
   ],
   "author": "Rémi Demol",
   "license": "MIT",
