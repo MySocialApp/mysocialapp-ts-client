@@ -1,5 +1,5 @@
-import { User } from "../models/user";
+import { Account } from "../models/account";
 import { Rest } from "./rest";
 export declare class RestRegister extends Rest {
-    create(user: User): Promise<User>;
+    create(user: Account): Promise<Account>;
 }

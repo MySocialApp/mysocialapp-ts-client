@@ -5,16 +5,16 @@ import { Photo } from "./photo";
 import { AccessControl } from "./access_control";
 import { BaseImpl } from "./base_impl";
 export declare class Base extends Model implements BaseImpl {
+    private _owner?;
+    private _displayed_photo;
     id_str?: string;
     type?: string;
     created_date: string;
     displayed_name: string;
-    _displayed_photo: Photo;
     access_control?: AccessControl;
     body_message?: string;
     body_image_url?: string;
     body_image_text?: string;
-    private _owner?;
     id: any;
     owner: User;
     displayed_photo: Photo;

@@ -1,18 +1,23 @@
 import {Photo} from "./photo";
-import {Base} from "./base";
 import {CustomField} from "./custom_field";
 import {UserStat} from "./user_stat";
 import {Status} from "./status";
-import {Flag} from "./flag";
 import {Location} from "./location";
+import {Flag} from "./flag";
+import {Model} from "./model";
 
-export class User extends Base {
+export class User extends Model {
     private _profile_photo?: Photo;
     private _custom_fields?: CustomField[] = [];
     private _living_location: Location;
     private _current_status: Status;
     private _flag: Flag;
     private _user_stat: UserStat;
+    id_str?: string;
+    type?: string;
+
+    displayed_name: string;
+    _displayed_photo: Photo;
     updated_date?: string;
     first_name?: string;
     last_name?: string;
@@ -38,6 +43,22 @@ export class User extends Base {
         };
     }
 
+    get id(): any {
+        return this.id_str
+    }
+
+    set id(id: any) {
+        // int64 cannot be interpreted by browsers
+    }
+
+    set displayed_photo(o: Photo) {
+        this._displayed_photo = new Photo(o);
+    }
+
+    get displayed_photo(): Photo {
+        return this._displayed_photo;
+    }
+
     set profile_photo(p: Photo) {
         this._profile_photo = new Photo(p, this.conf);
     }
@@ -55,7 +76,7 @@ export class User extends Base {
     }
 
     set living_location(p: Location) {
-        this._living_location = new Location(p, this.conf);
+        this._living_location = new Location(p);
     }
 
     get living_location(): Location {

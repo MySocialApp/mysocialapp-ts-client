@@ -12,5 +12,4 @@ export declare class Model implements ModelInterface, Serializable {
     constructor(o?: {}, conf?: Configuration);
     toJson(): string;
     getJsonParameters(): {};
-    static listToParameters(models: Model[]): {}[];
 }

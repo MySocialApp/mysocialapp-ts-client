@@ -1,6 +1,6 @@
-import { Model } from "./model";
+import { Serializable } from "./model";
 import { SimpleLocation } from "./simple_location";
-export declare class Location extends Model {
+export declare class Location implements Serializable {
     country?: string;
     distrinct?: string;
     state?: string;
@@ -11,7 +11,9 @@ export declare class Location extends Model {
     complete_address?: string;
     complete_city_address?: string;
     _location: SimpleLocation;
+    constructor(o?: {});
     getJsonParameters(): {};
+    toJson(): string;
     latitude: number;
     longitude: number;
     location: SimpleLocation;

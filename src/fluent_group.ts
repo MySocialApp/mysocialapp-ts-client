@@ -1,6 +1,5 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Group} from "./models/group";
-import {Event} from "./models/event";
 
 export class FluentGroup extends FluentAbstract {
 

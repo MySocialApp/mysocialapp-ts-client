@@ -1,11 +1,11 @@
-import { User } from "./models/user";
+import { Account } from "./models/account";
 import { CustomField } from "./models/custom_field";
 import { FluentAbstract } from "./fluent_abstract";
 import { Photo } from "./models/photo";
 import { AccountEvents } from "./models/account_events";
 export declare class FluentAccount extends FluentAbstract {
-    account?: User;
-    get(useCache?: boolean): Promise<User>;
+    account?: Account;
+    get(useCache?: boolean): Promise<Account>;
     getAvailableCustomFields(): Promise<CustomField[]>;
     changeProfilePhoto(photo: File): Promise<Photo>;
     changeProfileCoverPhoto(photo: File): Promise<Photo>;

@@ -1,4 +1,4 @@
-import {User} from "./models/user";
+import {Account} from "./models/account";
 import {CustomField} from "./models/custom_field";
 import {FluentAbstract} from "./fluent_abstract";
 import {Photo} from "./models/photo";
@@ -7,9 +7,9 @@ import {AccountEvents} from "./models/account_events";
 import {ResetIdentifier} from "./models/reset_identifier";
 
 export class FluentAccount extends FluentAbstract {
-    account?: User;
+    account?: Account;
 
-    async get(useCache?: boolean): Promise<User> {
+    async get(useCache?: boolean): Promise<Account> {
         if (useCache && this.account !== undefined) {
             return this.account;
         }

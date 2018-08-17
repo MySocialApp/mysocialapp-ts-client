@@ -2,7 +2,9 @@ import {Session} from "./session";
 import {Configuration} from "./configuration";
 import {ClientConfiguration} from "./client_configuration";
 import {ClientService} from "./client_service";
-import {User} from "./models/user";
+import {Account} from "./models/account";
+
+(Symbol as any).asyncIterator = Symbol['asyncIterator'] || Symbol.for("Symbol.asyncIterator");
 
 export class MySocialApp {
 
@@ -37,7 +39,7 @@ export class MySocialApp {
 
     async createAccount(email: string, password: string, firstName: string): Promise<Session> {
         let clientService = new ClientService(this.configuration);
-        await clientService.register.create(new User({
+        await clientService.register.create(new Account({
             email: email,
             password: password,
             first_name: firstName
