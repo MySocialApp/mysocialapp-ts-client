@@ -8,6 +8,19 @@ export class FluentDynamicFeed extends FluentAbstract {
         return this.session.clientService.shadowEntityFeed.list(feedId, page, size);
     }
 
+    async* stream() {
+        let page = 0;
+        while (true) {
+            let feeds = await this.list(page++);
+            if (!feeds.length) {
+                return;
+            }
+            for (let feed of feeds) {
+                yield feed;
+            }
+        }
+    }
+
     get(feedId: string): Feed {
         return this.session.clientService.shadowEntityFeed.get(feedId);
     }

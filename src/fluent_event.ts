@@ -6,6 +6,19 @@ export class FluentEvent extends FluentAbstract {
         return this.session.clientService.event.list(page, undefined, size, undefined, options);
     }
 
+    async* stream() {
+        let page = 0;
+        while (true) {
+            let feeds = await this.list(page++);
+            if (!feeds.length) {
+                return;
+            }
+            for (let feed of feeds) {
+                yield feed;
+            }
+        }
+    }
+
     async get(id: string): Event {
         return this.session.clientService.event.get(id);
     }
