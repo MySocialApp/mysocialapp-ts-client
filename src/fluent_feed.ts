@@ -4,7 +4,7 @@ import {FluentAbstract} from "./fluent_abstract";
 
 export class FluentFeed extends FluentAbstract {
 
-    async sendWallPost(feedPost: TextWallMessage): Feed {
+    async sendWallPost(feedPost: TextWallMessage): Promise<Feed> {
         return this.session.clientService.feed.addMessage(feedPost);
     }
 }

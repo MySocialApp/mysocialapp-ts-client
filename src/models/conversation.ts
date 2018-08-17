@@ -58,14 +58,14 @@ export class Conversation extends Base {
         this._messages = new ConversationMessages(o, this.conf);
     }
 
-    async sendMessage(message: ConversationMessagePost): ConversationMessage {
+    async sendMessage(message: ConversationMessagePost): Promise<ConversationMessage> {
         if (!message.isMultipart) {
             return (new RestConversationMessage(this.conf)).create(this.id, message.getConversationMessage());
         }
         return (new RestConversationMessage(this.conf)).postFile(this.id, message);
     }
 
-    async update(): Conversation {
+    async update(): Promise<Conversation> {
         return (new RestConversation(this.conf)).update(this.id, this);
     }
 }

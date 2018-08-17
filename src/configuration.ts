@@ -38,7 +38,7 @@ export class Configuration {
     } 
 
 
-    public async get(model: Model, path: string, options?: any): ModelInterface {
+    public async get(model: Model, path: string, options?: any): Promise<ModelInterface> {
         try {
             const resp = await this.httpClient.get(path, this.setDefaultOptions(options)) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);

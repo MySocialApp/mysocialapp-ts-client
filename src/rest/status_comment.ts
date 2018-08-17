@@ -4,20 +4,20 @@ import {Photo} from "../models/photo";
 import {TagEntities} from "../models/tag_entities";
 
 export class RestStatusComment extends Rest {
-    async list(statusId: string): Comment[] {
+    async list(statusId: string): Promise<Comment[]> {
         return this.conf.getList(new Comment(), Rest.params("/status/{id}/comment", {id: statusId})) as Promise<Comment[]>;
     }
 
-    async create(statusId: string, comment: Comment): Comment {
+    async create(statusId: string, comment: Comment): Promise<Comment> {
         return this.conf.post(new Comment(), Rest.params("/status/{id}/comment", {id: statusId}), comment) as Promise<Comment>;
     }
 
-    async update(statusId: string, commentId: string, comment: Comment): Comment {
+    async update(statusId: string, commentId: string, comment: Comment): Promise<Comment> {
         let path = Rest.params("/status/{id}/comment/{commentId}", {id: statusId, commentId: commentId});
         return this.conf.put(new Comment(), path, comment) as Promise<Comment>;
     }
 
-    async createPhoto(statusId: string, photo: File, message?: string, tagEntities?: TagEntities): Photo {
+    async createPhoto(statusId: string, photo: File, message?: string, tagEntities?: TagEntities): Promise<Photo> {
         let f = new FormData();
         f.set("file", photo);
         if (message !== undefined) {

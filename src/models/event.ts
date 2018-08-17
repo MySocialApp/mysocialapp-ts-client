@@ -48,26 +48,26 @@ export class Event extends BaseWall {
         };
     }
 
-    async join(): void {
+    async join(): Promise<EventMember> {
         return (new RestEvent(this.conf)).join(this.id);
     }
 
-    async leave(): void {
+    async leave(): Promise<void> {
         return (new RestEvent(this.conf)).leave(this.id);
     }
 
     /**
      * must be creator of the event
      */
-    async cancel(): void {
+    async cancel(): Promise<void> {
         return (new RestEvent(this.conf)).cancel(this.id);
     }
 
-    async update(): Event {
+    async update(): Promise<Event> {
         return (new RestEvent(this.conf)).update(this);
     }
 
-    async addMessage(message: TextWallMessage): Feed {
+    async addMessage(message: TextWallMessage): Promise<Feed> {
         return (new RestEventWall(this.conf)).createMessage(this.id, message);
     }
 

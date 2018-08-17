@@ -1,8 +1,8 @@
 import {Model} from "./model";
 
 export class UserSettings extends Model {
-    stat_status_enabled: boolean;
     private _notification: UserSettingsNotification;
+    stat_status_enabled: boolean;
     language_zone: LanguageZone;
     interface_language: InterfaceLanguage;
 

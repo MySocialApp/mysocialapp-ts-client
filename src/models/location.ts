@@ -43,7 +43,6 @@ export class Location extends Model {
 
     set location(location: SimpleLocation) {
         this._location = new SimpleLocation(location);
-        return this;
     }
 
     get location(): SimpleLocation {

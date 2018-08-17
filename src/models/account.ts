@@ -37,7 +37,7 @@ export class Account extends User {
         return this._user_settings;
     }
 
-    async update(): Account {
+    async update(): Promise<Account> {
         return (new RestAccount(this.conf)).update(this);
     }
 }

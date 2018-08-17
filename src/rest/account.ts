@@ -5,34 +5,34 @@ import {LoginCredentials} from "../models/login_credentials";
 import {Photo} from "../models/photo";
 
 export class RestAccount extends Rest {
-    async get(): User {
+    async get(): Promise<User> {
         return this.conf.get(new Account(), '/account') as Promise<Account>;
     }
 
-    async update(acc: Account): User {
-        return this.conf.put(new Account(), "/account", acc) as Promise<User>;
+    async update(acc: Account): Promise<Account> {
+        return this.conf.put(new Account(), "/account", acc) as Promise<Account>;
     }
 
-    async delete(loginCredentials: LoginCredentials): void {
+    async delete(loginCredentials: LoginCredentials): Promise<void> {
         return this.conf.delete("/account", {data: loginCredentials.toJson()}) as Promise<void>;
     }
 
-    async getCover(): Photo {
+    async getCover(): Promise<Photo> {
         return this.conf.get(new Photo(), "/account/profile/cover/photo") as Promise<Photo>;
     }
 
-    async updateCover(image: File): Photo {
+    async updateCover(image: File): Promise<Photo> {
         let fd = new FormData();
         fd.set("file", image);
         fd.set("file", "image");
         return this.conf.postMultipart(new Photo(), "/account/profile/cover/photo", fd) as Promise<Photo>;
     }
 
-    async getProfilePhoto(): Photo {
+    async getProfilePhoto(): Promise<Photo> {
         return this.conf.get(new Photo(), "/account/profile/photo") as Promise<Photo>;
     }
 
-    async updateProfilePhoto(image: File): Photo {
+    async updateProfilePhoto(image: File): Promise<Photo> {
         let fd = new FormData();
         fd.set("file", image);
         fd.set("file", "image");

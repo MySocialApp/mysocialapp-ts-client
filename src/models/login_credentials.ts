@@ -5,6 +5,10 @@ export class LoginCredentials extends Model {
     password?: string;
 
     toJson(): string {
-        return JSON.stringify({username: this.username, password: this.password});
+        return JSON.stringify(this.getJsonParameters());
+    }
+
+    getJsonParameters(): {} {
+        return {username: this.username, password: this.password};
     }
 }

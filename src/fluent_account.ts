@@ -9,7 +9,7 @@ import {ResetIdentifier} from "./models/reset_identifier";
 export class FluentAccount extends FluentAbstract {
     account?: User;
 
-    async get(useCache?: boolean): User {
+    async get(useCache?: boolean): Promise<User> {
         if (useCache && this.account !== undefined) {
             return this.account;
         }
@@ -18,16 +18,16 @@ export class FluentAccount extends FluentAbstract {
         return resp;
     }
 
-    async getAvailableCustomFields(): CustomField[] {
+    async getAvailableCustomFields(): Promise<CustomField[]> {
         const acc = await this.get();
         return acc.custom_fields;
     }
 
-    async changeProfilePhoto(photo: File): Photo {
+    async changeProfilePhoto(photo: File): Promise<Photo> {
         return this.session.clientService.account.updateProfilePhoto(photo);
     }
 
-    async changeProfileCoverPhoto(photo: File): Photo {
+    async changeProfileCoverPhoto(photo: File): Promise<Photo> {
         return this.session.clientService.account.updateCover(photo);
     }
 
@@ -35,11 +35,11 @@ export class FluentAccount extends FluentAbstract {
         return this.session.clientService.account.delete(new LoginCredentials({password: password}))
     }
 
-    async getEvents(): AccountEvents {
+    async getEvents(): Promise<AccountEvents> {
         return this.session.clientService.configuration.get(new AccountEvents(), "/account/event") as Promise<AccountEvents>;
     }
 
-    async resetPassword(email: string): void {
+    async resetPassword(email: string): Promise<void> {
         return this.session.clientService.configuration.postVoid("/reset", new ResetIdentifier({email: email}))
     }
 }

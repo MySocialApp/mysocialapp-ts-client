@@ -5,7 +5,6 @@ import {UserStat} from "./user_stat";
 import {Status} from "./status";
 import {Flag} from "./flag";
 import {Location} from "./location";
-import {Model} from "./model";
 
 export class User extends Base {
     private _profile_photo?: Photo;

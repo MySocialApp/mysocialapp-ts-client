@@ -55,7 +55,7 @@ export class ConversationMessage extends Model implements Serializable, Taggable
         this._conversation = new Conversation(c, this.conf);
     }
 
-    async replyBack(conversationMessagePost: ConversationMessagePost): ConversationMessage {
+    async replyBack(conversationMessagePost: ConversationMessagePost): Promise<ConversationMessage> {
         return this.conversation.sendMessage(conversationMessagePost);
     }
 

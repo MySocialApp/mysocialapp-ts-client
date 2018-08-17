@@ -35,7 +35,7 @@ export class MySocialApp {
         return new Configuration(this._appId, this._apiEndpoint);
     }
 
-    async createAccount(email: string, password: string, firstName: string): Session {
+    async createAccount(email: string, password: string, firstName: string): Promise<Session> {
         let clientService = new ClientService(this.configuration);
         await clientService.register.create(new User({
             email: email,
@@ -47,7 +47,7 @@ export class MySocialApp {
         return session;
     }
 
-    async connect(email: string, password: string): Session {
+    async connect(email: string, password: string): Promise<Session> {
         let session = new Session(new ClientService(this.configuration));
         await this.publicSession.connect(email, password);
         return session;
@@ -57,7 +57,7 @@ export class MySocialApp {
         return new Session(new ClientService(this.configuration));
     }
 
-    async resetPassword(email: string): void {
+    async resetPassword(email: string): Promise<void> {
         return this.publicSession.account.resetPassword(email);
     }
 }

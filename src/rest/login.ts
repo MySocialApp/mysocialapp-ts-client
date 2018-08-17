@@ -5,7 +5,7 @@ import {AuthenticationToken} from "../models/authentication_token";
 
 export class RestLogin extends Rest {
 
-    async create(cred: LoginCredentials): AuthenticationToken {
+    async create(cred: LoginCredentials): Promise<AuthenticationToken> {
         return this.conf.post(new AuthenticationToken(), '/login', cred) as Promise<AuthenticationToken>;
     }
 }

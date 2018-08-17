@@ -15,7 +15,11 @@ export class CommentPost implements Serializable {
     }
 
     toJson(): string {
-        return JSON.stringify({message: this.mMessage});
+        return JSON.stringify(this.getJsonParameters());
+    }
+
+    getJsonParameters(): {} {
+        return {message: this.mMessage};
     }
 
 }

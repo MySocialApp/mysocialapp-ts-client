@@ -4,7 +4,7 @@ import {Event} from "./models/event";
 
 export class FluentGroup extends FluentAbstract {
 
-    async list(page: number, size: number = 10, options: {} = {}): Group[] {
+    async list(page: number, size: number = 10, options: {} = {}): Promise<Group[]> {
         return this.session.clientService.group.list(page, undefined, size, undefined, options);
     }
 
@@ -21,12 +21,12 @@ export class FluentGroup extends FluentAbstract {
         }
     }
 
-    async get(id: string): Group {
+    async get(id: string): Promise<Group> {
         return this.session.clientService.group.get(id);
     }
 
 
-    async create(group: Group): Group {
+    async create(group: Group): Promise<Group> {
         return this.session.clientService.group.create(group);
     }
 
@@ -37,7 +37,7 @@ export class FluentGroup extends FluentAbstract {
      * @param {number} size
      * @returns {Promise<Group[]>}
      */
-    async search(search: {}, page: number, size: number = 10): Group[] {
+    async search(search: {}, page: number, size: number = 10): Promise<Group[]> {
         return this.session.clientService.group.list(page, undefined, size);
     }
 }

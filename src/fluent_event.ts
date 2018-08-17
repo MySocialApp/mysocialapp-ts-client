@@ -2,7 +2,7 @@ import {FluentAbstract} from "./fluent_abstract";
 import {Event} from "./models/event";
 
 export class FluentEvent extends FluentAbstract {
-    async list(page: number, size: number = 10, options: {} = {}): Event[] {
+    async list(page: number, size: number = 10, options: {} = {}): Promise<Event[]> {
         return this.session.clientService.event.list(page, undefined, size, undefined, options);
     }
 
@@ -19,11 +19,11 @@ export class FluentEvent extends FluentAbstract {
         }
     }
 
-    async get(id: string): Event {
+    async get(id: string): Promise<Event> {
         return this.session.clientService.event.get(id);
     }
 
-    async create(event: Event): Event {
+    async create(event: Event): Promise<Event> {
         return this.session.clientService.event.create(event);
     }
 
@@ -34,7 +34,7 @@ export class FluentEvent extends FluentAbstract {
      * @param {number} size
      * @returns {Promise<Event[]>}
      */
-    async search(search: {}, page: number, size: number = 10): Event[] {
+    async search(search: {}, page: number, size: number = 10): Promise<Event[]> {
         return this.session.clientService.event.list(page, undefined, size);
     }
 }

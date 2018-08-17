@@ -2,7 +2,7 @@ import {Rest} from "./rest";
 import {User} from "../models/user";
 
 export class RestUserEvent extends Rest {
-    async list(eventId: string, page: number, size: number, params?: {}): User[] {
+    async list(eventId: string, page: number, size: number, params?: {}): Promise<User[]> {
         params = params !== undefined ? params : {};
         params['page'] = page;
         params['size'] = size;
