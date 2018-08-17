@@ -10,6 +10,17 @@ export class FeedPost implements Serializable {
     _tag_entities?: TagEntities;
 
 
+    toJson(): string {
+        return JSON.stringify(this.getJsonParameters());
+    }
+
+    getJsonParameters(): {} {
+        return {
+            message: this._message,
+            access_control: this._visibility !== undefined ? this._visibility : AccessControl.Friend
+        };
+    }
+
     setMessage(message: string): FeedPost {
         this._message = message;
         return this;
@@ -27,13 +38,6 @@ export class FeedPost implements Serializable {
     setVisibility(visible: AccessControl): FeedPost {
         this._visibility = visible;
         return this;
-    }
-
-    toJson(): string {
-        return JSON.stringify({
-            message: this._message,
-            access_control: this._visibility !== undefined ? this._visibility : AccessControl.Friend
-        });
     }
 
     hasPhoto(): boolean {
