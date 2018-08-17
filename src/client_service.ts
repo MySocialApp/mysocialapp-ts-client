@@ -34,6 +34,7 @@ import {RestShadowEntityFeed} from "./rest/shadow_entity_feed";
 import {RestShadowEntityFeedMessage} from "./rest/shadow_entity_feed_message";
 import {RestShadowEntityProfilePhoto} from "./rest/shadow_entity_profile_photo";
 import {RestShadowEntityProfileCoverPhoto} from "./rest/shadow_entity_profile_cover_photo";
+import {RestShadowEntityPhoto} from "./rest/shadow_entity_photo";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
@@ -70,6 +71,7 @@ export class ClientService {
     private restUserWall?: RestUserWall;
     private restUserWallMessage?: RestUserWallMessage;
     private restShadowEntityFeed?: RestShadowEntityFeed;
+    private restShadowEntityPhoto?: RestShadowEntityPhoto;
     private restShadowEntityFeedMessage?: RestShadowEntityFeedMessage;
     private restShadowEntityProfilePhoto?: RestShadowEntityProfilePhoto;
     private restShadowEntityProfileCoverPhoto?: RestShadowEntityProfileCoverPhoto;
@@ -207,6 +209,10 @@ export class ClientService {
 
     get shadowEntityFeed(): RestShadowEntityFeed {
         return this.restShadowEntityFeed !== undefined ? this.restShadowEntityFeed : this.restShadowEntityFeed = new RestShadowEntityFeed(this.configuration);
+    }
+
+    get shadowEntityPhoto(): RestShadowEntityPhoto {
+        return this.restShadowEntityPhoto !== undefined ? this.restShadowEntityPhoto : this.restShadowEntityPhoto = new RestShadowEntityPhoto(this.configuration);
     }
 
     get shadowEntityFeedMessage(): RestShadowEntityFeedMessage {

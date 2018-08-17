@@ -13,6 +13,7 @@ import {FluentNotification} from "./fluent_notification";
 import {FluentPhoto} from "./fluent_photo";
 import {FluentPhotoAlbum} from "./fluent_photo_album";
 import {FluentUser} from "./fluent_user";
+import {FluentDynamicFeed} from "./fluent_dynamic_feed";
 
 export class Session {
     clientService: ClientService;
@@ -25,6 +26,7 @@ export class Session {
     private _friend?: FluentFriend;
     private _group?: FluentGroup;
     private _newFeed?: FluentNewsFeed;
+    private _dynamicFeed?: FluentDynamicFeed;
     private _notification?: FluentNotification;
     private _photo?: FluentPhoto;
     private _photoAlbum?: FluentPhotoAlbum;
@@ -42,14 +44,15 @@ export class Session {
                     password: password
                 }));
                 this.clientService.configuration.setAuth(this.auth);
-                this.account.get().then(user => resolve(user));
+                let account = await this.account.get();
+                resolve(account);
             } catch (err) {
                 reject(err);
             }
         }));
     }
 
-    disconnect(): Promise<void> {
+    async disconnect(): Promise<void> {
         return this.clientService.logout.do();
     }
 
@@ -79,6 +82,10 @@ export class Session {
 
     get newsFeed(): FluentNewsFeed {
         return this._newFeed !== undefined ? this._newFeed : this._newFeed = new FluentNewsFeed(this);
+    }
+
+    get dynamicFeed(): FluentDynamicFeed {
+        return this._dynamicFeed !== undefined ? this._dynamicFeed : this._dynamicFeed = new FluentDynamicFeed(this);
     }
 
     get notification(): FluentNotification {

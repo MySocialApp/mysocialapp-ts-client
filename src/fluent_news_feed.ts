@@ -2,6 +2,7 @@ import {FluentAbstract} from "./fluent_abstract";
 import {Feed} from "./models/feed";
 import {FeedPost} from "./models/feed_post";
 import {FeedsSearchResult} from "./models/search_result_types";
+import {RestFeed} from "./rest/feed";
 
 export class FluentNewsFeed extends FluentAbstract {
 
@@ -9,8 +10,8 @@ export class FluentNewsFeed extends FluentAbstract {
         return this.session.clientService.feed.list(page, size);
     }
 
-    get(id: string): Feed {
-        return this.get(id);
+    async get(id: string): Feed {
+        return this.session.clientService.feed.get(id);
     }
 
     async create(feedPost: FeedPost): Feed {

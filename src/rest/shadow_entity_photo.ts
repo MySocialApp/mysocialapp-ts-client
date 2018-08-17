@@ -4,7 +4,7 @@ import {Photo} from "../models/photo";
 import {TagEntities} from "../models/tag_entities";
 import {AccessControl} from "../models/access_control";
 
-class RestShadowEntityPhoto extends Rest {
+export class RestShadowEntityPhoto extends Rest {
 
     async list(id: string, page: number, size: number = 10): Photo[] {
         let path = Rest.params("shadow/entity/{id}/photo?", {id: id}) + Rest.encodeQueryData({
