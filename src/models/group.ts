@@ -8,7 +8,7 @@ import {Feed} from "./feed";
 import {TextWallMessage} from "./text_wall_message";
 import {RestGroup} from "../rest/group";
 import {RestGroupWall} from "../rest/group_wall";
-import {Model} from "./model";
+import {listToParameters} from "./utils";
 
 export class Group extends BaseWall {
     private _location?: Location;
@@ -33,7 +33,7 @@ export class Group extends BaseWall {
             description: this.description,
             group_member_access_control: this.group_member_access_control,
             location: this.location ? this.location.getJsonParameters() : null,
-            custom_fields: this._custom_fields ? Model.listToParameters(this._custom_fields) : null,
+            custom_fields: this._custom_fields ? listToParameters(this._custom_fields) : null,
         };
     }
 
@@ -125,7 +125,7 @@ export class Group extends BaseWall {
     }
 
     set location(l: Location) {
-        this._location = new Location(l, this.conf);
+        this._location = new Location(l);
     }
 
 }

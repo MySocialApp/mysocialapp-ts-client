@@ -2,7 +2,6 @@ import {FluentAbstract} from "./fluent_abstract";
 import {Feed} from "./models/feed";
 import {FeedPost} from "./models/feed_post";
 import {FeedsSearchResult} from "./models/search_result_types";
-(Symbol as any).asyncIterator = Symbol['asyncIterator'] || Symbol.for("Symbol.asyncIterator");
 
 
 export class FluentNewsFeed extends FluentAbstract {

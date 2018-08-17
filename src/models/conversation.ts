@@ -4,8 +4,8 @@ import {Base} from "./base";
 import {ConversationMessagePost} from "./conversation_message_post";
 import {ConversationMessage} from "./conversation_message";
 import {RestConversationMessage} from "../rest/conversation_message";
-import {Model} from "./model";
 import {RestConversation} from "../rest/conversation";
+import {listToParameters} from "./utils";
 
 export class Conversation extends Base {
     private _members: User[];
@@ -14,7 +14,7 @@ export class Conversation extends Base {
 
     getJsonParameters(): {} {
         return {
-            members: Model.listToParameters(this.members),
+            members: listToParameters(this.members),
             name: this.name,
         };
     }

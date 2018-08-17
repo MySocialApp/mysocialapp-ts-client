@@ -1,16 +1,20 @@
 import { Photo } from "./photo";
-import { Base } from "./base";
 import { CustomField } from "./custom_field";
 import { Status } from "./status";
-import { Flag } from "./flag";
 import { Location } from "./location";
-export declare class User extends Base {
+import { Flag } from "./flag";
+import { Model } from "./model";
+export declare class User extends Model {
     private _profile_photo?;
     private _custom_fields?;
     private _living_location;
     private _current_status;
     private _flag;
     private _user_stat;
+    id_str?: string;
+    type?: string;
+    displayed_name: string;
+    _displayed_photo: Photo;
     updated_date?: string;
     first_name?: string;
     last_name?: string;
@@ -23,6 +27,8 @@ export declare class User extends Base {
     is_friend?: boolean;
     is_requested_as_friend?: boolean;
     getJsonParameters(): {};
+    id: any;
+    displayed_photo: Photo;
     profile_photo: Photo;
     flag: Flag;
     living_location: Location;

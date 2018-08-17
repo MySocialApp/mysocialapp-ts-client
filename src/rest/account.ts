@@ -5,7 +5,7 @@ import {LoginCredentials} from "../models/login_credentials";
 import {Photo} from "../models/photo";
 
 export class RestAccount extends Rest {
-    async get(): Promise<User> {
+    async get(): Promise<Account> {
         return this.conf.get(new Account(), '/account') as Promise<Account>;
     }
 

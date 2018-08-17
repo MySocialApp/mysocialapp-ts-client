@@ -9,8 +9,8 @@ import {TextWallMessage} from "./text_wall_message";
 import {Feed} from "./feed";
 import {RestEventWall} from "../rest/event_wall";
 import {CustomField} from "./custom_field";
-import {Model} from "./model";
 import moment = require("moment");
+import {listToParameters} from "./utils";
 
 export class Event extends BaseWall {
     private _custom_fields: CustomField[];
@@ -44,7 +44,7 @@ export class Event extends BaseWall {
             end_date: this.end_date,
             event_member_access_control: this.event_member_access_control,
             location: this.location ? this.location.getJsonParameters() : null,
-            custom_fields: this._custom_fields ? Model.listToParameters(this._custom_fields) : null,
+            custom_fields: this._custom_fields ? listToParameters(this._custom_fields) : null,
         };
     }
 
@@ -84,7 +84,7 @@ export class Event extends BaseWall {
     }
 
     set location(l: Location) {
-        this._location = new Location(l, this.conf);
+        this._location = new Location(l);
     }
 
     get members(): EventMember[] {

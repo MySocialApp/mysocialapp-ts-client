@@ -1,7 +1,7 @@
 import {User} from "./user";
 import {UserSettings} from "./user_settings";
 import {RestAccount} from "../rest/account";
-import {Model} from "./model";
+import {listToParameters} from "./utils";
 
 export class Account extends User {
     private _user_settings?: UserSettings;
@@ -17,16 +17,24 @@ export class Account extends User {
     external_id?: string;
 
     getJsonParameters(): {} {
-        return {
+        let data = {
             email: this.email,
             first_name: this.first_name,
             last_name: this.last_name,
-            living_location: this.living_location ? this.living_location.getJsonParameters() : null,
-            custom_fields: Model.listToParameters(this.custom_fields),
             gender: this.gender,
             date_of_birth: this.date_of_birth,
             presentation: this.presentation,
         };
+        if (this.living_location) {
+            data['living_location'] = this.living_location.getJsonParameters();
+        }
+        if (this.password) {
+            data['password'] = this.password;
+        }
+        if (this.custom_fields) {
+            data['custom_fields'] = listToParameters(this.custom_fields);
+        }
+        return data;
     }
 
     set user_settings(u: UserSettings) {

@@ -6,16 +6,17 @@ import {AccessControl} from "./access_control";
 import {BaseImpl} from "./base_impl";
 
 export class Base extends Model implements BaseImpl {
+    private _owner?: User;
+    private _displayed_photo: Photo;
+
     id_str?: string;
     type?: string;
     created_date: string;
     displayed_name: string;
-    _displayed_photo: Photo;
     access_control?: AccessControl;
     body_message?: string;
     body_image_url?: string = null;
     body_image_text?: string = null;
-    private _owner?: User;
 
     get id(): any {
         return this.id_str

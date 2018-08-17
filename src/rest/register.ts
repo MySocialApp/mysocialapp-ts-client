@@ -1,8 +1,8 @@
-import {User} from "../models/user";
+import {Account} from "../models/account";
 import {Rest} from "./rest";
 
 export class RestRegister extends Rest {
-    async create(user: User): Promise<User> {
-        return this.conf.post(new User(), "/register", user) as Promise<User>;
+    async create(user: Account): Promise<Account> {
+        return this.conf.post(new Account(), "/register", user) as Promise<Account>;
     }
 }

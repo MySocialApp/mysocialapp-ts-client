@@ -39,15 +39,4 @@ export class Model implements ModelInterface, Serializable {
     getJsonParameters(): {} {
         return this;
     }
-
-    static listToParameters(models: Model[]): {}[] {
-        if (!models) {
-            return null;
-        }
-        let list = [];
-        for (let m of models) {
-            list.push(m.getJsonParameters());
-        }
-        return list;
-    }
 }
