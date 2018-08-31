@@ -1,4 +1,5 @@
 # MySocialApp Typescript Library
+[![Build status](https://img.shields.io/travis/MySocialApp/mysocialapp-ts-client/master.svg?style=flat-square)](https://travis-ci.org/MySocialApp/mysocialapp-ts-client)
 [![npm version](https://img.shields.io/npm/v/mysocialapp-ts-client.svg?style=flat-square)](https://www.npmjs.com/package/mysocialapp-ts-client)
 
 SDK still in beta phase. Stable version will be out current October.
