@@ -1,8 +1,9 @@
+/// <reference types="node" />
 import { FluentAbstract } from "./fluent_abstract";
 import { Group } from "./models/group";
 export declare class FluentGroup extends FluentAbstract {
     list(page: number, size?: number, options?: {}): Promise<Group[]>;
-    stream(): {};
+    stream(): AsyncIterableIterator<Group>;
     get(id: string): Promise<Group>;
     create(group: Group): Promise<Group>;
     /**

@@ -11,5 +11,5 @@ export declare class Photo extends Model {
     _tag_entities: TagEntities;
     _target: Base;
     tag_entities: TagEntities;
-    target: TagEntities;
+    target: Base;
 }

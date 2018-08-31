@@ -1,6 +1,9 @@
 import {Rest} from "./rest";
 import {ConversationMessage} from "../models/conversation_message";
 import {ConversationMessagePost} from "../models/conversation_message_post";
+import {FileData} from "../models/file";
+import * as fd from 'form-data';
+import {GenericFormData} from "../models/generic_form_data";
 
 export class RestConversationMessage extends Rest {
 
@@ -17,8 +20,8 @@ export class RestConversationMessage extends Rest {
     }
 
     async postFile(id: string, message: ConversationMessagePost): Promise<ConversationMessage> {
-        let fd = new FormData();
-        fd.set("file", message.image);
+        let fd = new GenericFormData();
+        fd.set("file", message.image.blob, 'image/png', "image.png");
         fd.set("message", message.message);
         let path = Rest.params("/conversation/{id}/message", {id: id});
         return this.conf.postMultipart(new ConversationMessage(), path, fd) as Promise<ConversationMessage>;

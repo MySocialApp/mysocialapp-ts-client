@@ -4,10 +4,10 @@ import { Group } from "./group";
 import { Event } from "./event";
 import { Model } from "./model";
 export declare class SearchResultTypes extends Model {
-    _users?: UserSearchResult;
-    _feeds?: FeedsSearchResult;
-    _groups?: GroupSearchResult;
-    _events?: EventSearchResult;
+    private _users?;
+    private _feeds?;
+    private _groups?;
+    private _events?;
     users: UserSearchResult;
     feeds: FeedsSearchResult;
     groups: GroupSearchResult;

@@ -6,7 +6,9 @@ export function listToParameters(models: Serializable[]): {}[] {
     }
     let list = [];
     for (let m of models) {
-        list.push(m.getJsonParameters());
+        if (m.getJsonParameters !== undefined) {
+            list.push(m.getJsonParameters());
+        }
     }
     return list;
 }

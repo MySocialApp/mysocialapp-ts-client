@@ -8,6 +8,8 @@ import {Photo} from "../models/photo";
 import {AccessControl} from "../models/access_control";
 import {Feed} from "../models/feed";
 import {TagEntities} from "../models/tag_entities";
+import {FileData} from "../models/file";
+import {GenericFormData} from "../models/generic_form_data";
 
 export class RestEvent extends Rest {
     async list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<Event[]> {
@@ -75,17 +77,17 @@ export class RestEvent extends Rest {
         return this.conf.getList(new Photo(), path) as Promise<Photo[]>;
     }
 
-    async addPhoto(eventId: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
-        let f = new FormData();
-        f.set("file", photo);
+    async addPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
+        let f = new GenericFormData();
+        f.set("file", photo.blob, 'image/png', "image.png");
         if (message !== undefined) {
-            f.set("message", message);
+            f.append("message", message);
         }
         if (accessControl !== undefined) {
-            f.set("access_control", accessControl)
+            f.append("access_control", accessControl)
         }
         if (tagEntities !== undefined) {
-            f.set("tag_entities", tagEntities.toJson());
+            f.append("tag_entities", tagEntities.toJson());
         }
         return this.conf.postMultipart(new Feed(), Rest.params("/event/{id}/photo", {id: eventId}), f) as Promise<Feed>;
     }
@@ -94,9 +96,9 @@ export class RestEvent extends Rest {
         return this.conf.get(new Photo(), Rest.params("/event/{id}/profile/photo", {id: eventId})) as Promise<Photo>;
     }
 
-    async updateProfilePhoto(eventId: string, photo: File): Promise<Photo> {
-        let f = new FormData();
-        f.set("file", photo);
+    async updateProfilePhoto(eventId: string, photo: FileData): Promise<Photo> {
+        let f = new GenericFormData();
+        f.set("file", photo.blob, 'image/png', "image.png");
         return this.conf.postMultipart(new Photo(), Rest.params("/event/{id}/profile/photo", {id: eventId}), f) as Promise<Photo>;
 
     }
@@ -105,9 +107,9 @@ export class RestEvent extends Rest {
         return this.conf.get(new Photo(), Rest.params("/event/{id}/profile/cover/photo", {id: eventId})) as Promise<Photo>;
     }
 
-    async updateProfileCoverPhoto(eventId: string, photo: File): Promise<Photo> {
-        let f = new FormData();
-        f.set("file", photo);
+    async updateProfileCoverPhoto(eventId: string, photo: FileData): Promise<Photo> {
+        let f = new GenericFormData();
+        f.set("file", photo.blob, 'image/png', "image.png");
         return this.conf.postMultipart(new Photo(), Rest.params("/event/{id}/profile/cover/photo", {id: eventId}), f) as Promise<Photo>;
 
     }

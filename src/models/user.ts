@@ -13,11 +13,11 @@ export class User extends Model {
     private _current_status: Status;
     private _flag: Flag;
     private _user_stat: UserStat;
+    private _displayed_photo: Photo;
     id_str?: string;
     type?: string;
 
     displayed_name: string;
-    _displayed_photo: Photo;
     updated_date?: string;
     first_name?: string;
     last_name?: string;

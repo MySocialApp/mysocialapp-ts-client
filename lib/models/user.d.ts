@@ -11,10 +11,10 @@ export declare class User extends Model {
     private _current_status;
     private _flag;
     private _user_stat;
+    private _displayed_photo;
     id_str?: string;
     type?: string;
     displayed_name: string;
-    _displayed_photo: Photo;
     updated_date?: string;
     first_name?: string;
     last_name?: string;

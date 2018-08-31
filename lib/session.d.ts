@@ -13,6 +13,7 @@ import { FluentPhoto } from "./fluent_photo";
 import { FluentPhotoAlbum } from "./fluent_photo_album";
 import { FluentUser } from "./fluent_user";
 import { FluentDynamicFeed } from "./fluent_dynamic_feed";
+import { WebsocketService } from "./websocket_service";
 export declare class Session {
     clientService: ClientService;
     auth?: AuthenticationToken;
@@ -28,6 +29,7 @@ export declare class Session {
     private _photo?;
     private _photoAlbum?;
     private _user?;
+    private _websocket?;
     constructor(clientService: ClientService);
     connect(username: string, password: string): Promise<User>;
     disconnect(): Promise<void>;
@@ -43,4 +45,5 @@ export declare class Session {
     readonly photo: FluentPhoto;
     readonly photoAlbum: FluentPhotoAlbum;
     readonly user: FluentUser;
+    readonly websocket: WebsocketService;
 }

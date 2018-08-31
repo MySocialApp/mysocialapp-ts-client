@@ -1,5 +1,6 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Photo} from "./models/photo";
+import {FileData} from "./models/file";
 
 export class FluentPhoto extends FluentAbstract {
     async list(page: number, size: number = 10): Promise<Photo[]> {
@@ -10,7 +11,7 @@ export class FluentPhoto extends FluentAbstract {
         return this.session.clientService.photo.get(id);
     }
 
-    async create(file: File, photo: Photo): Promise<Photo> {
+    async create(file: FileData, photo: Photo): Promise<Photo> {
         let resp = await this.session.clientService.photo.create(file, photo.message, photo.tag_entities);
         return new Photo(resp.object);
     }

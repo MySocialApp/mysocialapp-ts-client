@@ -3,39 +3,41 @@ import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {Model, ModelInterface, Serializable} from "./models/model";
 import {ErrorResponse} from "./rest/error";
 import {DefaultInterfaceLanguage, InterfaceLanguage} from "./models/user_settings";
+import {GenericFormData} from "./models/generic_form_data";
 
 export class Configuration {
     appId: string;
     apiEndpointUrl: string;
+    websocketEndpointUrl: string;
     httpClient: AxiosInstance;
     interfaceLanguage: InterfaceLanguage = DefaultInterfaceLanguage;
-    private token: string;
+    token: string;
 
     constructor(appId: string, apiEndpointUrl?: string) {
         this.appId = appId;
         this.apiEndpointUrl = apiEndpointUrl !== undefined ? apiEndpointUrl + "/api/v1/" : "https://" + appId + "-api.mysocialapp.io/api/v1/";
+        this.websocketEndpointUrl = "wss://" + appId + "-ws.mysocialapp.io/ws";
         this.httpClient = axios.create(<AxiosRequestConfig>{
             baseURL: this.apiEndpointUrl,
             maxRedirects: 5,
-            headers: {'content-type': 'application/json'},
         });
     }
 
     setAuth(token: AuthenticationToken) {
-        this.httpClient.defaults.headers["authorization"] = this.token = token.access_token;
+        this.token = token.access_token;
     }
 
-    setDefaultOptions(options:{}, contentType?: string): AxiosRequestConfig {
+    setDefaultOptions(options: {}, contentType?: string): AxiosRequestConfig {
         options = options == undefined ? {} : options;
         options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
-        if (contentType !== undefined){
-            options['headers']['content-type'] = contentType;
-        } 
-        if(this.token !== undefined) {
-            options['headers']['authorization'] = this.token;
+        if (contentType != undefined) {
+            options['headers']['Content-Type'] = contentType;
+        }
+        if (this.token !== undefined) {
+            options['headers']['Authorization'] = this.token;
         }
         return <AxiosRequestConfig>options;
-    } 
+    }
 
 
     public async get(model: Model, path: string, options?: any): Promise<ModelInterface> {
@@ -82,10 +84,10 @@ export class Configuration {
         }
     }
 
-    public async postMultipart(model: Model, path: string, body: FormData, options?: {}): Promise<ModelInterface> {
+    public async postMultipart(model: Model, path: string, fd: GenericFormData, options: {} = {}): Promise<ModelInterface> {
         try {
-            // TODO check
-            const resp = await this.httpClient.post(path, body, this.setDefaultOptions(options, "multipart/form-data")) as AxiosResponse<ModelInterface>;
+            let body = await fd.getBody();
+            const resp = await this.httpClient.post(path, body, {headers: fd.getHeaders()}) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);
             return model
         } catch (error) {

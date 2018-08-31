@@ -1,8 +1,9 @@
 import {Rest} from "./rest";
-import {User} from "../models/user";
 import {Account} from "../models/account";
 import {LoginCredentials} from "../models/login_credentials";
 import {Photo} from "../models/photo";
+import {FileData} from "../models/file";
+import {GenericFormData} from "../models/generic_form_data";
 
 export class RestAccount extends Rest {
     async get(): Promise<Account> {
@@ -21,10 +22,9 @@ export class RestAccount extends Rest {
         return this.conf.get(new Photo(), "/account/profile/cover/photo") as Promise<Photo>;
     }
 
-    async updateCover(image: File): Promise<Photo> {
-        let fd = new FormData();
-        fd.set("file", image);
-        fd.set("file", "image");
+    async updateCover(image: FileData): Promise<Photo> {
+        let fd = new GenericFormData();
+        fd.set("file", image.blob, 'image/png', "image.png");
         return this.conf.postMultipart(new Photo(), "/account/profile/cover/photo", fd) as Promise<Photo>;
     }
 
@@ -32,10 +32,9 @@ export class RestAccount extends Rest {
         return this.conf.get(new Photo(), "/account/profile/photo") as Promise<Photo>;
     }
 
-    async updateProfilePhoto(image: File): Promise<Photo> {
-        let fd = new FormData();
-        fd.set("file", image);
-        fd.set("file", "image");
+    async updateProfilePhoto(image: FileData): Promise<Photo> {
+        let fd = new GenericFormData();
+        fd.set("file", image.blob, 'image/png', "image.png");
         return this.conf.postMultipart(new Photo(), "/account/profile/photo", fd) as Promise<Photo>;
     }
 
