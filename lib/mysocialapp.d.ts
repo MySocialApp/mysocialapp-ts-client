@@ -12,6 +12,6 @@ export declare class MySocialApp {
     readonly configuration: Configuration;
     createAccount(email: string, password: string, firstName: string): Promise<Session>;
     connect(email: string, password: string): Promise<Session>;
-    readonly publicSession: Session;
+    createSession(): Session;
     resetPassword(email: string): Promise<void>;
 }

@@ -7,8 +7,6 @@ describe("addMessage account", () => {
             const userAccount = await client.account.get();
             expect(userAccount.id != "").toBeTruthy();
             expect(userAccount.displayed_name != "").toBeTruthy();
-
-
         } catch (err) {
             catchErrorFunc(err);
         }

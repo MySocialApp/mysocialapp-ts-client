@@ -48,16 +48,16 @@ export class MySocialApp {
     }
 
     async connect(email: string, password: string): Promise<Session> {
-        let session = new Session(new ClientService(this.configuration));
-        await this.publicSession.connect(email, password);
+        let session = this.createSession();
+        await session.connect(email, password);
         return session;
     }
 
-    get publicSession(): Session {
-        return new Session(new ClientService(this.configuration));
+    createSession(): Session {
+        return new Session(new ClientService(this.configuration, this._client_configuration));
     }
 
     async resetPassword(email: string): Promise<void> {
-        return this.publicSession.account.resetPassword(email);
+        return this.createSession().account.resetPassword(email);
     }
 }

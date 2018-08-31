@@ -43,8 +43,11 @@ export class Session {
                     username: username,
                     password: password
                 }));
-                this.clientService.configuration.setAuth(this.auth);
-                let account = await this.account.get();
+                let conf = this.clientService.configuration;
+                conf.setAuth(this.auth);
+                this.clientService = new ClientService(conf, this.clientService.clientConfiguration);
+                this._account = undefined;
+                let account = await this.account.get(false);
                 resolve(account);
             } catch (err) {
                 reject(err);

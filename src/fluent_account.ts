@@ -8,14 +8,14 @@ import {ResetIdentifier} from "./models/reset_identifier";
 import {FileData} from "./models/file";
 
 export class FluentAccount extends FluentAbstract {
-    account?: Account;
+    private _account?: Account;
 
     async get(useCache?: boolean): Promise<Account> {
-        if (useCache && this.account !== undefined) {
-            return this.account;
+        if (useCache && this._account !== undefined) {
+            return this._account;
         }
         const resp = await this.session.clientService.account.get();
-        this.account = resp;
+        this._account = resp;
         return resp;
     }
 
