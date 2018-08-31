@@ -4,7 +4,6 @@ import {ClientConfiguration} from "./client_configuration";
 import {ClientService} from "./client_service";
 import {Account} from "./models/account";
 
-(Symbol as any).asyncIterator = Symbol['asyncIterator'] || Symbol.for("Symbol.asyncIterator");
 
 export class MySocialApp {
 
