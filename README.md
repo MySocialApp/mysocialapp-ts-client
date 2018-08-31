@@ -20,7 +20,7 @@ MySocialApp’s powerful API lets you quickly and seamlessly implement social ne
 - [Getting Started](#getting-started)
 - [Documentation](https://docs.mysocialapp.io/reference?ref=github)
 - [Demo app](#demo-app) 
-- [Docker](#Compile)
+- [Docker](##Compile)
 - [Contributions](#contributions)
 
 # Install
