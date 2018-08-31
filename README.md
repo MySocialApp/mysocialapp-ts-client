@@ -20,13 +20,13 @@ MySocialApp’s powerful API lets you quickly and seamlessly implement social ne
 - [Getting Started](#getting-started)
 - [Documentation](https://docs.mysocialapp.io/reference?ref=github)
 - [Demo app](#demo-app) 
-- [Docker](##Compile)
+- [Docker](#compile)
 - [Contributions](#contributions)
 
 # Install
 
 ```
-    npm install mysocialapp-ts-client
+npm install mysocialapp-ts-client
 ```
 
 
