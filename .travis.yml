@@ -5,5 +5,4 @@ node_js:
 addons:
   chrome: stable
 script:
-  - npm run test
   - npm run build
