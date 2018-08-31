@@ -54,7 +54,7 @@ Use docker to compile project
 docker run -v $PWD:/mnt -it --entrypoint /bin/sh node:9-alpine
 ````
 
-- Get node modules
+Get node modules
 
 ```
 cd /mnt && npm install
