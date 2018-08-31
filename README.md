@@ -32,7 +32,7 @@ MySocialApp’s powerful API lets you quickly and seamlessly implement social ne
 
 ## Getting Started
 
-[Read Java getting started](https://docs.mysocialapp.io/v1.0/docs/quick-start-java?ref=github)
+[Read Javascript getting started](https://docs.mysocialapp.io/v1.0/docs/quick-start-javascript?ref=github)
 
 ## API Documentation
 
