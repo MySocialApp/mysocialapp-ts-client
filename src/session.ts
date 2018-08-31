@@ -3,7 +3,6 @@ import {User} from "./models/user";
 import {AuthenticationToken} from "./models/authentication_token";
 import {LoginCredentials} from "./models/login_credentials";
 import {FluentAccount} from "./fluent_account";
-import {FluentFeed} from "./fluent_feed";
 import {FluentConversation} from "./fluent_conversation";
 import {FluentEvent} from "./fluent_event";
 import {FluentFriend} from "./fluent_friend";
@@ -23,7 +22,6 @@ export class Session {
     private _account?: FluentAccount;
     private _conversation?: FluentConversation;
     private _event?: FluentEvent;
-    private _feed?: FluentFeed;
     private _friend?: FluentFriend;
     private _group?: FluentGroup;
     private _newFeed?: FluentNewsFeed;
@@ -68,10 +66,6 @@ export class Session {
 
     get event(): FluentEvent {
         return this._event !== undefined ? this._event : this._event = new FluentEvent(this);
-    }
-
-    get feed(): FluentFeed {
-        return this._feed !== undefined ? this._feed : this._feed = new FluentFeed(this);
     }
 
     get friend(): FluentFriend {

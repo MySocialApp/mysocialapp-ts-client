@@ -2,7 +2,6 @@ import { ClientService } from "./client_service";
 import { User } from "./models/user";
 import { AuthenticationToken } from "./models/authentication_token";
 import { FluentAccount } from "./fluent_account";
-import { FluentFeed } from "./fluent_feed";
 import { FluentConversation } from "./fluent_conversation";
 import { FluentEvent } from "./fluent_event";
 import { FluentFriend } from "./fluent_friend";
@@ -20,7 +19,6 @@ export declare class Session {
     private _account?;
     private _conversation?;
     private _event?;
-    private _feed?;
     private _friend?;
     private _group?;
     private _newFeed?;
@@ -36,7 +34,6 @@ export declare class Session {
     readonly account: FluentAccount;
     readonly conversation: FluentConversation;
     readonly event: FluentEvent;
-    readonly feed: FluentFeed;
     readonly friend: FluentFriend;
     readonly group: FluentGroup;
     readonly newsFeed: FluentNewsFeed;

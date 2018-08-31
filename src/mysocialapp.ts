@@ -8,7 +8,6 @@ import {Account} from "./models/account";
 
 export class MySocialApp {
 
-    private _session: Session;
     private _client_configuration: ClientConfiguration;
 
     private _appId: string;

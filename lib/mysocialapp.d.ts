@@ -2,7 +2,6 @@ import { Session } from "./session";
 import { Configuration } from "./configuration";
 import { ClientConfiguration } from "./client_configuration";
 export declare class MySocialApp {
-    private _session;
     private _client_configuration;
     private _appId;
     private _apiEndpoint;

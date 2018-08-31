@@ -13,7 +13,7 @@ cd /mnt && npm install
 
 ```
 #compile ts files
-cd /mnt && ./node_modules/.bin/tsc -p .
+cd /mnt && npm run build
 
 # exec example file
 cd mnt && node lib/examples/feed/xxx.js
