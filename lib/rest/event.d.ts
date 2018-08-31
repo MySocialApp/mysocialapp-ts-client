@@ -7,6 +7,7 @@ import { Photo } from "../models/photo";
 import { AccessControl } from "../models/access_control";
 import { Feed } from "../models/feed";
 import { TagEntities } from "../models/tag_entities";
+import { FileData } from "../models/file";
 export declare class RestEvent extends Rest {
     list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<Event[]>;
     listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number, upperLatitude: number, upperLongitude: number): Promise<Event[]>;
@@ -20,9 +21,9 @@ export declare class RestEvent extends Rest {
     join(eventId: string): Promise<EventMember>;
     leave(eventId: string): Promise<void>;
     getPhotos(eventId: string, page?: number): Promise<Photo[]>;
-    addPhoto(eventId: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed>;
+    addPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed>;
     getProfilePhoto(eventId: string): Promise<Photo>;
-    updateProfilePhoto(eventId: string, photo: File): Promise<Photo>;
+    updateProfilePhoto(eventId: string, photo: FileData): Promise<Photo>;
     getProfileCoverPhoto(eventId: string): Promise<Photo>;
-    updateProfileCoverPhoto(eventId: string, photo: File): Promise<Photo>;
+    updateProfileCoverPhoto(eventId: string, photo: FileData): Promise<Photo>;
 }

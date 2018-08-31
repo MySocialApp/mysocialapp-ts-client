@@ -1,15 +1,16 @@
 import {Serializable} from "./model";
+import {FileData} from "./file";
 
 export class CommentPost implements Serializable {
     private mMessage: string;
-    private mFile: File;
+    private mFile: FileData;
 
     setMessage(message: string): CommentPost {
         this.mMessage = message;
         return this;
     }
 
-    setImage(file: File): CommentPost {
+    setImage(file: FileData): CommentPost {
         this.mFile = file;
         return this;
     }

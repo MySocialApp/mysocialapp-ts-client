@@ -5,6 +5,7 @@ import {Photo} from "./models/photo";
 import {LoginCredentials} from "./models/login_credentials";
 import {AccountEvents} from "./models/account_events";
 import {ResetIdentifier} from "./models/reset_identifier";
+import {FileData} from "./models/file";
 
 export class FluentAccount extends FluentAbstract {
     account?: Account;
@@ -23,11 +24,11 @@ export class FluentAccount extends FluentAbstract {
         return acc.custom_fields;
     }
 
-    async changeProfilePhoto(photo: File): Promise<Photo> {
+    async changeProfilePhoto(photo: FileData): Promise<Photo> {
         return this.session.clientService.account.updateProfilePhoto(photo);
     }
 
-    async changeProfileCoverPhoto(photo: File): Promise<Photo> {
+    async changeProfileCoverPhoto(photo: FileData): Promise<Photo> {
         return this.session.clientService.account.updateCover(photo);
     }
 

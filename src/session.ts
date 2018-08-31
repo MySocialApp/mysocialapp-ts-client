@@ -14,6 +14,7 @@ import {FluentPhoto} from "./fluent_photo";
 import {FluentPhotoAlbum} from "./fluent_photo_album";
 import {FluentUser} from "./fluent_user";
 import {FluentDynamicFeed} from "./fluent_dynamic_feed";
+import {WebsocketService} from "./websocket_service";
 
 export class Session {
     clientService: ClientService;
@@ -31,6 +32,7 @@ export class Session {
     private _photo?: FluentPhoto;
     private _photoAlbum?: FluentPhotoAlbum;
     private _user?: FluentUser;
+    private _websocket?: WebsocketService;
 
     constructor(clientService: ClientService) {
         this.clientService = clientService;
@@ -102,5 +104,9 @@ export class Session {
 
     get user(): FluentUser {
         return this._user !== undefined ? this._user : this._user = new FluentUser(this);
+    }
+
+    get websocket(): WebsocketService {
+        return this._websocket !== undefined ? this._websocket : this._websocket = new WebsocketService(this).connect();
     }
 }

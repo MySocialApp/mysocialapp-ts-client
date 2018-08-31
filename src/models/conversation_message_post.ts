@@ -1,15 +1,16 @@
 import {ConversationMessage} from "./conversation_message";
+import {FileData} from "./file";
 
 export class ConversationMessagePost {
     private mMessage: string = "";
-    private mImage: File = null;
+    private mImage: FileData = null;
 
     setMessage(message?: string): ConversationMessagePost {
         this.mMessage = message;
         return this;
     }
 
-    setImage(f: File): ConversationMessagePost {
+    setImage(f: FileData): ConversationMessagePost {
         this.mImage = f;
         return this;
     }
@@ -24,7 +25,7 @@ export class ConversationMessagePost {
         return c
     }
 
-    get image(): File {
+    get image(): FileData {
         return this.mImage;
     }
 

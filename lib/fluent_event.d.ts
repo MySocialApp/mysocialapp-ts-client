@@ -1,8 +1,9 @@
+/// <reference types="node" />
 import { FluentAbstract } from "./fluent_abstract";
 import { Event } from "./models/event";
 export declare class FluentEvent extends FluentAbstract {
     list(page: number, size?: number, options?: {}): Promise<Event[]>;
-    stream(): {};
+    stream(): AsyncIterableIterator<Event>;
     get(id: string): Promise<Event>;
     create(event: Event): Promise<Event>;
     /**

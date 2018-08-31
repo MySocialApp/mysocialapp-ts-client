@@ -1,9 +1,15 @@
 import {Taggable} from "./taggable";
-import {Base} from "./base";
 import {TagEntities} from "./tag_entities";
+import {Model} from "./model";
 
-export class TagEntityAbstract extends Base implements Taggable {
+export class TagEntityAbstract extends Model implements Taggable {
     private _tag_entities?: TagEntities;
+
+    getJsonParameters(): {} {
+        return {
+            tag_entities: this.tag_entities.getJsonParameters(),
+        };
+    }
 
     get tag_entities(): TagEntities {
         return this._tag_entities;

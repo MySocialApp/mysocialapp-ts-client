@@ -1,7 +1,7 @@
 import {User} from "./user";
 
 export class SearchQuery {
-    _user?: User;
+    private _user?: User;
     q?: string;
     name?: string;
     content?: string;

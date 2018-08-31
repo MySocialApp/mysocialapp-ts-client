@@ -3,6 +3,8 @@ import {Feed} from "../models/feed";
 import {Photo} from "../models/photo";
 import {TagEntities} from "../models/tag_entities";
 import {AccessControl} from "../models/access_control";
+import {FileData} from "../models/file";
+import {GenericFormData} from "../models/generic_form_data";
 
 export class RestShadowEntityPhoto extends Rest {
 
@@ -14,17 +16,17 @@ export class RestShadowEntityPhoto extends Rest {
         return this.conf.getList(new Feed(), path) as Promise<Photo[]>;
     }
 
-    async create(id: string, photo: File, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
-        let f = new FormData();
-        f.set("file", photo);
+    async create(id: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
+        let f = new GenericFormData();
+        f.set("file", photo.blob, 'image/png', "image.png");
         if (message !== undefined) {
-            f.set("message", message);
+            f.append("message", message);
         }
         if (accessControl !== undefined) {
-            f.set("access_control", accessControl)
+            f.append("access_control", accessControl)
         }
         if (tagEntities !== undefined) {
-            f.set("tag_entities", tagEntities.toJson());
+            f.append("tag_entities", tagEntities.toJson());
         }
         return this.conf.postMultipart(new Feed(), Rest.params("/shadow/entity/{id}/photo", {id: id}), f) as Promise<Feed>;
     }

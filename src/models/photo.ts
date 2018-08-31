@@ -20,11 +20,11 @@ export class Photo extends Model {
         this._tag_entities = new TagEntities(o);
     }
 
-    get target(): TagEntities {
+    get target(): Base {
         return new Base(this._target);
     }
 
-    set target(o: TagEntities) {
+    set target(o: Base) {
         this._target = new Base(o);
     }
 }

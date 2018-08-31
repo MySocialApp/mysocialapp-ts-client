@@ -5,10 +5,10 @@ import {Event} from "./event";
 import {Model} from "./model";
 
 export class SearchResultTypes extends Model {
-    _users?: UserSearchResult;
-    _feeds?: FeedsSearchResult;
-    _groups?: GroupSearchResult;
-    _events?: EventSearchResult;
+    private _users?: UserSearchResult;
+    private _feeds?: FeedsSearchResult;
+    private _groups?: GroupSearchResult;
+    private _events?: EventSearchResult;
 
     set users(o: UserSearchResult) {
         this._users = new UserSearchResult(o);

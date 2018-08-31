@@ -1,6 +1,8 @@
 import {Rest} from "./rest";
 import {Comment} from "../models/comment";
 import {TagEntities} from "../models/tag_entities";
+import {FileData} from "../models/file";
+import {GenericFormData} from "../models/generic_form_data";
 
 export class RestPhotoComment extends Rest {
     async list(photoId: string): Promise<Comment[]> {
@@ -11,17 +13,17 @@ export class RestPhotoComment extends Rest {
         return this.conf.post(new Comment(), Rest.params("/photo/{id}/comment", {id: photoId}), comment) as Promise<Comment>;
     }
 
-    async createPhoto(photoId: string, photo: File, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Comment> {
-        let f = new FormData();
-        f.set("file", photo);
+    async createPhoto(photoId: string, photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Comment> {
+        let f = new GenericFormData();
+        f.set("file", photo.blob, 'image/png', "image.png");
         if (message !== undefined) {
-            f.set("name", message);
+            f.append("name", message);
         }
         if (tagEntities !== undefined) {
-            f.set("tag_entities", tagEntities.toJson());
+            f.append("tag_entities", tagEntities.toJson());
         }
         if (albumName !== undefined) {
-            f.set("album", albumName);
+            f.append("album", albumName);
         }
         return this.conf.postMultipart(new Comment(), Rest.params("/photo/{id}/comment/photo", {id: photoId}), f) as Promise<Comment>;
     }

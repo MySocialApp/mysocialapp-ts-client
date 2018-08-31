@@ -2,10 +2,11 @@ import {AccessControl} from "./access_control";
 import {Serializable} from "./model";
 import {TextWallMessage} from "./text_wall_message";
 import {TagEntities} from "./tag_entities";
+import {FileData} from "./file";
 
 export class FeedPost implements Serializable {
     _message?: string;
-    _image?: File;
+    _image?: FileData;
     _visibility?: AccessControl;
     _tag_entities?: TagEntities;
 
@@ -26,7 +27,7 @@ export class FeedPost implements Serializable {
         return this;
     }
 
-    setImage(image: File): FeedPost {
+    setImage(image: FileData): FeedPost {
         this._image = image;
         return this;
     }
