@@ -5,7 +5,7 @@
   "main": "./lib/mysocialapp.js",
   "typings": "./lib/mysocialapp.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest test",
     "prepare": "npm run build",
     "build": "tsc",
     "concat": "concat -f lib/**/*.js -o dist/mysocialapp.js"
