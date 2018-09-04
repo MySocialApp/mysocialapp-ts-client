@@ -39,6 +39,7 @@ export class GenericFormData {
             first = false;
             body = concatTypedArrays(body, b);
         }
+        return body
     }
 }
 
@@ -104,7 +105,7 @@ class GenericFormDataValue {
         return await new Promise<Uint8Array>((resolve, reject) => {
             let reader = new FileReader();
             reader.onload = () => {
-                resolve(reader.result);
+                resolve(reader.result as Uint8Array);
             };
             reader.readAsArrayBuffer(this.value);
         });
