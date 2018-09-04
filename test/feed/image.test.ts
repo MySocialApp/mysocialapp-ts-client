@@ -7,6 +7,8 @@ describe("add image to news feed", () => {
     it("user creation api", async () => {
         try {
 
+            console.info('image', getImageFile());
+
             const session = await createAccountAndGetSession();
             let post = (new FeedPost())
                 .setMessage("Good day")

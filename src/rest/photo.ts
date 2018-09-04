@@ -21,7 +21,7 @@ export class RestPhoto extends Rest {
 
     async create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Feed> {
         let f = new GenericFormData();
-        f.set("file", photo.blob, 'image/png', "image.png");
+        f.set("file", photo.blob, photo.blob.type, "image");
         if (message !== undefined) {
             f.append("name", message);
         }

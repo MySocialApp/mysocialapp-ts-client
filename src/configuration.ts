@@ -30,7 +30,7 @@ export class Configuration {
     setDefaultOptions(options: {}, contentType?: string): AxiosRequestConfig {
         options = options == undefined ? {} : options;
         options['headers'] = options['headers'] !== undefined ? options['headers'] : {};
-        if (contentType != undefined) {
+        if (contentType != undefined && options['headers']['Content-Type'] === undefined) {
             options['headers']['Content-Type'] = contentType;
         }
         if (this.token !== undefined) {
@@ -87,7 +87,7 @@ export class Configuration {
     public async postMultipart(model: Model, path: string, fd: GenericFormData, options: {} = {}): Promise<ModelInterface> {
         try {
             let body = await fd.getBody();
-            const resp = await this.httpClient.post(path, body, {headers: fd.getHeaders()}) as AxiosResponse<ModelInterface>;
+            const resp = await this.httpClient.post(path, body, this.setDefaultOptions(options, fd.getHeaders()['Content-Type'])) as AxiosResponse<ModelInterface>;
             model.load(resp.data, this);
             return model
         } catch (error) {

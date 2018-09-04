@@ -24,17 +24,39 @@ export class GenericFormData {
         return this.boundary ? this.boundary : this.boundary = Date.now().toString();
     }
 
-    async getBody(): Promise<string> {
-        let bodyParts = [];
+    async getBody(): Promise<Uint8Array> {
+        let bodyParts = [] as Uint8Array[];
         for (let part of this.parts) {
+            bodyParts.push(stringToByteArray('--' + this.getBoundary() + '--'), stringToByteArray(''));
             bodyParts.push(...await part.getBodyPart(this.getBoundary()));
         }
-        bodyParts.push('--' + this.getBoundary() + '--', '');
-        return bodyParts.join('\r\n');
+        let body = stringToByteArray("");
+        let first = true;
+        for (let b of bodyParts) {
+            if (!first) {
+                body = concatTypedArrays(body, '\r\n');
+            }
+            first = false;
+            body = concatTypedArrays(body, b);
+        }
     }
 }
 
 const allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-+,@£$€!½§~'=()[]{}0123456789";
+
+function stringToByteArray(str: string): Uint8Array {
+    let buf = new Buffer(str);
+    let a = new Uint8Array(buf.length);
+    for (let i = 0; i < buf.length; i++) a[i] = buf[i];
+    return a
+}
+
+function concatTypedArrays(a, b) { // a, b TypedArray of same type
+    let c = new (a.constructor)(a.length + b.length);
+    c.set(a, 0);
+    c.set(b, a.length);
+    return c;
+}
 
 class GenericFormDataValue {
     name: string;
@@ -49,37 +71,42 @@ class GenericFormDataValue {
         this.contentType = contentType;
     }
 
-    async getBodyPart(boundary: string): Promise<string[]> {
+    async getBodyPart(boundary: string): Promise<Uint8Array[]> {
         if (this.filename != undefined) {
-            return await this.getBase64Part(boundary);
+            return await this.getArrayBufferPart(boundary);
         }
         return [
-            '--' + boundary,
-            'Content-Disposition: form-data; name="' + this.name + '"',
-            'Content-Type: ' + this.contentType+ "; charset=UTF-8",
-            '',
-            this.value
+            stringToByteArray('--' + boundary),
+            stringToByteArray('Content-Disposition: form-data; name="' + this.name + '"'),
+            stringToByteArray('Content-Type: ' + this.contentType + "; charset=UTF-8"),
+            stringToByteArray(''),
+            stringToByteArray(this.value)
         ];
     }
 
-    async getBase64Part(boundary: string): Promise<string[]> {
-        let body: string;
-        if (typeof this.value == typeof new Blob()) {
-            let reader = new FileReader();
-            reader.onload = function() {
-                body = String(reader.result).split(',')[1];
-            };
-            reader.readAsDataURL(this.value);
-        } else {
-            body = (new Buffer(this.value)).toString('base64');
-        }
+    async getArrayBufferPart(boundary: string): Promise<Uint8Array[]> {
         return [
-            '--' + boundary,
-            'Content-Disposition: form-data; name="' + this.name + '"; filename="' + this.filename + '"',
-            'Content-Type: ' + this.contentType,
-            'Content-Transfer-Encoding: base64',
-            '',
-            body
-        ];
+            stringToByteArray('--' + boundary),
+            stringToByteArray('Content-Disposition: form-data; name="' + this.name + '"; filename="' + this.filename + '"'),
+            stringToByteArray('Content-Type: ' + this.contentType),
+            stringToByteArray(''),
+            await this.getBody()
+        ] as Uint8Array[];
+    }
+
+    async getBody(): Promise<Uint8Array> {
+        if (typeof this.value != typeof new Blob()) {
+            let buf = new Buffer(this.value);
+            let a = new Uint8Array(buf.length);
+            for (let i = 0; i < buf.length; i++) a[i] = buf[i];
+            return a;
+        }
+        return await new Promise<Uint8Array>((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.readAsArrayBuffer(this.value);
+        });
     }
 }
