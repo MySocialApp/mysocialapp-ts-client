@@ -3,7 +3,7 @@ import {SearchType} from "./search_type";
 import {Model} from "./model";
 
 export class SearchResults extends Model {
-    matched_cout?: number;
+    matched_count?: number;
     query_id?: string;
     page?: number;
     size?: number;

@@ -1,1 +1,5 @@
-export type SearchType = string;
+export enum SearchType {
+    User = "USER",
+    Group = "GROUP",
+    Event = "EVENT",
+}

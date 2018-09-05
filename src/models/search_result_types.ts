@@ -10,35 +10,35 @@ export class SearchResultTypes extends Model {
     private _groups?: GroupSearchResult;
     private _events?: EventSearchResult;
 
-    set users(o: UserSearchResult) {
+    set USER(o: UserSearchResult) {
         this._users = new UserSearchResult(o);
     }
 
-    get users(): UserSearchResult {
+    get user(): UserSearchResult {
         return this._users;
     }
 
-    set feeds(o: FeedsSearchResult) {
+    set FEED(o: FeedsSearchResult) {
         this._feeds = new FeedsSearchResult(o);
     }
 
-    get feeds(): FeedsSearchResult {
+    get feed(): FeedsSearchResult {
         return this._feeds;
     }
 
-    set groups(o: GroupSearchResult) {
+    set GROUP(o: GroupSearchResult) {
         this._groups = new GroupSearchResult(o);
     }
 
-    get groups(): GroupSearchResult {
+    get group(): GroupSearchResult {
         return this._groups;
     }
 
-    set events(o: EventSearchResult) {
+    set EVENT(o: EventSearchResult) {
         this._events = new EventSearchResult(o);
     }
 
-    get events(): EventSearchResult {
+    get event(): EventSearchResult {
         return this._events;
     }
 }
@@ -50,7 +50,7 @@ interface SearchResultValue<T> {
 
 export class UserSearchResult extends Model implements SearchResultValue<User> {
     matched_count: number;
-    _data: User[];
+    private _data: User[];
 
     set data(users: User[]) {
         if (!users) {
@@ -62,11 +62,15 @@ export class UserSearchResult extends Model implements SearchResultValue<User> {
         }
         this._data = list;
     }
+
+    get data(): User[] {
+        return this._data;
+    }
 }
 
 export class FeedsSearchResult extends Model implements SearchResultValue<Feed> {
     matched_count: number;
-    _data: Feed[];
+    private _data: Feed[];
 
     set data(feeds: Feed[]) {
         if (!feeds) {
@@ -78,11 +82,15 @@ export class FeedsSearchResult extends Model implements SearchResultValue<Feed> 
         }
         this._data = list;
     }
+
+    get data(): Feed[] {
+        return this._data;
+    }
 }
 
 export class GroupSearchResult extends Model implements SearchResultValue<Group> {
     matched_count: number;
-    _data: Group[];
+    private _data: Group[];
 
     set data(groups: Group[]) {
         if (!groups) {
@@ -94,11 +102,15 @@ export class GroupSearchResult extends Model implements SearchResultValue<Group>
         }
         this._data = list;
     }
+
+    get data(): Group[] {
+        return this._data;
+    }
 }
 
 export class EventSearchResult extends Model implements SearchResultValue<Event> {
     matched_count: number;
-    _data: Event[];
+    private _data: Event[];
 
     set data(events: Event[]) {
         if (!events) {
@@ -109,5 +121,9 @@ export class EventSearchResult extends Model implements SearchResultValue<Event>
             list.push(new Event(event));
         }
         this._data = list;
+    }
+
+    get data(): Event[] {
+        return this._data;
     }
 }

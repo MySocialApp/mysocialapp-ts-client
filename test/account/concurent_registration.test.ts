@@ -1,6 +1,7 @@
 import {catchErrorFunc, randomId, sleep,} from "../common";
 import {MySocialApp} from "../../src/mysocialapp";
 import {Session} from "../../src/session";
+import {ErrorResponse} from "../../src/rest/error";
 
 describe("addMessage account", () => {
     it("user creation api", async () => {
@@ -26,11 +27,14 @@ describe("addMessage account", () => {
             };
 
             for (let i = 0; i < requestsToDo; i++) {
-                try {
-                    new MySocialApp().setAppId(appId).createAccount(email, password, firstName).then(printSession);
-                } catch (err) {
-                    console.info("creation rejected by lock? Add test with response status code");
-                }
+                new MySocialApp().setAppId(appId).createAccount(email, password, firstName).then(printSession).catch((err) => {
+                    err = err as ErrorResponse;
+                    if (err.status != 409) {
+                        console.info("invalid status response code", err.status + "\n" + err.exception + "\n" + err.message);
+                    }
+                    expect(err.status).toEqual(409);
+                    requestsToDo--;
+                });
             }
             while (requestsToDo > 0) {
                 await sleep(1000);
