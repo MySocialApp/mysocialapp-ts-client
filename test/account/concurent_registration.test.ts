@@ -29,10 +29,7 @@ describe("addMessage account", () => {
             for (let i = 0; i < requestsToDo; i++) {
                 new MySocialApp().setAppId(appId).createAccount(email, password, firstName).then(printSession).catch((err) => {
                     err = err as ErrorResponse;
-                    if (err.status != 409) {
-                        console.info("invalid status response code", err.status + "\n" + err.exception + "\n" + err.message);
-                    }
-                    expect(err.status).toEqual(409);
+                    expect(err.status == 409 || err.status == 400).toBeTruthy();
                     requestsToDo--;
                 });
             }
