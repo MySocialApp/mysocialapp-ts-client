@@ -30,7 +30,7 @@ export async function sleep(duration: number): Promise<{}> {
     }));
 }
 
-function randomId(): string {
+export function randomId(): string {
     let text = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for (let i = 0; i < 20; i++) {
