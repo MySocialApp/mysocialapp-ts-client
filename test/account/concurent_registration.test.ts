@@ -16,9 +16,9 @@ describe("addMessage account", () => {
 
             let firstId: string;
             let requestsToDo = 10;
-            let printSession = async function (session: Session){
+            let printSession = async function (session: Session) {
                 let account = await session.account.get(true);
-                if(firstId === undefined ) {
+                if (firstId === undefined) {
                     firstId = account.id_str;
                 }
                 expect(firstId).toEqual(account.id_str);
@@ -26,7 +26,11 @@ describe("addMessage account", () => {
             };
 
             for (let i = 0; i < requestsToDo; i++) {
-                new MySocialApp().setAppId(appId).createAccount(email, password, firstName).then(printSession);
+                try {
+                    new MySocialApp().setAppId(appId).createAccount(email, password, firstName).then(printSession);
+                } catch (err) {
+                    console.info("creation rejected by lock? Add test with response status code");
+                }
             }
             while (requestsToDo > 0) {
                 await sleep(1000);
