@@ -2,7 +2,7 @@ import { SearchResultTypes } from "./search_result_types";
 import { SearchType } from "./search_type";
 import { Model } from "./model";
 export declare class SearchResults extends Model {
-    matched_cout?: number;
+    matched_count?: number;
     query_id?: string;
     page?: number;
     size?: number;

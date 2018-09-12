@@ -8,10 +8,14 @@ export declare class SearchResultTypes extends Model {
     private _feeds?;
     private _groups?;
     private _events?;
-    users: UserSearchResult;
-    feeds: FeedsSearchResult;
-    groups: GroupSearchResult;
-    events: EventSearchResult;
+    USER: UserSearchResult;
+    readonly user: UserSearchResult;
+    FEED: FeedsSearchResult;
+    readonly feed: FeedsSearchResult;
+    GROUP: GroupSearchResult;
+    readonly group: GroupSearchResult;
+    EVENT: EventSearchResult;
+    readonly event: EventSearchResult;
 }
 interface SearchResultValue<T> {
     matched_count: number;
@@ -19,22 +23,22 @@ interface SearchResultValue<T> {
 }
 export declare class UserSearchResult extends Model implements SearchResultValue<User> {
     matched_count: number;
-    _data: User[];
+    private _data;
     data: User[];
 }
 export declare class FeedsSearchResult extends Model implements SearchResultValue<Feed> {
     matched_count: number;
-    _data: Feed[];
+    private _data;
     data: Feed[];
 }
 export declare class GroupSearchResult extends Model implements SearchResultValue<Group> {
     matched_count: number;
-    _data: Group[];
+    private _data;
     data: Group[];
 }
 export declare class EventSearchResult extends Model implements SearchResultValue<Event> {
     matched_count: number;
-    _data: Event[];
+    private _data;
     data: Event[];
 }
 export {};

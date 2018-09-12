@@ -24,40 +24,17 @@ export class GenericFormData {
         return this.boundary ? this.boundary : this.boundary = Date.now().toString();
     }
 
-    async getBody(): Promise<Uint8Array> {
-        let bodyParts = [] as Uint8Array[];
+    async getBody(): Promise<string> {
+        let bodyParts = [];
         for (let part of this.parts) {
-            bodyParts.push(stringToByteArray('--' + this.getBoundary() + '--'), stringToByteArray(''));
             bodyParts.push(...await part.getBodyPart(this.getBoundary()));
         }
-        let body = stringToByteArray("");
-        let first = true;
-        for (let b of bodyParts) {
-            if (!first) {
-                body = concatTypedArrays(body, '\r\n');
-            }
-            first = false;
-            body = concatTypedArrays(body, b);
-        }
-        return body
+        bodyParts.push('--' + this.getBoundary() + '--', '');
+        return bodyParts.join('\r\n');
     }
 }
 
 const allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-+,@£$€!½§~'=()[]{}0123456789";
-
-function stringToByteArray(str: string): Uint8Array {
-    let buf = new Buffer(str);
-    let a = new Uint8Array(buf.length);
-    for (let i = 0; i < buf.length; i++) a[i] = buf[i];
-    return a
-}
-
-function concatTypedArrays(a, b) { // a, b TypedArray of same type
-    let c = new (a.constructor)(a.length + b.length);
-    c.set(a, 0);
-    c.set(b, a.length);
-    return c;
-}
 
 class GenericFormDataValue {
     name: string;
@@ -72,42 +49,44 @@ class GenericFormDataValue {
         this.contentType = contentType;
     }
 
-    async getBodyPart(boundary: string): Promise<Uint8Array[]> {
+    async getBodyPart(boundary: string): Promise<string[]> {
         if (this.filename != undefined) {
-            return await this.getArrayBufferPart(boundary);
+            return await this.getBase64Part(boundary);
         }
         return [
-            stringToByteArray('--' + boundary),
-            stringToByteArray('Content-Disposition: form-data; name="' + this.name + '"'),
-            stringToByteArray('Content-Type: ' + this.contentType + "; charset=UTF-8"),
-            stringToByteArray(''),
-            stringToByteArray(this.value)
+            '--' + boundary,
+            'Content-Disposition: form-data; name="' + this.name + '"',
+            'Content-Type: ' + this.contentType + "; charset=UTF-8",
+            '',
+            this.value
         ];
     }
 
-    async getArrayBufferPart(boundary: string): Promise<Uint8Array[]> {
+    async getBase64Part(boundary: string): Promise<string[]> {
+        let body = await this.getBody();
+        console.info('value', this.value);
+        console.info('body', body);
         return [
-            stringToByteArray('--' + boundary),
-            stringToByteArray('Content-Disposition: form-data; name="' + this.name + '"; filename="' + this.filename + '"'),
-            stringToByteArray('Content-Type: ' + this.contentType),
-            stringToByteArray(''),
-            await this.getBody()
-        ] as Uint8Array[];
+            '--' + boundary,
+            'Content-Disposition: form-data; name="' + this.name + '"; filename="' + this.filename + '"',
+            'Content-Type: ' + this.contentType,
+            'Content-Transfer-Encoding: base64',
+            'Content-Encoding: base64',
+            '',
+            body
+        ];
     }
 
-    async getBody(): Promise<Uint8Array> {
+    async getBody(): Promise<string> {
         if (typeof this.value != typeof new Blob()) {
-            let buf = new Buffer(this.value);
-            let a = new Uint8Array(buf.length);
-            for (let i = 0; i < buf.length; i++) a[i] = buf[i];
-            return a;
+            return (new Buffer(this.value)).toString('base64');
         }
-        return await new Promise<Uint8Array>((resolve, reject) => {
+        return await new Promise<string>((resolve, reject) => {
             let reader = new FileReader();
             reader.onload = () => {
-                resolve(reader.result as Uint8Array);
+                resolve(String(reader.result).split(',')[1]);
             };
-            reader.readAsArrayBuffer(this.value);
+            reader.readAsDataURL(this.value);
         });
     }
 }
