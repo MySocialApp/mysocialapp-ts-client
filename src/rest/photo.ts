@@ -31,7 +31,7 @@ export class RestPhoto extends Rest {
         if (albumName !== undefined) {
             f.append("album", albumName);
         }
-        return this.conf.postMultipart(new Feed(), "/photo", f) as Promise<Feed>;
+        return this.conf.postMultipart(new Feed(), "/photo/base64", f) as Promise<Feed>;
     }
 
     async update(photoId: string, photo: Photo): Promise<Photo> {
