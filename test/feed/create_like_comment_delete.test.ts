@@ -1,17 +1,17 @@
-import {catchErrorFunc, createAccountAndGetSession, sleep} from "../common";
+import {catchErrorFunc, createAccountAndGetSession} from "../common";
 import {AccessControl} from "../../src/models/access_control";
 import {CommentPost} from "../../src/models/comment_post";
-import {TextWallMessage} from "../../src/models/text_wall_message";
+import {FeedPost} from "../../src/models/feed_post";
 
 jest.setTimeout(60000);
 describe("addMessage account", () => {
     it("user creation api", async () => {
         try {
-            let post = (new TextWallMessage()).setMessage("Good day").setVisibility(AccessControl.Friend);
+            let post = (new FeedPost()).setMessage("Good day").setVisibility(AccessControl.Friend);
 
             const session = await createAccountAndGetSession();
             const account = await session.account.get();
-            const createdPost = await session.feed.sendWallPost(post);
+            const createdPost = await session.newsFeed.create(post);
             expect(createdPost.object.id != "").toBeTruthy();
             expect(createdPost.object.displayed_name != "").toBeTruthy();
 
