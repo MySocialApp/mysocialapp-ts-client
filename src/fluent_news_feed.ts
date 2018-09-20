@@ -13,7 +13,6 @@ export class FluentNewsFeed extends FluentAbstract {
     async* stream() {
         let page = 0;
         while (true) {
-            console.log("get page "+ page);
             let feeds = await this.list(page++);
             if (!feeds.length) {
                 return;

@@ -2,7 +2,7 @@ import {AccessControl} from "./access_control";
 import {Model} from "./model";
 import {InterfaceLanguage} from "./user_settings";
 import {SimpleLocation} from "./simple_location";
-import {dateFormat} from "../constant";
+import {apiDateFormat} from "../constant";
 import moment = require("moment");
 
 export class CustomField extends Model {
@@ -112,7 +112,7 @@ export class CustomField extends Model {
     }
 
     set dateValue(value: moment.Moment) {
-        this.value = value.format(dateFormat);
+        this.value = value.format(apiDateFormat);
     }
 
     get dateValue(): moment.Moment {

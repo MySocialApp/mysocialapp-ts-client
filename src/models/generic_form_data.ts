@@ -10,13 +10,17 @@ export class GenericFormData {
         this.parts.push(new GenericFormDataValue(name, value, contentType, filename));
     }
 
+    setBase64File(name: string, value:string, contentType?: string, filename?: string ) {
+        this.parts.push(new GenericFormDataValue(name, value, contentType, filename));
+    }
+
     append(name: string, value: any, contentType?: string, filename?: string) {
         this.set(name, value, filename, contentType)
     }
 
     getHeaders(): {} {
         return {
-            "Content-Type": 'multipart/form-data; boundary="' + this.getBoundary() + '"',
+            "Content-Type": 'multipart/form-data; boundary=' + this.getBoundary(),
         };
     }
 
@@ -30,6 +34,7 @@ export class GenericFormData {
             bodyParts.push(...await part.getBodyPart(this.getBoundary()));
         }
         bodyParts.push('--' + this.getBoundary() + '--', '');
+        console.info("body", bodyParts.join("\r\n"));
         return bodyParts.join('\r\n');
     }
 }
@@ -64,12 +69,10 @@ class GenericFormDataValue {
 
     async getBase64Part(boundary: string): Promise<string[]> {
         let body = await this.getBody();
-        console.info('value', this.value);
-        console.info('body', body);
         return [
             '--' + boundary,
             'Content-Disposition: form-data; name="' + this.name + '"; filename="' + this.filename + '"',
-            'Content-Type: ' + this.contentType,
+            //'Content-Type: ' + this.contentType,
             'Content-Transfer-Encoding: base64',
             'Content-Encoding: base64',
             '',

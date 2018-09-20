@@ -10,7 +10,7 @@ export interface Wallable {
     owner?: User;
     base_target?: BaseWall;
     base_object?: BaseWall;
-    body_message?: string;
+    bodyMessage?: string;
     body_message_tag_entities?: TagEntities;
     body_image_url?: string;
     body_image_text?: string;

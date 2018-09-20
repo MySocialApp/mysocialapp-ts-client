@@ -5,6 +5,7 @@ import {Status} from "./status";
 import {Location} from "./location";
 import {Flag} from "./flag";
 import {Model} from "./model";
+import {Gender} from "./gender";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -101,9 +102,23 @@ export class User extends Model {
     get custom_fields(): CustomField[] {
         return this._custom_fields;
     }
-}
 
-export enum Gender {
-    Male = "MALE",
-    Female = "FEMALE",
+    /**
+     * return true if field found
+     * @param {string} id
+     * @param value
+     * @returns {boolean}
+     */
+    setCustomFieldValueById(id: string, value: any): boolean {
+        if (!this.custom_fields || this.custom_fields.length == 0) {
+            return
+        }
+        for (let field of this.custom_fields) {
+            if (field.field.id == id) {
+                field.value = value;
+                return true;
+            }
+        }
+        return false;
+    }
 }

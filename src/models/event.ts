@@ -3,7 +3,7 @@ import {EventMember} from "./event_member";
 import {EventMemberAccessControl} from "./event_member_access_control";
 import {Photo} from "./photo";
 import {Location} from "./location";
-import {dateFormat} from "../constant";
+import {apiDateFormat} from "../constant";
 import {RestEvent} from "../rest/event";
 import {TextWallMessage} from "./text_wall_message";
 import {Feed} from "./feed";
@@ -103,12 +103,12 @@ export class Event extends BaseWall {
     }
 
     setStartDate(d: moment.Moment): Event {
-        this.start_date = d.format(dateFormat);
+        this.start_date = d.format(apiDateFormat);
         return this;
     }
 
     setEndDate(d: moment.Moment): Event {
-        this.end_date = d.format(dateFormat);
+        this.end_date = d.format(apiDateFormat);
         return this;
     }
 

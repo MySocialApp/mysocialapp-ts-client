@@ -14,7 +14,6 @@ export class Base extends Model implements BaseImpl {
     created_date: string;
     displayed_name: string;
     access_control?: AccessControl;
-    body_message?: string;
     body_image_url?: string = null;
     body_image_text?: string = null;
 
@@ -24,6 +23,10 @@ export class Base extends Model implements BaseImpl {
 
     set id(id: any) {
         // int64 cannot be interpreted by browsers
+    }
+
+    get bodyMessage(): string {
+        return this.displayed_name;
     }
 
     set owner(o: User) {

@@ -1,6 +1,7 @@
 import {catchErrorFunc, createAccountAndGetSession, getImageFile, sleep} from "../common";
 import {AccessControl} from "../../src/models/access_control";
 import {FeedPost} from "../../src/models/feed_post";
+import {CommentPost} from "../../src/models/comment_post";
 
 jest.setTimeout(60000);
 describe("add image to news feed", () => {
@@ -9,19 +10,23 @@ describe("add image to news feed", () => {
 
             console.info('image', getImageFile());
 
+            const photoMessage = "Good day";
             const session = await createAccountAndGetSession();
             let post = (new FeedPost())
-                .setMessage("Good day")
+                .setMessage(photoMessage)
                 .setVisibility(AccessControl.Friend)
                 .setImage(getImageFile());
 
             const createdPost = await session.newsFeed.create(post);
-            expect(createdPost.object.id != "").toBeTruthy();
-            expect(createdPost.object.displayed_name != "").toBeTruthy();
-            expect(createdPost.object.displayed_photo != undefined).toBeTruthy();
-            console.log(createdPost.object.displayed_photo);
-            sleep(200);
+            expect(createdPost.bodyMessage).toEqual(photoMessage);
 
+            const message = "nice!";
+            let comment = await createdPost.addComment(new CommentPost().setMessage(message));
+            expect(message).toEqual(comment.message);
+
+            expect(createdPost.object.id != "").toBeTruthy();
+            expect(createdPost.object.type).toEqual("Photo");
+            await createdPost.delete();
 
         } catch (err) {
             catchErrorFunc(err);

@@ -57,8 +57,8 @@ export class Feed extends Model implements Wallable {
         return this.object ? this.object.getCreatedDate : null;
     }
 
-    get body_message(): string {
-        return this.object.body_message ? this.object.body_message : '';
+    get bodyMessage(): string {
+        return this.object.bodyMessage ? this.object.bodyMessage : '';
     }
 
     async addLike(): Promise<Like> {

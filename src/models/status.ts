@@ -9,7 +9,7 @@ import {RestStatus} from "../rest/status";
 export class Status extends BaseWall {
     message?: string;
 
-    get body_message(): string {
+    get bodyMessage(): string {
         return this.message;
     }
 

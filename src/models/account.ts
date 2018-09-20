@@ -2,6 +2,9 @@ import {User} from "./user";
 import {UserSettings} from "./user_settings";
 import {RestAccount} from "../rest/account";
 import {listToParameters} from "./utils";
+import {Gender} from "./gender";
+import moment = require('moment');
+import {apiDateFormat} from "../constant";
 
 export class Account extends User {
     private _user_settings?: UserSettings;
@@ -51,5 +54,40 @@ export class Account extends User {
 
     async update(): Promise<Account> {
         return (new RestAccount(this.conf)).update(this);
+    }
+
+    setEmail(value: string): Account {
+        this.email = value;
+        return this;
+    }
+
+    setPassword(value: string): Account {
+        this.password = value;
+        return this;
+    }
+
+    setFirstName(value: string): Account {
+        this.first_name = value;
+        return this;
+    }
+
+    setLastName(value: string): Account {
+        this.last_name = value;
+        return this;
+    }
+
+    setExternalId(value: string): Account {
+        this.external_id = value;
+        return this;
+    }
+
+    setGender(value: Gender): Account {
+        this.gender = value;
+        return this;
+    }
+
+    setDateOfBirth(date: moment.Moment): Account {
+        this.date_of_birth = date.format(apiDateFormat);
+        return this;
     }
 }

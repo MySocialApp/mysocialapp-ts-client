@@ -36,14 +36,21 @@ export class MySocialApp {
     }
 
     async createAccount(email: string, password: string, firstName: string): Promise<Session> {
-        let clientService = new ClientService(this.configuration);
-        await clientService.register.create(new Account({
+        return this.createAccountFromBuilder(new Account({
             email: email,
             password: password,
             first_name: firstName
         }));
+    }
+
+    async createAccountFromBuilder(account: Account): Promise<Session> {
+        if (account.email == "" || account.first_name == "" || account.password == "") {
+            throw new Error("missing mandatory email, first_name or password");
+        }
+        let clientService = new ClientService(this.configuration);
+        await clientService.register.create(account);
         let session = new Session(clientService);
-        await session.connect(email, password);
+        await session.connect(account.email, account.password);
         return session;
     }
 
