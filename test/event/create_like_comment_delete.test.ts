@@ -13,11 +13,9 @@ describe("addMessage account", () => {
         try {
             const session1 = await createAccountAndGetSession();
             const account1 = await session1.account.get();
-            console.info("user id 1", account1.id);
 
             const session2 = await createAccountAndGetSession();
             const account2 = await session2.account.get();
-            console.info("user id 2", account2.id);
             let event = new Event().setName("Let's create an event")
                 .setMaxSeats(10)
                 .setDescription("Adding social networking features to your app has never been so easy. Integrate MySocialApp with your app and engage users via realtime messaging. No more infrastructure hell, no hassle, just add it.")

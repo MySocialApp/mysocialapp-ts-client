@@ -7,9 +7,6 @@ jest.setTimeout(60000);
 describe("add image to news feed", () => {
     it("user creation api", async () => {
         try {
-
-            console.info('image', getImageFile());
-
             const photoMessage = "Good day";
             const session = await createAccountAndGetSession();
             let post = (new FeedPost())

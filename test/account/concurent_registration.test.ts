@@ -11,10 +11,6 @@ describe("addMessage account", () => {
             let firstName = randomId();
             let appId = 'u470584465854a728453';
 
-            console.info("email", email);
-            console.info("firstName", firstName);
-
-
             let firstId: string;
             let requestsToDo = 10;
             let printSession = async function (session: Session) {

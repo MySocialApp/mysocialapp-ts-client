@@ -52,7 +52,7 @@ Here are demo apps that use the 100% MySocialApp API
 Use docker to compile project
 
 ````
-docker run -v $PWD:/mnt -it --entrypoint /bin/sh node:9-alpine
+docker run -v $PWD:/mnt -it --entrypoint /bin/sh node:10-alpine
 ````
 
 Get node modules

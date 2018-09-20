@@ -3,8 +3,8 @@ import {UserSettings} from "./user_settings";
 import {RestAccount} from "../rest/account";
 import {listToParameters} from "./utils";
 import {Gender} from "./gender";
-import moment = require('moment');
 import {apiDateFormat} from "../constant";
+import moment = require('moment');
 
 export class Account extends User {
     private _user_settings?: UserSettings;
@@ -28,6 +28,7 @@ export class Account extends User {
             gender: this.gender,
             date_of_birth: this.date_of_birth,
             presentation: this.presentation,
+            external_id: this.external_id,
         };
         if (this.living_location) {
             data['living_location'] = this.living_location.getJsonParameters();

@@ -34,7 +34,6 @@ export class GenericFormData {
             bodyParts.push(...await part.getBodyPart(this.getBoundary()));
         }
         bodyParts.push('--' + this.getBoundary() + '--', '');
-        console.info("body", bodyParts.join("\r\n"));
         return bodyParts.join('\r\n');
     }
 }

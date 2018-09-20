@@ -9,11 +9,9 @@ describe("addMessage account", () => {
         try {
             const session1 = await createAccountAndGetSession();
             const account1 = await session1.account.get();
-            console.info("user id 1", account1.id);
 
             const session2 = await createAccountAndGetSession();
             const account2 = await session2.account.get();
-            console.info("user id 2", account2.id);
 
             const user2 = await session1.user.get(account2.id);
 

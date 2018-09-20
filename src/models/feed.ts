@@ -22,6 +22,14 @@ export class Feed extends Model implements Wallable {
     private _object: BaseWall;
     private _target: BaseWall;
 
+    set id(v: string) {
+
+    }
+
+    get id(): string {
+        return this.object ? this.object.id : null;
+    }
+
     set target(o: BaseWall) {
         this._target = new BaseWall(o, this.conf);
     }

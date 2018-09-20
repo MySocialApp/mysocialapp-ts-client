@@ -1,4 +1,4 @@
-import {catchErrorFunc, createAccountAndGetSession} from "../common";
+import {catchErrorFunc, createAccountAndGetSession, sleep} from "../common";
 import {AccessControl} from "../../src/models/access_control";
 import {CommentPost} from "../../src/models/comment_post";
 import {FeedPost} from "../../src/models/feed_post";
@@ -13,17 +13,16 @@ describe("addMessage account", () => {
             const account = await session.account.get();
             const createdPost = await session.newsFeed.create(post);
             expect(createdPost.object.id != "").toBeTruthy();
-            expect(createdPost.object.displayed_name != "").toBeTruthy();
-
+            expect(createdPost.object.bodyMessage != "").toBeTruthy();
+            console.log(createdPost);
             let like = await createdPost.object.addLike();
             expect(like.id != "").toBeTruthy();
 
             let comment = await createdPost.object.addComment((new CommentPost()).setMessage("hello world"));
             expect(comment.message == "hello world");
-
+            await sleep(200);
             let likes = await createdPost.getLikes();
             expect(likes.length).toBeGreaterThan(0);
-
             let comments = await createdPost.getComments();
             expect(comments.length).toBeGreaterThan(0);
 

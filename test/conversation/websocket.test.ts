@@ -1,6 +1,7 @@
 import {catchErrorFunc, createAccountAndGetSession, sleep} from "../common";
 import {Conversation} from "../../src/models/conversation";
 import {ConversationMessagePost} from "../../src/models/conversation_message_post";
+import {Notification} from "../../src/models/notification";
 
 jest.setTimeout(60000);
 describe("addMessage account", () => {
@@ -8,14 +9,12 @@ describe("addMessage account", () => {
         try {
             const session1 = await createAccountAndGetSession();
             const account1 = await session1.account.get();
-            console.info("user id 1", account1.id);
 
             const session2 = await createAccountAndGetSession();
             const account2 = await session2.account.get();
-            console.info("user id 2", account2.id);
 
-            session2.websocket.onMessage((notif) => {
-                console.info("notif", notif);
+            session2.websocket.onMessage((notif: Notification) => {
+                expect(notif.created_date != "").toBeTruthy();
             });
 
             // create conversation

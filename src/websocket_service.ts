@@ -31,7 +31,6 @@ export class WebsocketService {
             });
             this.connection.on('message', (message) => {
                 if (message.type === 'utf8') {
-                    console.log("Received: '" + message.utf8Data + "'");
                 }
                 let j = JSON.parse(message.utf8Data);
                 if (j) {
@@ -42,7 +41,6 @@ export class WebsocketService {
                 }
             });
         });
-        console.info("connect to websocket", this.session.clientService.configuration.websocketEndpointUrl + "/notification");
         this.client.connect(this.session.clientService.configuration.websocketEndpointUrl + "/notification", null, null, {
             "Authorization": this.session.clientService.configuration.token
         });
