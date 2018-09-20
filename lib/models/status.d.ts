@@ -4,7 +4,7 @@ import { Like } from "./like";
 import { Comment } from "./comment";
 export declare class Status extends BaseWall {
     message?: string;
-    readonly body_message: string;
+    readonly bodyMessage: string;
     getLikes(): Promise<Like[]>;
     addLike(): Promise<Like>;
     deleteLike(): Promise<void>;

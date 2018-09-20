@@ -4,6 +4,7 @@ import { Status } from "./status";
 import { Location } from "./location";
 import { Flag } from "./flag";
 import { Model } from "./model";
+import { Gender } from "./gender";
 export declare class User extends Model {
     private _profile_photo?;
     private _custom_fields?;
@@ -34,8 +35,11 @@ export declare class User extends Model {
     living_location: Location;
     current_status: Status;
     custom_fields: CustomField[];
-}
-export declare enum Gender {
-    Male = "MALE",
-    Female = "FEMALE"
+    /**
+     * return true if field found
+     * @param {string} id
+     * @param value
+     * @returns {boolean}
+     */
+    setCustomFieldValueById(id: string, value: any): boolean;
 }

@@ -13,7 +13,7 @@ export interface BaseImpl extends Serializable {
     owner?: User;
     body_image_url?: string;
     body_image_text?: string;
-    body_message?: string;
+    bodyMessage?: string;
     entity_type?: EntityType;
     access_control?: AccessControl;
     delete(): Promise<any>;

@@ -17,12 +17,13 @@ export declare class Feed extends Model implements Wallable {
     private _actor;
     private _object;
     private _target;
+    id: string;
     target: BaseWall;
     object: BaseWall;
     actor: User;
     created_date: string;
     readonly createdDate: moment.Moment;
-    readonly body_message: string;
+    readonly bodyMessage: string;
     addLike(): Promise<Like>;
     getLikes(): Promise<Like[]>;
     deleteLike(): Promise<void>;

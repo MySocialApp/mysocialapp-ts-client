@@ -1,5 +1,7 @@
 import { User } from "./user";
 import { UserSettings } from "./user_settings";
+import { Gender } from "./gender";
+import moment = require('moment');
 export declare class Account extends User {
     private _user_settings?;
     password?: string;
@@ -13,4 +15,11 @@ export declare class Account extends User {
     getJsonParameters(): {};
     user_settings: UserSettings;
     update(): Promise<Account>;
+    setEmail(value: string): Account;
+    setPassword(value: string): Account;
+    setFirstName(value: string): Account;
+    setLastName(value: string): Account;
+    setExternalId(value: string): Account;
+    setGender(value: Gender): Account;
+    setDateOfBirth(date: moment.Moment): Account;
 }

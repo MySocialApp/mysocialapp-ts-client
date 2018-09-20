@@ -1,6 +1,7 @@
 import { Session } from "./session";
 import { Configuration } from "./configuration";
 import { ClientConfiguration } from "./client_configuration";
+import { Account } from "./models/account";
 export declare class MySocialApp {
     private _client_configuration;
     private _appId;
@@ -11,6 +12,7 @@ export declare class MySocialApp {
     setClientConfiguration(clientConfiguration: ClientConfiguration): MySocialApp;
     readonly configuration: Configuration;
     createAccount(email: string, password: string, firstName: string): Promise<Session>;
+    createAccountFromBuilder(account: Account): Promise<Session>;
     connect(email: string, password: string): Promise<Session>;
     createSession(): Session;
     resetPassword(email: string): Promise<void>;
