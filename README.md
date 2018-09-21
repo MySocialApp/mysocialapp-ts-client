@@ -33,7 +33,7 @@ npm install mysocialapp-ts-client
 
 ## Getting Started
 
-[Read Javascript getting started](https://docs.mysocialapp.io/v1.0/docs/quick-start-javascript?ref=github)
+[Read Javascript getting started](https://docs.mysocialapp.io/v1.0/docs/typescript-quick-start?ref=github)
 
 ## API Documentation
 
