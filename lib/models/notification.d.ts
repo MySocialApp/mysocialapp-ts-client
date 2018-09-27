@@ -12,7 +12,7 @@ export declare class Notification extends Model {
     request_ack?: boolean;
     show_notification: boolean;
     force_notification_sound: boolean;
-    payload?: Map<string, any>;
+    payload?: {};
     readonly root_url: string;
     readonly id: string;
     readonly owner: User;

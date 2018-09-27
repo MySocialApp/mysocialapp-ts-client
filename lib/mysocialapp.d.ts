@@ -14,6 +14,7 @@ export declare class MySocialApp {
     createAccount(email: string, password: string, firstName: string): Promise<Session>;
     createAccountFromBuilder(account: Account): Promise<Session>;
     connect(email: string, password: string): Promise<Session>;
+    connectWithToken(token: string): Session;
     createSession(): Session;
     resetPassword(email: string): Promise<void>;
 }
