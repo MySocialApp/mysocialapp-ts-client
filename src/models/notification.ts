@@ -13,7 +13,7 @@ export class Notification extends Model{
     request_ack?: boolean;
     show_notification: boolean;
     force_notification_sound: boolean;
-    payload?: Map<string, any>;
+    payload?: {};
 
     get root_url(): string {
         if (this.url === undefined) {

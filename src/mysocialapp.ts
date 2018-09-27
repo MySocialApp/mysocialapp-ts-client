@@ -3,6 +3,7 @@ import {Configuration} from "./configuration";
 import {ClientConfiguration} from "./client_configuration";
 import {ClientService} from "./client_service";
 import {Account} from "./models/account";
+import {AuthenticationToken} from "./models/authentication_token";
 
 
 export class MySocialApp {
@@ -58,6 +59,12 @@ export class MySocialApp {
         let session = this.createSession();
         await session.connect(email, password);
         return session;
+    }
+
+    connectWithToken(token: string): Session {
+        let session = this.createSession();
+        session.auth = new AuthenticationToken({access_token: token});
+        return session
     }
 
     createSession(): Session {
