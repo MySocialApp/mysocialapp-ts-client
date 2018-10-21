@@ -71,8 +71,6 @@ npm run test
     OR
 cd /mnt && ./node_modules/.bin/jest test
 
-# concat file
-cd /mnt && npm run concat
 ```
 
 # Contributions
