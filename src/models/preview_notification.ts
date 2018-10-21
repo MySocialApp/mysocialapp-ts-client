@@ -11,8 +11,12 @@ export class PreviewNotification extends Model {
     id_str: string;
     total: number;
 
-    get id() {
+    get id(): any {
         return this.id_str;
+    }
+
+    set id(c: any) {
+        // nothing
     }
 
     async consume(): Promise<PreviewNotification> {

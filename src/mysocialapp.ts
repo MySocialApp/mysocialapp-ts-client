@@ -64,6 +64,7 @@ export class MySocialApp {
     connectWithToken(token: string): Session {
         let session = this.createSession();
         session.auth = new AuthenticationToken({access_token: token});
+        session.updateToken();
         return session
     }
 

@@ -6,7 +6,7 @@ export declare class PreviewNotification extends Model {
     type: string;
     id_str: string;
     total: number;
-    readonly id: string;
+    id: any;
     consume(): Promise<PreviewNotification>;
     last_notification: Notification;
 }

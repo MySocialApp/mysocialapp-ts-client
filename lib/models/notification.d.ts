@@ -14,7 +14,7 @@ export declare class Notification extends Model {
     force_notification_sound: boolean;
     payload?: {};
     readonly root_url: string;
-    readonly id: string;
+    id: any;
     readonly owner: User;
     readonly recipient_user_id: string;
     readonly recipient_device_id: string;

@@ -30,6 +30,7 @@ export declare class Session {
     private _websocket?;
     constructor(clientService: ClientService);
     connect(username: string, password: string): Promise<User>;
+    updateToken(): void;
     disconnect(): Promise<void>;
     readonly account: FluentAccount;
     readonly conversation: FluentConversation;

@@ -43,16 +43,20 @@ export class Session {
                     username: username,
                     password: password
                 }));
-                let conf = this.clientService.configuration;
-                conf.setAuth(this.auth);
-                this.clientService = new ClientService(conf, this.clientService.clientConfiguration);
-                this._account = undefined;
+                this.updateToken();
                 let account = await this.account.get(false);
                 resolve(account);
             } catch (err) {
                 reject(err);
             }
         }));
+    }
+
+    updateToken() {
+        let conf = this.clientService.configuration;
+        conf.setAuth(this.auth);
+        this.clientService = new ClientService(conf, this.clientService.clientConfiguration);
+        this._account = undefined;
     }
 
     async disconnect(): Promise<void> {

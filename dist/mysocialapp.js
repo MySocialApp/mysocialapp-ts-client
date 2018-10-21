@@ -2135,6 +2135,9 @@ class Notification extends model_1.Model {
         }
         return (new URL(this.url)).pathname.split("/")[2];
     }
+    set id(v) {
+        // nothing
+    }
     get owner() {
         return this.payload['owner'] !== undefined ? new user_1.User(this.payload['user']) : null;
     }
@@ -2224,6 +2227,9 @@ const notification_2 = require("../rest/notification");
 class PreviewNotification extends model_1.Model {
     get id() {
         return this.id_str;
+    }
+    set id(c) {
+        // nothing
     }
     consume() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2787,6 +2793,7 @@ class MySocialApp {
     connectWithToken(token) {
         let session = this.createSession();
         session.auth = new authentication_token_1.AuthenticationToken({ access_token: token });
+        session.updateToken();
         return session;
     }
     createSession() {
@@ -4429,10 +4436,7 @@ class Session {
                         username: username,
                         password: password
                     }));
-                    let conf = this.clientService.configuration;
-                    conf.setAuth(this.auth);
-                    this.clientService = new client_service_1.ClientService(conf, this.clientService.clientConfiguration);
-                    this._account = undefined;
+                    this.updateToken();
                     let account = yield this.account.get(false);
                     resolve(account);
                 }
@@ -4441,6 +4445,12 @@ class Session {
                 }
             })));
         });
+    }
+    updateToken() {
+        let conf = this.clientService.configuration;
+        conf.setAuth(this.auth);
+        this.clientService = new client_service_1.ClientService(conf, this.clientService.clientConfiguration);
+        this._account = undefined;
     }
     disconnect() {
         return __awaiter(this, void 0, void 0, function* () {

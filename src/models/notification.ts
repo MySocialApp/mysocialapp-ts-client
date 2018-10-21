@@ -2,6 +2,7 @@ import {User} from "./user";
 import {Model} from "./model";
 
 export class Notification extends Model{
+    private _owner?: User;
     config_id?: string;
     type?: string;
     created_date?: string;
@@ -23,15 +24,22 @@ export class Notification extends Model{
         return url.protocol + '//' + url.host;
     }
 
-    get id(): string {
+    get id(): any {
         if (this.url === undefined) {
             return undefined;
         }
         return (new URL(this.url)).pathname.split("/")[2];
     }
 
+    set id(v: any) {
+        // nothing
+    }
+
     get owner(): User {
-        return this.payload['owner'] !== undefined ? new User(this.payload['user']) : null;
+        if (this._owner === undefined) {
+            this._owner = this.payload['owner'] !== undefined ? new User(this.payload['owner'], this.conf) : null;
+        }
+        return this._owner;
     }
 
     get recipient_user_id(): string {
