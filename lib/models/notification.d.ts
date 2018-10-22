@@ -1,6 +1,7 @@
 import { User } from "./user";
 import { Model } from "./model";
 export declare class Notification extends Model {
+    private _owner?;
     config_id?: string;
     type?: string;
     created_date?: string;
