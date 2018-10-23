@@ -82,6 +82,11 @@ export class Account extends User {
         return this;
     }
 
+    setPresentation(value: string): Account {
+        this.presentation = value;
+        return this;
+    }
+
     setGender(value: Gender): Account {
         this.gender = value;
         return this;
