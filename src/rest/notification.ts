@@ -8,15 +8,18 @@ export class RestNotification extends Rest {
     }
 
     async listRead(page: number, size: number): Promise<PreviewNotification[]> {
-        return this.conf.getList(new PreviewNotification(), "/notification/read") as Promise<PreviewNotification[]>;
+        let path = "/notification/read?" + Rest.encodeQueryData({page:page, size:size});
+        return this.conf.getList(new PreviewNotification(), path) as Promise<PreviewNotification[]>;
     }
 
     async listUnread(page: number, size: number): Promise<PreviewNotification[]> {
-        return this.conf.getList(new PreviewNotification(), "/notification/unread") as Promise<PreviewNotification[]>;
+        let path = "/notification/unread?" + Rest.encodeQueryData({page:page, size:size});
+        return this.conf.getList(new PreviewNotification(), path) as Promise<PreviewNotification[]>;
     }
 
     async listUnreadAndConsume(page: number, size: number): Promise<PreviewNotification[]> {
-        return this.conf.getList(new PreviewNotification(), "/notification/unread/consume") as Promise<PreviewNotification[]>;
+        let path = "/notification/unread/consume?" + Rest.encodeQueryData({page:page, size:size});
+        return this.conf.getList(new PreviewNotification(), path) as Promise<PreviewNotification[]>;
     }
 
     async getUnreadAndConsume(notificationId: string): Promise<PreviewNotification> {

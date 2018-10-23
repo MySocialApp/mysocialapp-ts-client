@@ -13,6 +13,7 @@ export declare class User extends Model {
     private _flag;
     private _user_stat;
     private _displayed_photo;
+    private _profile_cover_photo;
     id_str?: string;
     type?: string;
     displayed_name: string;
@@ -31,6 +32,7 @@ export declare class User extends Model {
     id: any;
     displayed_photo: Photo;
     profile_photo: Photo;
+    profile_cover_photo: Photo;
     flag: Flag;
     living_location: Location;
     current_status: Status;

@@ -15,6 +15,7 @@ export class User extends Model {
     private _flag: Flag;
     private _user_stat: UserStat;
     private _displayed_photo: Photo;
+    private _profile_cover_photo: Photo;
     id_str?: string;
     type?: string;
 
@@ -66,6 +67,14 @@ export class User extends Model {
 
     get profile_photo(): Photo {
         return this._profile_photo;
+    }
+
+    set profile_cover_photo(p: Photo) {
+        this._profile_cover_photo = new Photo(p, this.conf);
+    }
+
+    get profile_cover_photo(): Photo {
+        return this._profile_cover_photo;
     }
 
     set flag(p: Flag) {

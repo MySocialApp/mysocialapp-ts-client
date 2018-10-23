@@ -2587,6 +2587,12 @@ class User extends model_1.Model {
     get profile_photo() {
         return this._profile_photo;
     }
+    set profile_cover_photo(p) {
+        this._profile_cover_photo = new photo_1.Photo(p, this.conf);
+    }
+    get profile_cover_photo() {
+        return this._profile_cover_photo;
+    }
     set flag(p) {
         this._flag = new flag_1.Flag(p, this.conf);
     }
@@ -3597,17 +3603,20 @@ class RestNotification extends rest_1.Rest {
     }
     listRead(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.getList(new preview_notification_1.PreviewNotification(), "/notification/read");
+            let path = "/notification/read?" + rest_1.Rest.encodeQueryData({ page: page, size: size });
+            return this.conf.getList(new preview_notification_1.PreviewNotification(), path);
         });
     }
     listUnread(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.getList(new preview_notification_1.PreviewNotification(), "/notification/unread");
+            let path = "/notification/unread?" + rest_1.Rest.encodeQueryData({ page: page, size: size });
+            return this.conf.getList(new preview_notification_1.PreviewNotification(), path);
         });
     }
     listUnreadAndConsume(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.getList(new preview_notification_1.PreviewNotification(), "/notification/unread/consume");
+            let path = "/notification/unread/consume?" + rest_1.Rest.encodeQueryData({ page: page, size: size });
+            return this.conf.getList(new preview_notification_1.PreviewNotification(), path);
         });
     }
     getUnreadAndConsume(notificationId) {
