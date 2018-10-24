@@ -8,6 +8,9 @@ import {Model} from "./model";
 import {Gender} from "./gender";
 import {Feed} from "./feed";
 import {RestUserWall} from "../rest/user_wall";
+import {FeedPost} from "./feed_post";
+import {RestUserWallMessage} from "../rest/user_wall_message";
+import {TextWallMessage} from "./text_wall_message";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -135,5 +138,9 @@ export class User extends Model {
 
     async listNewsFeed(page: number, size: number): Promise<Feed[]> {
         return new RestUserWall(this.conf).list(this.id, page, size);
+    }
+
+    async createFeedPost(post: FeedPost): Promise<Feed> {
+        return new RestUserWallMessage(this.conf).create(this.id, post.textWallMessage);
     }
 }
