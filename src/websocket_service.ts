@@ -141,6 +141,14 @@ export class WebsocketService {
         this.onMessageByType(callback, notificationType.UserMentionTag);
     }
 
+    onMentionComment(callback) {
+        this.onMessageByType((object) =>{
+            if(object.type == 'Comment') {
+                callback(object)
+            }
+        }, notificationType.UserMentionTag);
+    }
+
     onEvent(callback) {
         this.onMessageByType(callback, notificationType.NewEvent);
     }
