@@ -18,7 +18,7 @@ describe("addMessage account", () => {
             let like = await createdPost.object.addLike();
             expect(like.id != "").toBeTruthy();
 
-            let comment = await createdPost.object.addComment((new CommentPost()).setMessage("hello world").set);
+            let comment = await createdPost.object.addComment((new CommentPost()).setMessage("hello world"));
             expect(comment.message == "hello world");
             await sleep(200);
             let likes = await createdPost.getLikes();

@@ -28,5 +28,19 @@ export class RestFeedComment extends Rest {
         return this.conf.postMultipart(new Comment(), Rest.params("/feed/{id}/comment/photo", {id: id}), f) as Promise<Comment>;
     }
 
+    async update(feedId: string, commentId: string, comment: CommentPost): Promise<Comment> {
+        return this.conf.put(new Comment(), Rest.params("feed/{id}/comment/{commentId}", {
+            id: feedId,
+            commentId: commentId
+        }), comment) as Promise<Comment>;
+    }
+
+    async delete(feedId: string, commentId: string): Promise<void> {
+        return this.conf.delete(Rest.params("feed/{id}/comment/{commentId}", {
+            id: feedId,
+            commentId: commentId
+        })) as Promise<void>;
+    }
+
 
 }
