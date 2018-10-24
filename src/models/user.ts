@@ -10,8 +10,6 @@ import {Feed} from "./feed";
 import {RestUserWall} from "../rest/user_wall";
 import {FeedPost} from "./feed_post";
 import {RestUserWallMessage} from "../rest/user_wall_message";
-import {TextWallMessage} from "./text_wall_message";
-import {RestFriend} from "../rest/friend";
 import {RestUserFriend} from "../rest/user_friend";
 
 export class User extends Model {
@@ -152,5 +150,9 @@ export class User extends Model {
 
     async listFriends(page: number, size: number): Promise<User[]> {
         return new RestUserFriend(this.conf).list(this.id, page, size);
+    }
+
+    async requestAsFriend(): Promise<User> {
+        return new RestUserFriend(this.conf).create(this.id);
     }
 }
