@@ -11,6 +11,8 @@ import {RestUserWall} from "../rest/user_wall";
 import {FeedPost} from "./feed_post";
 import {RestUserWallMessage} from "../rest/user_wall_message";
 import {TextWallMessage} from "./text_wall_message";
+import {RestFriend} from "../rest/friend";
+import {RestUserFriend} from "../rest/user_friend";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -142,5 +144,9 @@ export class User extends Model {
 
     async createFeedPost(post: FeedPost): Promise<Feed> {
         return new RestUserWallMessage(this.conf).create(this.id, post.textWallMessage);
+    }
+
+    async removeFriend(): Promise<void> {
+        return new RestUserFriend(this.conf).delete(this.id);
     }
 }
