@@ -149,4 +149,8 @@ export class User extends Model {
     async removeFriend(): Promise<void> {
         return new RestUserFriend(this.conf).delete(this.id);
     }
+
+    async listFriends(page: number, size: number): Promise<User[]> {
+        return new RestUserFriend(this.conf).list(this.id, page, size);
+    }
 }
