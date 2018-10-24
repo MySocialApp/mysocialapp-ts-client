@@ -159,4 +159,8 @@ export class User extends Model {
     async cancelFriendRequest(): Promise<void> {
         return new RestUserFriend(this.conf).delete(this.id);
     }
+
+    async acceptFriendRequest(): Promise<User> {
+        return new RestUserFriend(this.conf).create(this.id);
+    }
 }
