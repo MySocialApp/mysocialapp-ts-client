@@ -77,11 +77,11 @@ export class WebsocketService {
         }
     }
 
-    onMessage(callback) {
+    onNotification(callback) {
         this.listeners.push(callback);
     }
 
-    onMessageByType(callback, type) {
+    private onMessageByType(callback, type) {
         let list = this.listenersByType.get(type);
         if (list === undefined) {
             list = [];

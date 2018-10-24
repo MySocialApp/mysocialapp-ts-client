@@ -13,7 +13,7 @@ describe("addMessage account", () => {
             const session2 = await createAccountAndGetSession();
             const account2 = await session2.account.get();
 
-            session2.websocket.onMessage((notif: Notification) => {
+            session2.websocket.onNotification((notif: Notification) => {
                 expect(notif.created_date != "").toBeTruthy();
             });
 
