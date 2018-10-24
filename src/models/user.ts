@@ -6,6 +6,8 @@ import {Location} from "./location";
 import {Flag} from "./flag";
 import {Model} from "./model";
 import {Gender} from "./gender";
+import {Feed} from "./feed";
+import {RestUserWall} from "../rest/user_wall";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -129,5 +131,9 @@ export class User extends Model {
             }
         }
         return false;
+    }
+
+    async listNewsFeed(page: number, size: number): Promise<Feed[]> {
+        return new RestUserWall(this.conf).list(this.id, page, size);
     }
 }
