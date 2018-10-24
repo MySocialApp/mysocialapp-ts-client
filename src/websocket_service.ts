@@ -1,6 +1,10 @@
 import {Session} from "./session";
 import {Notification} from "./models/notification";
 import {client as WebSocketClient, connection} from 'websocket';
+import {Feed} from "./models/feed";
+import {ConversationMessage} from "./models/conversation_message";
+import {Event} from "./models/event";
+import {User} from "./models/user";
 
 export enum notificationType {
     Feed = "FEED",
@@ -53,7 +57,34 @@ export class WebsocketService {
                     let listenerForType = this.listenersByType.get(notif.type);
                     if (listenerForType !== undefined) {
                         for (let l of listenerForType) {
-                            l(notif);
+                            switch (notif.type) {
+                                case notificationType.Feed:
+                                    l(new Feed(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.UserMentionTag:
+                                    l(new Feed(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.ConversationMessage:
+                                    l(new ConversationMessage(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.Like:
+                                    l(new Feed(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.NewEvent:
+                                    l(new Event(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.Comment:
+                                    l(new Feed(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.Friend:
+                                    l(new User(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                case notificationType.FriendRequest:
+                                    l(new User(notif.payload, this.session.clientService.configuration));
+                                    break;
+                                default:
+                                    console.info("unknown notification type", notif);
+                            }
                         }
                     }
                 }
