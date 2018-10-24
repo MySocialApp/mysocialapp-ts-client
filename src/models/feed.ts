@@ -8,6 +8,7 @@ import {Like} from "./like";
 import {CommentPost} from "./comment_post";
 import {Comment} from "./comment";
 import moment = require('moment');
+import {TextWallMessage} from "./text_wall_message";
 
 export enum ActionType {
     Publish = 'PUBLISH',
@@ -99,5 +100,24 @@ export class Feed extends Model implements Wallable {
 
     async delete(): Promise<void> {
         return (new RestFeed(this.conf)).delete(this.object.id);
+    }
+
+    async save(): Promise<Feed> {
+        let wm = new TextWallMessage().setMessage(this.object.displayed_name).setVisibility(this.access_control);
+        return (new RestFeed(this.conf)).updateMessage(this.object.id, wm)
+    }
+
+    setBodyMessage(message: string): Feed {
+        if (this.object && this.object.bodyMessage) {
+            this.object.bodyMessage = message;
+        }
+        return this;
+    }
+
+    setAccessControl(ac: AccessControl): Feed {
+        if (this.object) {
+            this.access_control = ac;
+        }
+        return this;
     }
 }

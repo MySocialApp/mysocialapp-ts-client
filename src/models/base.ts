@@ -29,6 +29,10 @@ export class Base extends Model implements BaseImpl {
         return this.displayed_name;
     }
 
+    set bodyMessage(value: string) {
+        return this.displayed_name = value;
+    }
+
     set owner(o: User) {
         this._owner = new User(o);
     }
