@@ -14,32 +14,48 @@ export class SearchResultTypes extends Model {
         this._users = new UserSearchResult(o);
     }
 
-    get user(): UserSearchResult {
+    get USER(): UserSearchResult {
         return this._users;
+    }
+
+    get user(): UserSearchResult {
+        return this.USER;
     }
 
     set FEED(o: FeedsSearchResult) {
         this._feeds = new FeedsSearchResult(o);
     }
 
-    get feed(): FeedsSearchResult {
+    get FEED(): FeedsSearchResult {
         return this._feeds;
+    }
+
+    get feed(): FeedsSearchResult {
+        return this.FEED;
     }
 
     set GROUP(o: GroupSearchResult) {
         this._groups = new GroupSearchResult(o);
     }
 
-    get group(): GroupSearchResult {
+    get GROUP(): GroupSearchResult {
         return this._groups;
+    }
+
+    get group(): GroupSearchResult {
+        return this.GROUP;
     }
 
     set EVENT(o: EventSearchResult) {
         this._events = new EventSearchResult(o);
     }
 
-    get event(): EventSearchResult {
+    get EVENT(): EventSearchResult {
         return this._events;
+    }
+
+    get event(): EventSearchResult {
+        return this.EVENT;
     }
 }
 
