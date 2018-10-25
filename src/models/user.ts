@@ -13,6 +13,10 @@ import {RestUserWallMessage} from "../rest/user_wall_message";
 import {RestUserFriend} from "../rest/user_friend";
 import {PhotoAlbum} from "./photo_album";
 import {RestUserAlbum} from "../rest/user_album";
+import {ConversationMessagePost} from "./conversation_message_post";
+import {ConversationMessage} from "./conversation_message";
+import {RestConversation} from "../rest/conversation";
+import {Conversation} from "./conversation";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -172,5 +176,11 @@ export class User extends Model {
 
     async listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]> {
         return new RestUserAlbum(this.conf).list(this.id, page, size);
+    }
+
+    async sendPrivateMessage(message: ConversationMessagePost): Promise<ConversationMessage> {
+        let conversation = new Conversation().addMember(this);
+        conversation = await new RestConversation(this.conf).create(conversation);
+        return conversation.sendMessage(message);
     }
 }
