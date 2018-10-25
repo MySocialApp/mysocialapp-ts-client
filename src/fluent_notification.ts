@@ -12,4 +12,9 @@ export class FluentNotification extends FluentAbstract {
     async listAndConsume(page: number, size: number = 10): Promise<PreviewNotification[]> {
         return this.session.clientService.notification.listUnreadAndConsume(page, size);
     }
+
+    async getTotalUnread(): Promise<number> {
+        let events = await this.session.account.getEvents();
+        return events.notification.total_unreads ? events.notification.total_unreads : 0;
+    }
 }

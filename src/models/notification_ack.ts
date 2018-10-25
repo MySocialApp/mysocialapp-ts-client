@@ -19,4 +19,9 @@ export class NotificationAck extends Model {
     set location(a: BaseLocation) {
         this._location = new BaseLocation(a);
     }
+
+    setAppPlatform(v: AppPlatform): NotificationAck {
+        this.app_platform = v;
+        return this;
+    }
 }

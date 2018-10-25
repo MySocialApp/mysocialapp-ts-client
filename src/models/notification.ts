@@ -1,7 +1,9 @@
 import {User} from "./user";
 import {Model} from "./model";
+import {NotificationAck} from "./notification_ack";
+import {RestNotification} from "../rest/notification";
 
-export class Notification extends Model{
+export class Notification extends Model {
     private _owner?: User;
     config_id?: string;
     type?: string;
@@ -48,5 +50,9 @@ export class Notification extends Model{
 
     get recipient_device_id(): string {
         return this.payload['recipient_device_id'];
+    }
+
+    async ack(n: NotificationAck): Promise<NotificationAck> {
+        return new RestNotification(this.conf).ack(n);
     }
 }
