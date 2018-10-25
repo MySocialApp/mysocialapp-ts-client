@@ -30,7 +30,7 @@ export class Base extends Model implements BaseImpl {
     }
 
     set bodyMessage(value: string) {
-        return this.displayed_name = value;
+        this.displayed_name = value;
     }
 
     set owner(o: User) {

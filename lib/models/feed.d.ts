@@ -32,4 +32,7 @@ export declare class Feed extends Model implements Wallable {
     abuse(): Promise<void>;
     ignore(): Promise<void>;
     delete(): Promise<void>;
+    save(): Promise<Feed>;
+    setBodyMessage(message: string): Feed;
+    setAccessControl(ac: AccessControl): Feed;
 }

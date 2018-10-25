@@ -20,6 +20,7 @@ export declare class Account extends User {
     setFirstName(value: string): Account;
     setLastName(value: string): Account;
     setExternalId(value: string): Account;
+    setPresentation(value: string): Account;
     setGender(value: Gender): Account;
     setDateOfBirth(date: moment.Moment): Account;
 }

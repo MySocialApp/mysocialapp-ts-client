@@ -5,6 +5,9 @@ import { Location } from "./location";
 import { Flag } from "./flag";
 import { Model } from "./model";
 import { Gender } from "./gender";
+import { Feed } from "./feed";
+import { FeedPost } from "./feed_post";
+import { PhotoAlbum } from "./photo_album";
 export declare class User extends Model {
     private _profile_photo?;
     private _custom_fields?;
@@ -44,4 +47,13 @@ export declare class User extends Model {
      * @returns {boolean}
      */
     setCustomFieldValueById(id: string, value: any): boolean;
+    listNewsFeed(page: number, size: number): Promise<Feed[]>;
+    createFeedPost(post: FeedPost): Promise<Feed>;
+    removeFriend(): Promise<void>;
+    listFriends(page: number, size: number): Promise<User[]>;
+    requestAsFriend(): Promise<User>;
+    cancelFriendRequest(): Promise<void>;
+    acceptFriendRequest(): Promise<User>;
+    refuseFriendRequest(): Promise<void>;
+    listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]>;
 }

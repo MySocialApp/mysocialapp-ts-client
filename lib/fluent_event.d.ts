@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { FluentAbstract } from "./fluent_abstract";
 import { Event } from "./models/event";
+import { CustomField } from "./models/custom_field";
 export declare class FluentEvent extends FluentAbstract {
     list(page: number, size?: number, options?: {}): Promise<Event[]>;
     stream(): AsyncIterableIterator<Event>;
@@ -14,4 +15,5 @@ export declare class FluentEvent extends FluentAbstract {
      * @returns {Promise<Event[]>}
      */
     search(search: {}, page: number, size?: number): Promise<Event[]>;
+    getAvailableCustomFields(): Promise<CustomField[]>;
 }

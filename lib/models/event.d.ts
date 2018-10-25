@@ -6,9 +6,12 @@ import { Location } from "./location";
 import { TextWallMessage } from "./text_wall_message";
 import { Feed } from "./feed";
 import { CustomField } from "./custom_field";
+import { FileData } from "./file";
 import moment = require("moment");
+import { FeedPost } from "./feed_post";
 export declare class Event extends BaseWall {
     private _custom_fields;
+    private _profile_photo?;
     private _profile_cover_photo?;
     private _members?;
     private _location?;
@@ -28,15 +31,23 @@ export declare class Event extends BaseWall {
     available: boolean;
     remaining_seconds_before_start?: number;
     getJsonParameters(): {};
+    listNewsFeed(page: number, size: number): Promise<Feed[]>;
+    createFeedPost(feedPost: FeedPost): Promise<Feed>;
     join(): Promise<EventMember>;
     leave(): Promise<void>;
+    confirmParticipation(): Promise<void>;
     /**
      * must be creator of the event
      */
     cancel(): Promise<void>;
     update(): Promise<Event>;
     addMessage(message: TextWallMessage): Promise<Feed>;
+    profile_photo: Photo;
+    readonly image: Photo;
+    updateImage(file: FileData): Promise<Photo>;
     profile_cover_photo: Photo;
+    readonly cover_image: Photo;
+    updateCoverImage(file: FileData): Promise<Photo>;
     location: Location;
     members: EventMember[];
     setStartDate(d: moment.Moment): Event;

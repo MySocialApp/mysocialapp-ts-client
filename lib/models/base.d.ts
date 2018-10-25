@@ -15,7 +15,7 @@ export declare class Base extends Model implements BaseImpl {
     body_image_url?: string;
     body_image_text?: string;
     id: any;
-    readonly bodyMessage: string;
+    bodyMessage: string;
     owner: User;
     displayed_photo: Photo;
     readonly getCreatedDate: moment.Moment;

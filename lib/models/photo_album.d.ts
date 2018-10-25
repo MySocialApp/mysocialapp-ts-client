@@ -4,4 +4,5 @@ export declare class PhotoAlbum extends Model {
     private _photos;
     name?: string;
     photos: Photo[];
+    setName(value: string): PhotoAlbum;
 }

@@ -9,4 +9,6 @@ export declare class Comment extends Base implements Taggable {
     parent: Base;
     photo: Photo;
     tag_entities: TagEntities;
+    save(): Promise<Comment>;
+    delete(): Promise<void>;
 }
