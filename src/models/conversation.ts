@@ -68,4 +68,14 @@ export class Conversation extends Base {
     async update(): Promise<Conversation> {
         return (new RestConversation(this.conf)).update(this.id, this);
     }
+
+    async kickMember(userId: string): Promise<Conversation> {
+        for (let i = 0; i < this.members.length; i++) {
+            if(this.members[i].id == userId) {
+                this.members.splice(i, 1);
+                break;
+            }
+        }
+        return this.update();
+    }
 }
