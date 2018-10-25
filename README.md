@@ -2,8 +2,6 @@
 [![Build status](https://img.shields.io/travis/MySocialApp/mysocialapp-ts-client/master.svg?style=flat-square)](https://travis-ci.org/MySocialApp/mysocialapp-ts-client)
 [![npm version](https://img.shields.io/npm/v/mysocialapp-ts-client.svg?style=flat-square)](https://www.npmjs.com/package/mysocialapp-ts-client)
 
-SDK still in beta phase. Stable version will be out current October.
-
 The Javascript library for interacting with the [MySocialApp](https://mysocialapp.io?ref=github) API.
 
 In order to use this library, you need to have a free account on [https://go.mysocialapp.io](https://go.mysocialapp.io?ref=github). After registering, you will need the application credentials for your app.
