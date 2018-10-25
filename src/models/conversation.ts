@@ -78,4 +78,8 @@ export class Conversation extends Base {
         }
         return this.update();
     }
+
+    async leave(): Promise<void> {
+        return new RestConversation(this.conf).delete(this.id);
+    }
 }
