@@ -9,11 +9,14 @@ import {TextWallMessage} from "./text_wall_message";
 import {Feed} from "./feed";
 import {RestEventWall} from "../rest/event_wall";
 import {CustomField} from "./custom_field";
-import moment = require("moment");
 import {listToParameters} from "./utils";
+import {FileData} from "./file";
+import moment = require("moment");
+import {FeedPost} from "./feed_post";
 
 export class Event extends BaseWall {
     private _custom_fields: CustomField[];
+    private _profile_photo?: Photo;
     private _profile_cover_photo?: Photo;
     private _members?: EventMember[];
     private _location?: Location;
@@ -48,12 +51,24 @@ export class Event extends BaseWall {
         };
     }
 
+    async listNewsFeed(page: number, size: number): Promise<Feed[]> {
+        return new RestEventWall(this.conf).list(this.id, page, size);
+    }
+
+    async createFeedPost(feedPost: FeedPost): Promise<Feed> {
+        return new RestEventWall(this.conf).createMessage(this.id, feedPost.textWallMessage);
+    }
+
     async join(): Promise<EventMember> {
         return (new RestEvent(this.conf)).join(this.id);
     }
 
     async leave(): Promise<void> {
         return (new RestEvent(this.conf)).leave(this.id);
+    }
+
+    async confirmParticipation(): Promise<void> {
+        this.join();
     }
 
     /**
@@ -71,12 +86,36 @@ export class Event extends BaseWall {
         return (new RestEventWall(this.conf)).createMessage(this.id, message);
     }
 
+    get profile_photo(): Photo {
+        return this._profile_photo;
+    }
+
+    set profile_photo(p: Photo) {
+        this._profile_photo = new Photo(p, this.conf);
+    }
+
+    get image(): Photo {
+        return this.profile_photo;
+    }
+
+    updateImage(file: FileData): Promise<Photo> {
+        return new RestEvent(this.conf).updateProfilePhoto(this.id, file);
+    }
+
     get profile_cover_photo(): Photo {
         return this._profile_cover_photo;
     }
 
     set profile_cover_photo(p: Photo) {
         this._profile_cover_photo = new Photo(p, this.conf);
+    }
+
+    get cover_image(): Photo {
+        return this.profile_cover_photo;
+    }
+
+    updateCoverImage(file: FileData): Promise<Photo> {
+        return new RestEvent(this.conf).updateProfileCoverPhoto(this.id, file);
     }
 
     get location(): Location {

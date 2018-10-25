@@ -1,5 +1,6 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Event} from "./models/event";
+import {CustomField} from "./models/custom_field";
 
 export class FluentEvent extends FluentAbstract {
     async list(page: number, size: number = 10, options: {} = {}): Promise<Event[]> {
@@ -36,5 +37,9 @@ export class FluentEvent extends FluentAbstract {
      */
     async search(search: {}, page: number, size: number = 10): Promise<Event[]> {
         return this.session.clientService.event.list(page, undefined, size);
+    }
+
+    async getAvailableCustomFields(): Promise<CustomField[]> {
+        return this.session.clientService.event.getCustomFields();
     }
 }

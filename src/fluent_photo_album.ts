@@ -13,4 +13,8 @@ export class FluentPhotoAlbum extends FluentAbstract {
     async delete(id: string): Promise<void> {
         return this.session.clientService.photoAlbum.delete(id);
     }
+
+    async create(album: PhotoAlbum): Promise<PhotoAlbum> {
+        return this.session.clientService.photoAlbum.create(album);
+    }
 }

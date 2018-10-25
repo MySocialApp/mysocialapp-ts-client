@@ -16,4 +16,9 @@ export class PhotoAlbum extends Model {
     get photos(): Photo[] {
         return this._photos;
     }
+
+    setName(value: string): PhotoAlbum {
+        this.name = value;
+        return this;
+    }
 }

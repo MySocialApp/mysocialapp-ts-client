@@ -11,6 +11,8 @@ import {RestUserWall} from "../rest/user_wall";
 import {FeedPost} from "./feed_post";
 import {RestUserWallMessage} from "../rest/user_wall_message";
 import {RestUserFriend} from "../rest/user_friend";
+import {PhotoAlbum} from "./photo_album";
+import {RestUserAlbum} from "../rest/user_album";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -162,5 +164,13 @@ export class User extends Model {
 
     async acceptFriendRequest(): Promise<User> {
         return new RestUserFriend(this.conf).create(this.id);
+    }
+
+    async refuseFriendRequest(): Promise<void> {
+        return new RestUserFriend(this.conf).delete(this.id);
+    }
+
+    async listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]> {
+        return new RestUserAlbum(this.conf).list(this.id, page, size);
     }
 }
