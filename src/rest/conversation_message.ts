@@ -1,8 +1,6 @@
 import {Rest} from "./rest";
 import {ConversationMessage} from "../models/conversation_message";
 import {ConversationMessagePost} from "../models/conversation_message_post";
-import {FileData} from "../models/file";
-import * as fd from 'form-data';
 import {GenericFormData} from "../models/generic_form_data";
 
 export class RestConversationMessage extends Rest {
@@ -19,6 +17,7 @@ export class RestConversationMessage extends Rest {
         return this.conf.post(new ConversationMessage(), path, message) as Promise<ConversationMessage>;
     }
 
+    // TODO add unit test
     async postFile(id: string, message: ConversationMessagePost): Promise<ConversationMessage> {
         let fd = new GenericFormData();
         fd.set("file", message.image.blob, 'image/png', "image.png");

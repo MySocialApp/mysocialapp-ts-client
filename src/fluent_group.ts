@@ -1,5 +1,6 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Group} from "./models/group";
+import {CustomField} from "./models/custom_field";
 
 export class FluentGroup extends FluentAbstract {
 
@@ -38,5 +39,9 @@ export class FluentGroup extends FluentAbstract {
      */
     async search(search: {}, page: number, size: number = 10): Promise<Group[]> {
         return this.session.clientService.group.list(page, undefined, size);
+    }
+
+    async getAvailableCustomFields(): Promise<CustomField[]> {
+        return this.session.clientService.group.getCustomFields();
     }
 }

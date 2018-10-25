@@ -9,6 +9,9 @@ import {TextWallMessage} from "./text_wall_message";
 import {RestGroup} from "../rest/group";
 import {RestGroupWall} from "../rest/group_wall";
 import {listToParameters} from "./utils";
+import {FileData} from "./file";
+import {RestEventWall} from "../rest/event_wall";
+import {FeedPost} from "./feed_post";
 
 export class Group extends BaseWall {
     private _location?: Location;
@@ -35,6 +38,14 @@ export class Group extends BaseWall {
             location: this.location ? this.location.getJsonParameters() : null,
             custom_fields: this._custom_fields ? listToParameters(this._custom_fields) : null,
         };
+    }
+
+    async listNewsFeed(page: number, size: number): Promise<Feed[]> {
+        return new RestGroupWall(this.conf).list(this.id, page, size);
+    }
+
+    async createFeedPost(feedPost: FeedPost): Promise<Feed> {
+        return new RestGroupWall(this.conf).createMessage(this.id, feedPost.textWallMessage);
     }
 
     async join(): Promise<GroupMember> {
@@ -103,12 +114,20 @@ export class Group extends BaseWall {
         this._members = list;
     }
 
+    get cover_image(): Photo {
+        return this.profile_cover_photo;
+    }
+
     get profile_cover_photo(): Photo {
         return this._profile_cover_photo;
     }
 
     set profile_cover_photo(p: Photo) {
         this._profile_cover_photo = new Photo(p, this.conf);
+    }
+
+    get image(): Photo {
+        return this.profile_photo;
     }
 
     get profile_photo(): Photo {
@@ -126,6 +145,14 @@ export class Group extends BaseWall {
 
     set location(l: Location) {
         this._location = new Location(l);
+    }
+
+    updateImage(file: FileData): Promise<Photo> {
+        return new RestGroup(this.conf).updateProfilePhoto(this.id, file);
+    }
+
+    updateCoverImage(file: FileData): Promise<Photo> {
+        return new RestGroup(this.conf).updateProfileCoverPhoto(this.id, file);
     }
 
 }

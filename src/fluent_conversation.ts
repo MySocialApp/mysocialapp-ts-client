@@ -13,4 +13,9 @@ export class FluentConversation extends FluentAbstract {
     async create(conversation: Conversation): Promise<Conversation> {
         return this.session.clientService.conversation.create(conversation);
     }
+
+    async getTotalUnread(): Promise<number> {
+        let event = await this.session.account.getEvents();
+        return event.conversation.total_unreads ? event.conversation.total_unreads : 0;
+    }
 }
