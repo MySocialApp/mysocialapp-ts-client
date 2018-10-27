@@ -15,4 +15,6 @@ export declare class Conversation extends Base {
     messages: ConversationMessages;
     sendMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
     update(): Promise<Conversation>;
+    kickMember(userId: string): Promise<Conversation>;
+    leave(): Promise<void>;
 }

@@ -154,7 +154,7 @@ class ClientService {
 }
 exports.ClientService = ClientService;
 
-},{"./rest/account":63,"./rest/conversation":64,"./rest/conversation_message":65,"./rest/event":67,"./rest/event_wall":68,"./rest/feed":69,"./rest/feed_comment":70,"./rest/feed_like":71,"./rest/friend":72,"./rest/group":73,"./rest/group_wall":74,"./rest/login":75,"./rest/logout":76,"./rest/notification":77,"./rest/photo":78,"./rest/photo_album":79,"./rest/photo_comment":80,"./rest/photo_like":81,"./rest/register":82,"./rest/search":84,"./rest/shadow_entity_feed":85,"./rest/shadow_entity_feed_message":86,"./rest/shadow_entity_photo":87,"./rest/shadow_entity_profile_cover_photo":88,"./rest/shadow_entity_profile_photo":89,"./rest/status":90,"./rest/status_comment":91,"./rest/status_like":92,"./rest/user":93,"./rest/user_event":95,"./rest/user_external":96,"./rest/user_friend":97,"./rest/user_group":98,"./rest/user_wall":99,"./rest/user_wall_message":100}],2:[function(require,module,exports){
+},{"./rest/account":83,"./rest/conversation":84,"./rest/conversation_message":85,"./rest/event":87,"./rest/event_wall":88,"./rest/feed":89,"./rest/feed_comment":90,"./rest/feed_like":91,"./rest/friend":92,"./rest/group":93,"./rest/group_wall":94,"./rest/login":95,"./rest/logout":96,"./rest/notification":97,"./rest/photo":98,"./rest/photo_album":99,"./rest/photo_comment":100,"./rest/photo_like":101,"./rest/register":102,"./rest/search":104,"./rest/shadow_entity_feed":105,"./rest/shadow_entity_feed_message":106,"./rest/shadow_entity_photo":107,"./rest/shadow_entity_profile_cover_photo":108,"./rest/shadow_entity_profile_photo":109,"./rest/status":110,"./rest/status_comment":111,"./rest/status_like":112,"./rest/user":113,"./rest/user_event":115,"./rest/user_external":116,"./rest/user_friend":117,"./rest/user_group":118,"./rest/user_wall":119,"./rest/user_wall_message":120}],2:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -287,7 +287,7 @@ class Configuration {
 }
 exports.Configuration = Configuration;
 
-},{"./models/user_settings":60,"./rest/error":66,"axios":103}],3:[function(require,module,exports){
+},{"./models/user_settings":79,"./rest/error":86,"axios":123}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // format ex : 2018-08-15T16:48:06Z
@@ -363,7 +363,7 @@ class FluentAccount extends fluent_abstract_1.FluentAbstract {
 }
 exports.FluentAccount = FluentAccount;
 
-},{"./fluent_abstract":4,"./models/account_events":17,"./models/login_credentials":42,"./models/reset_identifier":49}],6:[function(require,module,exports){
+},{"./fluent_abstract":4,"./models/account_events":19,"./models/login_credentials":56,"./models/reset_identifier":63}],6:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -389,6 +389,12 @@ class FluentConversation extends fluent_abstract_1.FluentAbstract {
     create(conversation) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.session.clientService.conversation.create(conversation);
+        });
+    }
+    getTotalUnread() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let event = yield this.session.account.getEvents();
+            return event.conversation.total_unreads ? event.conversation.total_unreads : 0;
         });
     }
 }
@@ -478,10 +484,15 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fluent_abstract_1 = require("./fluent_abstract");
+const event_options_1 = require("./models/event_options");
 class FluentEvent extends fluent_abstract_1.FluentAbstract {
-    list(page, size = 10, options = {}) {
+    list(page, size = 10, search) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.session.clientService.event.list(page, undefined, size, undefined, options);
+            if (!search) {
+                search = new event_options_1.EventOptions();
+            }
+            search.setPage(page).setSize(size);
+            return this.session.clientService.event.listFromParams(search.toQueryParams());
         });
     }
     stream() {
@@ -528,7 +539,7 @@ class FluentEvent extends fluent_abstract_1.FluentAbstract {
 }
 exports.FluentEvent = FluentEvent;
 
-},{"./fluent_abstract":4}],9:[function(require,module,exports){
+},{"./fluent_abstract":4,"./models/event_options":39}],9:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -627,6 +638,11 @@ class FluentGroup extends fluent_abstract_1.FluentAbstract {
             return this.session.clientService.group.list(page, undefined, size);
         });
     }
+    getAvailableCustomFields() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.session.clientService.group.getCustomFields();
+        });
+    }
 }
 exports.FluentGroup = FluentGroup;
 
@@ -721,9 +737,20 @@ class FluentNotification extends fluent_abstract_1.FluentAbstract {
             return this.session.clientService.notification.listUnread(page, size);
         });
     }
+    listRead(page, size = 10) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.session.clientService.notification.listRead(page, size);
+        });
+    }
     listAndConsume(page, size = 10) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.session.clientService.notification.listUnreadAndConsume(page, size);
+        });
+    }
+    getTotalUnread() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let events = yield this.session.account.getEvents();
+            return events.notification.total_unreads ? events.notification.total_unreads : 0;
         });
     }
 }
@@ -767,7 +794,7 @@ class FluentPhoto extends fluent_abstract_1.FluentAbstract {
 }
 exports.FluentPhoto = FluentPhoto;
 
-},{"./fluent_abstract":4,"./models/photo":46}],14:[function(require,module,exports){
+},{"./fluent_abstract":4,"./models/photo":60}],14:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -846,6 +873,143 @@ class FluentUser extends fluent_abstract_1.FluentAbstract {
 exports.FluentUser = FluentUser;
 
 },{"./fluent_abstract":4}],16:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const access_control_1 = require("./models/access_control");
+const account_1 = require("./models/account");
+const account_events_1 = require("./models/account_events");
+const activity_type_1 = require("./models/activity_type");
+const app_platform_1 = require("./models/app_platform");
+const authentication_token_1 = require("./models/authentication_token");
+const base_1 = require("./models/base");
+const base_location_1 = require("./models/base_location");
+const base_wall_1 = require("./models/base_wall");
+const comment_1 = require("./models/comment");
+const comment_blob_1 = require("./models/comment_blob");
+const comment_post_1 = require("./models/comment_post");
+const conversation_1 = require("./models/conversation");
+const conversation_message_1 = require("./models/conversation_message");
+const conversation_message_post_1 = require("./models/conversation_message_post");
+const conversation_messages_1 = require("./models/conversation_messages");
+const custom_field_1 = require("./models/custom_field");
+const entity_type_1 = require("./models/entity_type");
+const event_member_1 = require("./models/event_member");
+const event_member_access_control_1 = require("./models/event_member_access_control");
+const event_options_1 = require("./models/event_options");
+const event_status_1 = require("./models/event_status");
+const feed_1 = require("./models/feed");
+const feed_post_1 = require("./models/feed_post");
+const file_1 = require("./models/file");
+const flag_1 = require("./models/flag");
+const friend_requests_1 = require("./models/friend_requests");
+const gender_1 = require("./models/gender");
+const group_1 = require("./models/group");
+const group_member_1 = require("./models/group_member");
+const group_member_access_control_1 = require("./models/group_member_access_control");
+const group_status_1 = require("./models/group_status");
+const hash_tag_1 = require("./models/hash_tag");
+const like_1 = require("./models/like");
+const like_blob_1 = require("./models/like_blob");
+const login_credentials_1 = require("./models/login_credentials");
+const model_1 = require("./models/model");
+const notification_ack_1 = require("./models/notification_ack");
+const photo_1 = require("./models/photo");
+const photo_album_1 = require("./models/photo_album");
+const preview_notification_1 = require("./models/preview_notification");
+const reset_identifier_1 = require("./models/reset_identifier");
+const search_query_1 = require("./models/search_query");
+const search_result_1 = require("./models/search_result");
+const search_results_1 = require("./models/search_results");
+const search_result_types_1 = require("./models/search_result_types");
+const search_type_1 = require("./models/search_type");
+const simple_location_1 = require("./models/simple_location");
+const sort_order_1 = require("./models/sort_order");
+const status_1 = require("./models/status");
+const tag_entities_1 = require("./models/tag_entities");
+const tag_entity_1 = require("./models/tag_entity");
+const tag_entity_abstract_1 = require("./models/tag_entity_abstract");
+const text_wall_message_1 = require("./models/text_wall_message");
+const url_tag_1 = require("./models/url_tag");
+const user_1 = require("./models/user");
+const user_mention_tag_1 = require("./models/user_mention_tag");
+const user_settings_1 = require("./models/user_settings");
+const user_stat_1 = require("./models/user_stat");
+exports.models = {
+    AccessControl: access_control_1.AccessControl,
+    Account: account_1.Account,
+    AccountEvents: account_events_1.AccountEvents,
+    ActivityType: activity_type_1.ActivityType,
+    AppPlatform: app_platform_1.AppPlatform,
+    AuthenticationToken: authentication_token_1.AuthenticationToken,
+    Base: base_1.Base,
+    BaseLocation: base_location_1.BaseLocation,
+    BaseWall: base_wall_1.BaseWall,
+    Comment: comment_1.Comment,
+    CommentBlob: comment_blob_1.CommentBlob,
+    CommentPost: comment_post_1.CommentPost,
+    Conversation: conversation_1.Conversation,
+    ConversationMessage: conversation_message_1.ConversationMessage,
+    ConversationMessagePost: conversation_message_post_1.ConversationMessagePost,
+    ConversationMessages: conversation_messages_1.ConversationMessages,
+    CustomField: custom_field_1.CustomField,
+    EntityType: entity_type_1.EntityType,
+    Event: Event,
+    EventMember: event_member_1.EventMember,
+    EventMemberAccessControl: event_member_access_control_1.EventMemberAccessControl,
+    EventOptions: event_options_1.EventOptions,
+    EventStatus: event_status_1.EventStatus,
+    Feed: feed_1.Feed,
+    FeedPost: feed_post_1.FeedPost,
+    FileData: file_1.FileData,
+    Flag: flag_1.Flag,
+    FriendRequests: friend_requests_1.FriendRequests,
+    Gender: gender_1.Gender,
+    Group: group_1.Group,
+    GroupMember: group_member_1.GroupMember,
+    GroupMemberAccessControl: group_member_access_control_1.GroupMemberAccessControl,
+    GroupStatus: group_status_1.GroupStatus,
+    HashTag: hash_tag_1.HashTag,
+    Like: like_1.Like,
+    LikeBlob: like_blob_1.LikeBlob,
+    Location: Location,
+    LoginCredentials: login_credentials_1.LoginCredentials,
+    Model: model_1.Model,
+    Notification: Notification,
+    NotificationAck: notification_ack_1.NotificationAck,
+    Photo: photo_1.Photo,
+    PhotoAlbum: photo_album_1.PhotoAlbum,
+    PreviewNotification: preview_notification_1.PreviewNotification,
+    ResetIdentifier: reset_identifier_1.ResetIdentifier,
+    SearchQuery: search_query_1.SearchQuery,
+    SearchResult: search_result_1.SearchResult,
+    SearchResultTypes: search_result_types_1.SearchResultTypes,
+    SearchResults: search_results_1.SearchResults,
+    SearchType: search_type_1.SearchType,
+    SimpleLocation: simple_location_1.SimpleLocation,
+    SortOrder: sort_order_1.SortOrder,
+    Status: status_1.Status,
+    TagEntities: tag_entities_1.TagEntities,
+    TagEntity: tag_entity_1.TagEntity,
+    TagEntityAbstract: tag_entity_abstract_1.TagEntityAbstract,
+    TextWallMessage: text_wall_message_1.TextWallMessage,
+    URLTag: url_tag_1.URLTag,
+    User: user_1.User,
+    UserMentionTag: user_mention_tag_1.UserMentionTag,
+    UserSettings: user_settings_1.UserSettings,
+    UserStat: user_stat_1.UserStat,
+};
+
+},{"./models/access_control":17,"./models/account":18,"./models/account_events":19,"./models/activity_type":20,"./models/app_platform":21,"./models/authentication_token":22,"./models/base":23,"./models/base_location":24,"./models/base_wall":25,"./models/comment":26,"./models/comment_blob":27,"./models/comment_post":28,"./models/conversation":29,"./models/conversation_message":30,"./models/conversation_message_post":31,"./models/conversation_messages":32,"./models/custom_field":33,"./models/entity_type":35,"./models/event_member":37,"./models/event_member_access_control":38,"./models/event_options":39,"./models/event_status":40,"./models/feed":41,"./models/feed_post":42,"./models/file":43,"./models/flag":44,"./models/friend_requests":45,"./models/gender":46,"./models/group":48,"./models/group_member":49,"./models/group_member_access_control":50,"./models/group_status":51,"./models/hash_tag":52,"./models/like":53,"./models/like_blob":54,"./models/login_credentials":56,"./models/model":57,"./models/notification_ack":59,"./models/photo":60,"./models/photo_album":61,"./models/preview_notification":62,"./models/reset_identifier":63,"./models/search_query":64,"./models/search_result":65,"./models/search_result_types":66,"./models/search_results":67,"./models/search_type":68,"./models/simple_location":69,"./models/sort_order":70,"./models/status":71,"./models/tag_entities":72,"./models/tag_entity":73,"./models/tag_entity_abstract":74,"./models/text_wall_message":75,"./models/url_tag":76,"./models/user":77,"./models/user_mention_tag":78,"./models/user_settings":79,"./models/user_stat":80}],17:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var AccessControl;
+(function (AccessControl) {
+    AccessControl["Private"] = "PRIVATE";
+    AccessControl["Friend"] = "FRIEND";
+    AccessControl["Public"] = "PUBLIC";
+})(AccessControl = exports.AccessControl || (exports.AccessControl = {}));
+
+},{}],18:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -933,7 +1097,7 @@ class Account extends user_1.User {
 }
 exports.Account = Account;
 
-},{"../constant":3,"../rest/account":63,"./user":58,"./user_settings":60,"./utils":61}],17:[function(require,module,exports){
+},{"../constant":3,"../rest/account":83,"./user":77,"./user_settings":79,"./utils":81}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -941,7 +1105,33 @@ class AccountEvents extends model_1.Model {
 }
 exports.AccountEvents = AccountEvents;
 
-},{"./model":43}],18:[function(require,module,exports){
+},{"./model":57}],20:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var ActivityType;
+(function (ActivityType) {
+    ActivityType["Publish"] = "PUBLISH";
+    ActivityType["Edit"] = "EDIT";
+    ActivityType["Delete"] = "DELETE";
+    ActivityType["Like"] = "LIKE";
+    ActivityType["Dislike"] = "DISLIKE";
+    ActivityType["Join"] = "JOIN";
+    ActivityType["Leave"] = "LEAVE";
+    ActivityType["Mention"] = "MENTION";
+    ActivityType["Add"] = "ADD";
+    ActivityType["Remove"] = "REMOVE";
+})(ActivityType = exports.ActivityType || (exports.ActivityType = {}));
+
+},{}],21:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var AppPlatform;
+(function (AppPlatform) {
+    AppPlatform["Browser"] = "Browser";
+    AppPlatform["Typescript"] = "Typescript";
+})(AppPlatform = exports.AppPlatform || (exports.AppPlatform = {}));
+
+},{}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -949,7 +1139,7 @@ class AuthenticationToken extends model_1.Model {
 }
 exports.AuthenticationToken = AuthenticationToken;
 
-},{"./model":43}],19:[function(require,module,exports){
+},{"./model":57}],23:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1016,7 +1206,7 @@ class Base extends model_1.Model {
 }
 exports.Base = Base;
 
-},{"./model":43,"./photo":46,"./user":58,"moment":133}],20:[function(require,module,exports){
+},{"./model":57,"./photo":60,"./user":77,"moment":153}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1024,7 +1214,7 @@ class BaseLocation extends model_1.Model {
 }
 exports.BaseLocation = BaseLocation;
 
-},{"./model":43}],21:[function(require,module,exports){
+},{"./model":57}],25:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1102,7 +1292,7 @@ class BaseWall extends base_1.Base {
 }
 exports.BaseWall = BaseWall;
 
-},{"../rest/feed":69,"../rest/feed_comment":70,"../rest/feed_like":71,"./base":19,"./comment_blob":23,"./like_blob":40}],22:[function(require,module,exports){
+},{"../rest/feed":89,"../rest/feed_comment":90,"../rest/feed_like":91,"./base":23,"./comment_blob":27,"./like_blob":54}],26:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1144,7 +1334,7 @@ class Comment extends base_1.Base {
 }
 exports.Comment = Comment;
 
-},{"../rest/feed_comment":70,"./base":19,"./comment_post":24,"./photo":46,"./tag_entities":54}],23:[function(require,module,exports){
+},{"../rest/feed_comment":90,"./base":23,"./comment_post":28,"./photo":60,"./tag_entities":72}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const comment_1 = require("./comment");
@@ -1163,7 +1353,7 @@ class CommentBlob extends model_1.Model {
 }
 exports.CommentBlob = CommentBlob;
 
-},{"./comment":22,"./model":43}],24:[function(require,module,exports){
+},{"./comment":26,"./model":57}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class CommentPost {
@@ -1184,7 +1374,7 @@ class CommentPost {
 }
 exports.CommentPost = CommentPost;
 
-},{}],25:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1253,10 +1443,26 @@ class Conversation extends base_1.Base {
             return (new conversation_1.RestConversation(this.conf)).update(this.id, this);
         });
     }
+    kickMember(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < this.members.length; i++) {
+                if (this.members[i].id == userId) {
+                    this.members.splice(i, 1);
+                    break;
+                }
+            }
+            return this.update();
+        });
+    }
+    leave() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new conversation_1.RestConversation(this.conf).delete(this.id);
+        });
+    }
 }
 exports.Conversation = Conversation;
 
-},{"../rest/conversation":64,"../rest/conversation_message":65,"./base":19,"./conversation_messages":27,"./user":58,"./utils":61}],26:[function(require,module,exports){
+},{"../rest/conversation":84,"../rest/conversation_message":85,"./base":23,"./conversation_messages":32,"./user":77,"./utils":81}],30:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1308,7 +1514,41 @@ class ConversationMessage extends model_1.Model {
 }
 exports.ConversationMessage = ConversationMessage;
 
-},{"./conversation":25,"./model":43,"./tag_entities":54}],27:[function(require,module,exports){
+},{"./conversation":29,"./model":57,"./tag_entities":72}],31:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const conversation_message_1 = require("./conversation_message");
+class ConversationMessagePost {
+    constructor() {
+        this.mMessage = "";
+        this.mImage = null;
+    }
+    setMessage(message) {
+        this.mMessage = message;
+        return this;
+    }
+    setImage(f) {
+        this.mImage = f;
+        return this;
+    }
+    get isMultipart() {
+        return this.mImage !== null;
+    }
+    getConversationMessage() {
+        let c = (new conversation_message_1.ConversationMessage());
+        c.message = this.mMessage;
+        return c;
+    }
+    get image() {
+        return this.mImage;
+    }
+    get message() {
+        return this.mMessage;
+    }
+}
+exports.ConversationMessagePost = ConversationMessagePost;
+
+},{"./conversation_message":30}],32:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1341,7 +1581,7 @@ class ConversationMessages extends model_1.Model {
 }
 exports.ConversationMessages = ConversationMessages;
 
-},{"../rest/conversation_message":65,"./conversation_message":26,"./model":43}],28:[function(require,module,exports){
+},{"../rest/conversation_message":85,"./conversation_message":30,"./model":57}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1479,7 +1719,7 @@ var CustomFieldType;
     CustomFieldType["InputCheckbox"] = "INPUT_CHECKBOX";
 })(CustomFieldType = exports.CustomFieldType || (exports.CustomFieldType = {}));
 
-},{"../constant":3,"./model":43,"./simple_location":52,"moment":133}],29:[function(require,module,exports){
+},{"../constant":3,"./model":57,"./simple_location":69,"moment":153}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1490,7 +1730,31 @@ class Empty extends model_1.Model {
 }
 exports.Empty = Empty;
 
-},{"./model":43}],30:[function(require,module,exports){
+},{"./model":57}],35:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EntityType;
+(function (EntityType) {
+    EntityType["User"] = "USER";
+    EntityType["Ride"] = "RIDE";
+    EntityType["Group"] = "GROUP";
+    EntityType["Event"] = "EVENT";
+    EntityType["Photo"] = "PHOTO";
+    EntityType["PhotoAlbum"] = "PHOTO_ALBUM";
+    EntityType["Status"] = "STATUS";
+    EntityType["Conversation"] = "CONVERSATION";
+    EntityType["TextWallMessage"] = "TEXT_WALL_MESSAGE";
+    EntityType["Story"] = "STORY";
+    EntityType["Location"] = "LOCATION";
+    EntityType["Comment"] = "COMMENT";
+    EntityType["Like"] = "LIKE";
+    EntityType["UrlTag"] = "URL_TAG";
+    EntityType["HashTag"] = "HASH_TAG";
+    EntityType["UserMentionTag"] = "USER_MENTION_TAG";
+    EntityType["ConversationMessage"] = "CONVERSATION_MESSAGE";
+})(EntityType = exports.EntityType || (exports.EntityType = {}));
+
+},{}],36:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1654,7 +1918,7 @@ class Event extends base_wall_1.BaseWall {
 }
 exports.Event = Event;
 
-},{"../constant":3,"../rest/event":67,"../rest/event_wall":68,"./base_wall":21,"./custom_field":28,"./event_member":31,"./location":41,"./photo":46,"./utils":61}],31:[function(require,module,exports){
+},{"../constant":3,"../rest/event":87,"../rest/event_wall":88,"./base_wall":25,"./custom_field":33,"./event_member":37,"./location":55,"./photo":60,"./utils":81}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1662,7 +1926,92 @@ class EventMember extends model_1.Model {
 }
 exports.EventMember = EventMember;
 
-},{"./model":43}],32:[function(require,module,exports){
+},{"./model":57}],38:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventMemberAccessControl;
+(function (EventMemberAccessControl) {
+    EventMemberAccessControl["Public"] = "PUBLIC";
+    EventMemberAccessControl["FriendOfFriend"] = "FRIEND_OF_FRIEND";
+})(EventMemberAccessControl = exports.EventMemberAccessControl || (exports.EventMemberAccessControl = {}));
+
+},{}],39:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class EventOptions {
+    constructor() {
+        this._page = 0;
+        this._size = 10;
+        this._limited = true;
+        this._date_field = EventDateField.StartDate;
+        this._sort = "start_date";
+    }
+    setPage(p) {
+        this._page = p;
+        return this;
+    }
+    setSize(s) {
+        this._size = s;
+        return this;
+    }
+    setSortField(sortField) {
+        this._sort = sortField;
+        return this;
+    }
+    setDateField(v) {
+        this._date_field = v;
+        return this;
+    }
+    setFromDate(date) {
+        this._from_date = date.format("YYYY:MM:dd") + "T00:00:00Z";
+        return this;
+    }
+    setLimited(v) {
+        this._limited = v;
+        return this;
+    }
+    setLocation(location) {
+        this._location = location;
+        return this;
+    }
+    toQueryParams() {
+        let params = {
+            sort_field: this._sort,
+            limited: this._limited,
+            from_date: this._from_date,
+            date_field: this._date_field,
+            type: 'EVENT',
+        };
+        if (this._location !== undefined && this._location.latitude && this._location.longitude) {
+            params['latitude'] = this._location.latitude;
+            params['longitude'] = this._location.longitude;
+        }
+        return params;
+    }
+}
+exports.EventOptions = EventOptions;
+var EventDateField;
+(function (EventDateField) {
+    EventDateField["StartDate"] = "start_date";
+    EventDateField["EndDate"] = "end_date";
+})(EventDateField = exports.EventDateField || (exports.EventDateField = {}));
+
+},{}],40:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventStatus;
+(function (EventStatus) {
+    EventStatus["WantToParticipate"] = "WANT_TO_PARTICIPATE";
+    EventStatus["WaitingConfirmation"] = "WAITING_CONFIRMATION";
+    EventStatus["Confirmed"] = "CONFIRMED";
+    EventStatus["WaitingForFreeSeat"] = "WAITING_FOR_FREE_SEAT";
+    EventStatus["NoResponse"] = "NO_RESPONSE";
+    EventStatus["NotAvailable"] = "NOT_AVAILABLE";
+    EventStatus["HasCancelled"] = "HAS_CANCELLED";
+    EventStatus["HasCancelledAfterHavingConfirmed"] = "HAS_CANCELLED_AFTER_HAVING_CONFIRMED";
+})(EventStatus = exports.EventStatus || (exports.EventStatus = {}));
+
+},{}],41:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1782,7 +2131,72 @@ class Feed extends model_1.Model {
 }
 exports.Feed = Feed;
 
-},{"../rest/feed":69,"./base_wall":21,"./model":43,"./text_wall_message":56,"./user":58}],33:[function(require,module,exports){
+},{"../rest/feed":89,"./base_wall":25,"./model":57,"./text_wall_message":75,"./user":77}],42:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const access_control_1 = require("./access_control");
+const text_wall_message_1 = require("./text_wall_message");
+class FeedPost {
+    toJson() {
+        return JSON.stringify(this.getJsonParameters());
+    }
+    getJsonParameters() {
+        return {
+            message: this._message,
+            access_control: this._visibility !== undefined ? this._visibility : access_control_1.AccessControl.Friend
+        };
+    }
+    setMessage(message) {
+        this._message = message;
+        return this;
+    }
+    setImage(image) {
+        this._image = image;
+        return this;
+    }
+    setTagEntities(t) {
+        this._tag_entities = t;
+    }
+    setVisibility(visible) {
+        this._visibility = visible;
+        return this;
+    }
+    hasPhoto() {
+        return this._image !== undefined;
+    }
+    get textWallMessage() {
+        return new text_wall_message_1.TextWallMessage({}).setVisibility(this._visibility).setMessage(this._message).setTagEntities(this._tag_entities);
+    }
+}
+exports.FeedPost = FeedPost;
+
+},{"./access_control":17,"./text_wall_message":75}],43:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class FileData {
+    loadFromBase64(data) {
+        this.data = data;
+        return this;
+    }
+    get blob() {
+        return this.file;
+    }
+    /**
+     * Works only with browsers, do not use with nodejs
+     * @param {File} file
+     * @returns {FileData}
+     */
+    loadFromFileBrowser(file) {
+        this.file = file;
+        return this;
+    }
+    toString() {
+        return this.data;
+    }
+}
+exports.FileData = FileData;
+
+},{}],44:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1790,7 +2204,7 @@ class Flag extends model_1.Model {
 }
 exports.Flag = Flag;
 
-},{"./model":43}],34:[function(require,module,exports){
+},{"./model":57}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1819,7 +2233,16 @@ class FriendRequests extends model_1.Model {
 }
 exports.FriendRequests = FriendRequests;
 
-},{"./model":43,"./user":58}],35:[function(require,module,exports){
+},{"./model":57,"./user":77}],46:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Gender;
+(function (Gender) {
+    Gender["Male"] = "MALE";
+    Gender["Female"] = "FEMALE";
+})(Gender = exports.Gender || (exports.Gender = {}));
+
+},{}],47:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -1917,7 +2340,7 @@ class GenericFormDataValue {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":129}],36:[function(require,module,exports){
+},{"buffer":149}],48:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1946,6 +2369,16 @@ class Group extends base_wall_1.BaseWall {
             location: this.location ? this.location.getJsonParameters() : null,
             custom_fields: this._custom_fields ? utils_1.listToParameters(this._custom_fields) : null,
         };
+    }
+    listNewsFeed(page, size) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new group_wall_1.RestGroupWall(this.conf).list(this.id, page, size);
+        });
+    }
+    createFeedPost(feedPost) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new group_wall_1.RestGroupWall(this.conf).createMessage(this.id, feedPost.textWallMessage);
+        });
     }
     join() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2009,11 +2442,17 @@ class Group extends base_wall_1.BaseWall {
         }
         this._members = list;
     }
+    get cover_image() {
+        return this.profile_cover_photo;
+    }
     get profile_cover_photo() {
         return this._profile_cover_photo;
     }
     set profile_cover_photo(p) {
         this._profile_cover_photo = new photo_1.Photo(p, this.conf);
+    }
+    get image() {
+        return this.profile_photo;
     }
     get profile_photo() {
         return this._profile_photo;
@@ -2027,10 +2466,16 @@ class Group extends base_wall_1.BaseWall {
     set location(l) {
         this._location = new location_1.Location(l);
     }
+    updateImage(file) {
+        return new group_1.RestGroup(this.conf).updateProfilePhoto(this.id, file);
+    }
+    updateCoverImage(file) {
+        return new group_1.RestGroup(this.conf).updateProfileCoverPhoto(this.id, file);
+    }
 }
 exports.Group = Group;
 
-},{"../rest/group":73,"../rest/group_wall":74,"./base_wall":21,"./custom_field":28,"./group_member":37,"./location":41,"./photo":46,"./utils":61}],37:[function(require,module,exports){
+},{"../rest/group":93,"../rest/group_wall":94,"./base_wall":25,"./custom_field":33,"./group_member":49,"./location":55,"./photo":60,"./utils":81}],49:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const group_1 = require("./group");
@@ -2052,7 +2497,28 @@ class GroupMember extends model_1.Model {
 }
 exports.GroupMember = GroupMember;
 
-},{"./group":36,"./model":43,"./user":58}],38:[function(require,module,exports){
+},{"./group":48,"./model":57,"./user":77}],50:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var GroupMemberAccessControl;
+(function (GroupMemberAccessControl) {
+    GroupMemberAccessControl["Public"] = "PUBLIC";
+    GroupMemberAccessControl["FriendOfFriend"] = "FRIEND_OF_FRIEND";
+})(GroupMemberAccessControl = exports.GroupMemberAccessControl || (exports.GroupMemberAccessControl = {}));
+
+},{}],51:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var GroupStatus;
+(function (GroupStatus) {
+    GroupStatus["WaitingForApproval"] = "WAITING_FOR_APPROVAL";
+    GroupStatus["NotAvailable"] = "NOT_AVAILABLE";
+    GroupStatus["Member"] = "MEMBER";
+    GroupStatus["WasMember"] = "WAS_MEMBER";
+    GroupStatus["WasWaitingForApproval"] = "WAS_WAITING_FOR_APPROVAL";
+})(GroupStatus = exports.GroupStatus || (exports.GroupStatus = {}));
+
+},{}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entity_abstract_1 = require("./tag_entity_abstract");
@@ -2083,7 +2549,7 @@ class HashTag extends tag_entity_abstract_1.TagEntityAbstract {
 }
 exports.HashTag = HashTag;
 
-},{"./tag_entity_abstract":55}],39:[function(require,module,exports){
+},{"./tag_entity_abstract":74}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("./user");
@@ -2104,7 +2570,7 @@ class Like extends model_1.Model {
 }
 exports.Like = Like;
 
-},{"./model":43,"./user":58}],40:[function(require,module,exports){
+},{"./model":57,"./user":77}],54:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const like_1 = require("./like");
@@ -2122,7 +2588,7 @@ class LikeBlob extends model_1.Model {
 }
 exports.LikeBlob = LikeBlob;
 
-},{"./like":39,"./model":43}],41:[function(require,module,exports){
+},{"./like":53,"./model":57}],55:[function(require,module,exports){
 "use strict";
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -2175,7 +2641,7 @@ class Location {
 }
 exports.Location = Location;
 
-},{"./simple_location":52,"lodash":132}],42:[function(require,module,exports){
+},{"./simple_location":69,"lodash":152}],56:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2189,7 +2655,7 @@ class LoginCredentials extends model_1.Model {
 }
 exports.LoginCredentials = LoginCredentials;
 
-},{"./model":43}],43:[function(require,module,exports){
+},{"./model":57}],57:[function(require,module,exports){
 "use strict";
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
@@ -2226,11 +2692,20 @@ class Model {
 }
 exports.Model = Model;
 
-},{"lodash":132}],44:[function(require,module,exports){
+},{"lodash":152}],58:[function(require,module,exports){
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("./user");
 const model_1 = require("./model");
+const notification_1 = require("../rest/notification");
 class Notification extends model_1.Model {
     get root_url() {
         if (this.url === undefined) {
@@ -2260,10 +2735,15 @@ class Notification extends model_1.Model {
     get recipient_device_id() {
         return this.payload['recipient_device_id'];
     }
+    ack(n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new notification_1.RestNotification(this.conf).ack(n);
+        });
+    }
 }
 exports.Notification = Notification;
 
-},{"./model":43,"./user":58}],45:[function(require,module,exports){
+},{"../rest/notification":97,"./model":57,"./user":77}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const base_location_1 = require("./base_location");
@@ -2279,10 +2759,14 @@ class NotificationAck extends model_1.Model {
     set location(a) {
         this._location = new base_location_1.BaseLocation(a);
     }
+    setAppPlatform(v) {
+        this.app_platform = v;
+        return this;
+    }
 }
 exports.NotificationAck = NotificationAck;
 
-},{"./base_location":20,"./model":43}],46:[function(require,module,exports){
+},{"./base_location":24,"./model":57}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2304,7 +2788,7 @@ class Photo extends model_1.Model {
 }
 exports.Photo = Photo;
 
-},{"./base":19,"./model":43,"./tag_entities":54}],47:[function(require,module,exports){
+},{"./base":23,"./model":57,"./tag_entities":72}],61:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2327,7 +2811,7 @@ class PhotoAlbum extends model_1.Model {
 }
 exports.PhotoAlbum = PhotoAlbum;
 
-},{"./model":43,"./photo":46}],48:[function(require,module,exports){
+},{"./model":57,"./photo":60}],62:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2362,7 +2846,7 @@ class PreviewNotification extends model_1.Model {
 }
 exports.PreviewNotification = PreviewNotification;
 
-},{"../rest/notification":77,"./model":43,"./notification":44}],49:[function(require,module,exports){
+},{"../rest/notification":97,"./model":57,"./notification":58}],63:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2370,7 +2854,28 @@ class ResetIdentifier extends model_1.Model {
 }
 exports.ResetIdentifier = ResetIdentifier;
 
-},{"./model":43}],50:[function(require,module,exports){
+},{"./model":57}],64:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const user_1 = require("./user");
+class SearchQuery {
+    get user() {
+        return this._user;
+    }
+    set user(u) {
+        this._user = new user_1.User(u);
+    }
+}
+exports.SearchQuery = SearchQuery;
+
+},{"./user":77}],65:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class SearchResult {
+}
+exports.SearchResult = SearchResult;
+
+},{}],66:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("./user");
@@ -2482,7 +2987,7 @@ class EventSearchResult extends model_1.Model {
 }
 exports.EventSearchResult = EventSearchResult;
 
-},{"./event":30,"./feed":32,"./group":36,"./model":43,"./user":58}],51:[function(require,module,exports){
+},{"./event":36,"./feed":41,"./group":48,"./model":57,"./user":77}],67:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_result_types_1 = require("./search_result_types");
@@ -2497,7 +3002,17 @@ class SearchResults extends model_1.Model {
 }
 exports.SearchResults = SearchResults;
 
-},{"./model":43,"./search_result_types":50}],52:[function(require,module,exports){
+},{"./model":57,"./search_result_types":66}],68:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var SearchType;
+(function (SearchType) {
+    SearchType["User"] = "USER";
+    SearchType["Group"] = "GROUP";
+    SearchType["Event"] = "EVENT";
+})(SearchType = exports.SearchType || (exports.SearchType = {}));
+
+},{}],69:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class SimpleLocation {
@@ -2521,7 +3036,16 @@ class SimpleLocation {
 }
 exports.SimpleLocation = SimpleLocation;
 
-},{}],53:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var SortOrder;
+(function (SortOrder) {
+    SortOrder["Asc"] = "ASC";
+    SortOrder["Desc"] = "DESC";
+})(SortOrder = exports.SortOrder || (exports.SortOrder = {}));
+
+},{}],71:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2573,7 +3097,7 @@ class Status extends base_wall_1.BaseWall {
 }
 exports.Status = Status;
 
-},{"../rest/status":90,"../rest/status_comment":91,"../rest/status_like":92,"./base_wall":21}],54:[function(require,module,exports){
+},{"../rest/status":110,"../rest/status_comment":111,"../rest/status_like":112,"./base_wall":25}],72:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2622,7 +3146,23 @@ class TagEntities extends model_1.Model {
 }
 exports.TagEntities = TagEntities;
 
-},{"./hash_tag":38,"./model":43,"./url_tag":57,"./user_mention_tag":59,"./utils":61}],55:[function(require,module,exports){
+},{"./hash_tag":52,"./model":57,"./url_tag":76,"./user_mention_tag":78,"./utils":81}],73:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const model_1 = require("./model");
+class TagEntity extends model_1.Model {
+    getJsonParameters() {
+        return {
+            type: this.type,
+            text: this.text,
+            text_shown: this.text_shown,
+            indices: this.indices,
+        };
+    }
+}
+exports.TagEntity = TagEntity;
+
+},{"./model":57}],74:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entities_1 = require("./tag_entities");
@@ -2642,7 +3182,7 @@ class TagEntityAbstract extends model_1.Model {
 }
 exports.TagEntityAbstract = TagEntityAbstract;
 
-},{"./model":43,"./tag_entities":54}],56:[function(require,module,exports){
+},{"./model":57,"./tag_entities":72}],75:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const base_wall_1 = require("./base_wall");
@@ -2676,7 +3216,7 @@ class TextWallMessage extends base_wall_1.BaseWall {
 }
 exports.TextWallMessage = TextWallMessage;
 
-},{"./base_wall":21,"./tag_entities":54}],57:[function(require,module,exports){
+},{"./base_wall":25,"./tag_entities":72}],76:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entity_abstract_1 = require("./tag_entity_abstract");
@@ -2703,7 +3243,7 @@ class URLTag extends tag_entity_abstract_1.TagEntityAbstract {
 }
 exports.URLTag = URLTag;
 
-},{"./tag_entity_abstract":55}],58:[function(require,module,exports){
+},{"./tag_entity_abstract":74}],77:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2724,6 +3264,8 @@ const user_wall_1 = require("../rest/user_wall");
 const user_wall_message_1 = require("../rest/user_wall_message");
 const user_friend_1 = require("../rest/user_friend");
 const user_album_1 = require("../rest/user_album");
+const conversation_1 = require("../rest/conversation");
+const conversation_2 = require("./conversation");
 class User extends model_1.Model {
     constructor() {
         super(...arguments);
@@ -2855,10 +3397,17 @@ class User extends model_1.Model {
             return new user_album_1.RestUserAlbum(this.conf).list(this.id, page, size);
         });
     }
+    sendPrivateMessage(message) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let conversation = new conversation_2.Conversation().addMember(this);
+            conversation = yield new conversation_1.RestConversation(this.conf).create(conversation);
+            return conversation.sendMessage(message);
+        });
+    }
 }
 exports.User = User;
 
-},{"../rest/user_album":94,"../rest/user_friend":97,"../rest/user_wall":99,"../rest/user_wall_message":100,"./custom_field":28,"./flag":33,"./location":41,"./model":43,"./photo":46,"./status":53}],59:[function(require,module,exports){
+},{"../rest/conversation":84,"../rest/user_album":114,"../rest/user_friend":117,"../rest/user_wall":119,"../rest/user_wall_message":120,"./conversation":29,"./custom_field":33,"./flag":44,"./location":55,"./model":57,"./photo":60,"./status":71}],78:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entity_abstract_1 = require("./tag_entity_abstract");
@@ -2900,7 +3449,7 @@ class UserMentionTag extends tag_entity_abstract_1.TagEntityAbstract {
 }
 exports.UserMentionTag = UserMentionTag;
 
-},{"./feed":32,"./tag_entity_abstract":55,"./user":58}],60:[function(require,module,exports){
+},{"./feed":41,"./tag_entity_abstract":74,"./user":77}],79:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2937,7 +3486,24 @@ var InterfaceLanguage;
 })(InterfaceLanguage = exports.InterfaceLanguage || (exports.InterfaceLanguage = {}));
 exports.DefaultInterfaceLanguage = InterfaceLanguage.EN;
 
-},{"./model":43}],61:[function(require,module,exports){
+},{"./model":57}],80:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const model_1 = require("./model");
+class UserStat extends model_1.Model {
+}
+exports.UserStat = UserStat;
+var UserStatus;
+(function (UserStatus) {
+    UserStatus["Disabled"] = "DISABLED";
+    UserStatus["Riding"] = "RIDING";
+    UserStatus["Unknown"] = "UNKNOWN";
+    UserStatus["Connected"] = "CONNECTED";
+    UserStatus["Away"] = "AWAY";
+    UserStatus["NotConnected"] = "NOT_CONNECTED";
+})(UserStatus = exports.UserStatus || (exports.UserStatus = {}));
+
+},{"./model":57}],81:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function listToParameters(models) {
@@ -2954,7 +3520,7 @@ function listToParameters(models) {
 }
 exports.listToParameters = listToParameters;
 
-},{}],62:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2970,8 +3536,10 @@ const configuration_1 = require("./configuration");
 const client_service_1 = require("./client_service");
 const account_1 = require("./models/account");
 const authentication_token_1 = require("./models/authentication_token");
+const models_1 = require("./models");
 class MySocialApp {
     constructor() {
+        this.models = models_1.models;
     }
     setAppId(appId) {
         this._appId = appId;
@@ -3033,7 +3601,7 @@ class MySocialApp {
 }
 exports.MySocialApp = MySocialApp;
 
-},{"./client_service":1,"./configuration":2,"./models/account":16,"./models/authentication_token":18,"./session":101}],63:[function(require,module,exports){
+},{"./client_service":1,"./configuration":2,"./models":16,"./models/account":18,"./models/authentication_token":22,"./session":121}],83:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3091,7 +3659,7 @@ class RestAccount extends rest_1.Rest {
 }
 exports.RestAccount = RestAccount;
 
-},{"../models/account":16,"../models/generic_form_data":35,"../models/photo":46,"./rest":83}],64:[function(require,module,exports){
+},{"../models/account":18,"../models/generic_form_data":47,"../models/photo":60,"./rest":103}],84:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3163,7 +3731,7 @@ class RestConversation extends rest_1.Rest {
 }
 exports.RestConversation = RestConversation;
 
-},{"../models/conversation":25,"../models/conversation_message":26,"../models/generic_form_data":35,"./rest":83}],65:[function(require,module,exports){
+},{"../models/conversation":29,"../models/conversation_message":30,"../models/generic_form_data":47,"./rest":103}],85:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3192,6 +3760,7 @@ class RestConversationMessage extends rest_1.Rest {
             return this.conf.post(new conversation_message_1.ConversationMessage(), path, message);
         });
     }
+    // TODO add unit test
     postFile(id, message) {
         return __awaiter(this, void 0, void 0, function* () {
             let fd = new generic_form_data_1.GenericFormData();
@@ -3204,7 +3773,7 @@ class RestConversationMessage extends rest_1.Rest {
 }
 exports.RestConversationMessage = RestConversationMessage;
 
-},{"../models/conversation_message":26,"../models/generic_form_data":35,"./rest":83}],66:[function(require,module,exports){
+},{"../models/conversation_message":30,"../models/generic_form_data":47,"./rest":103}],86:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ErrorResponse {
@@ -3226,7 +3795,7 @@ class ErrorResponse {
 }
 exports.ErrorResponse = ErrorResponse;
 
-},{}],67:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3256,18 +3825,26 @@ class RestEvent extends rest_1.Rest {
                 params['latitude'] = location.latitude;
                 params['longitude'] = location.longitude;
             }
-            return this.conf.getList(new event_1.Event(), "/event?" + rest_1.Rest.encodeQueryData(params));
+            return this.listFromParams(params);
         });
     }
     listByZone(page, limited, size, lowerLatitude, lowerLongitude, upperLatitude, upperLongitude) {
         return __awaiter(this, void 0, void 0, function* () {
             let params = {
+                page: page,
+                limited: limited,
+                size: size,
                 lower_latitude: lowerLatitude,
                 lower_longitude: lowerLongitude,
                 upper_latitude: upperLatitude,
                 upper_longitude: upperLongitude
             };
-            return this.list(page, limited, size, undefined, params);
+            return this.listFromParams(params);
+        });
+    }
+    listFromParams(queryParams) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.getList(new event_1.Event(), "/event?" + rest_1.Rest.encodeQueryData(queryParams));
         });
     }
     get(id) {
@@ -3365,7 +3942,7 @@ class RestEvent extends rest_1.Rest {
 }
 exports.RestEvent = RestEvent;
 
-},{"../models/custom_field":28,"../models/empty":29,"../models/event":30,"../models/event_member":31,"../models/feed":32,"../models/generic_form_data":35,"../models/photo":46,"./rest":83}],68:[function(require,module,exports){
+},{"../models/custom_field":33,"../models/empty":34,"../models/event":36,"../models/event_member":37,"../models/feed":41,"../models/generic_form_data":47,"../models/photo":60,"./rest":103}],88:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3408,7 +3985,7 @@ class RestEventWall extends rest_1.Rest {
 }
 exports.RestEventWall = RestEventWall;
 
-},{"../models/feed":32,"./rest":83}],69:[function(require,module,exports){
+},{"../models/feed":41,"./rest":103}],89:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3463,7 +4040,7 @@ class RestFeed extends rest_1.Rest {
 }
 exports.RestFeed = RestFeed;
 
-},{"../models/empty":29,"../models/feed":32,"./rest":83}],70:[function(require,module,exports){
+},{"../models/empty":34,"../models/feed":41,"./rest":103}],90:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3520,7 +4097,7 @@ class RestFeedComment extends rest_1.Rest {
 }
 exports.RestFeedComment = RestFeedComment;
 
-},{"../models/comment":22,"../models/generic_form_data":35,"./rest":83}],71:[function(require,module,exports){
+},{"../models/comment":26,"../models/generic_form_data":47,"./rest":103}],91:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3553,7 +4130,7 @@ class RestFeedLike extends rest_1.Rest {
 }
 exports.RestFeedLike = RestFeedLike;
 
-},{"../models/empty":29,"../models/feed":32,"./rest":83}],72:[function(require,module,exports){
+},{"../models/empty":34,"../models/feed":41,"./rest":103}],92:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3582,7 +4159,7 @@ class RestFriend extends rest_1.Rest {
 }
 exports.RestFriend = RestFriend;
 
-},{"../models/friend_requests":34,"../models/user":58,"./rest":83}],73:[function(require,module,exports){
+},{"../models/friend_requests":45,"../models/user":77,"./rest":103}],93:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3721,7 +4298,7 @@ class RestGroup extends rest_1.Rest {
 }
 exports.RestGroup = RestGroup;
 
-},{"../models/custom_field":28,"../models/empty":29,"../models/feed":32,"../models/generic_form_data":35,"../models/group":36,"../models/group_member":37,"../models/photo":46,"./rest":83}],74:[function(require,module,exports){
+},{"../models/custom_field":33,"../models/empty":34,"../models/feed":41,"../models/generic_form_data":47,"../models/group":48,"../models/group_member":49,"../models/photo":60,"./rest":103}],94:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3764,7 +4341,7 @@ class RestGroupWall extends rest_1.Rest {
 }
 exports.RestGroupWall = RestGroupWall;
 
-},{"../models/feed":32,"./rest":83}],75:[function(require,module,exports){
+},{"../models/feed":41,"./rest":103}],95:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3786,7 +4363,7 @@ class RestLogin extends rest_1.Rest {
 }
 exports.RestLogin = RestLogin;
 
-},{"../models/authentication_token":18,"./rest":83}],76:[function(require,module,exports){
+},{"../models/authentication_token":22,"./rest":103}],96:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3814,7 +4391,7 @@ class RestLogout extends rest_1.Rest {
 }
 exports.RestLogout = RestLogout;
 
-},{"./error":66,"./rest":83}],77:[function(require,module,exports){
+},{"./error":86,"./rest":103}],97:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3860,7 +4437,7 @@ class RestNotification extends rest_1.Rest {
 }
 exports.RestNotification = RestNotification;
 
-},{"../models/notification_ack":45,"../models/preview_notification":48,"./rest":83}],78:[function(require,module,exports){
+},{"../models/notification_ack":59,"../models/preview_notification":62,"./rest":103}],98:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3916,7 +4493,7 @@ class RestPhoto extends rest_1.Rest {
 }
 exports.RestPhoto = RestPhoto;
 
-},{"../models/feed":32,"../models/generic_form_data":35,"../models/photo":46,"./rest":83}],79:[function(require,module,exports){
+},{"../models/feed":41,"../models/generic_form_data":47,"../models/photo":60,"./rest":103}],99:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3962,7 +4539,7 @@ class RestPhotoAlbum extends rest_1.Rest {
 }
 exports.RestPhotoAlbum = RestPhotoAlbum;
 
-},{"../models/photo_album":47,"./rest":83}],80:[function(require,module,exports){
+},{"../models/photo_album":61,"./rest":103}],100:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4006,7 +4583,7 @@ class RestPhotoComment extends rest_1.Rest {
 }
 exports.RestPhotoComment = RestPhotoComment;
 
-},{"../models/comment":22,"../models/generic_form_data":35,"./rest":83}],81:[function(require,module,exports){
+},{"../models/comment":26,"../models/generic_form_data":47,"./rest":103}],101:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4039,7 +4616,7 @@ class RestPhotoLike extends rest_1.Rest {
 }
 exports.RestPhotoLike = RestPhotoLike;
 
-},{"../models/empty":29,"../models/like":39,"./rest":83}],82:[function(require,module,exports){
+},{"../models/empty":34,"../models/like":53,"./rest":103}],102:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4061,7 +4638,7 @@ class RestRegister extends rest_1.Rest {
 }
 exports.RestRegister = RestRegister;
 
-},{"../models/account":16,"./rest":83}],83:[function(require,module,exports){
+},{"../models/account":18,"./rest":103}],103:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Rest {
@@ -4084,7 +4661,7 @@ class Rest {
 }
 exports.Rest = Rest;
 
-},{}],84:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4109,7 +4686,7 @@ class RestSearch extends rest_1.Rest {
 }
 exports.RestSearch = RestSearch;
 
-},{"../models/search_results":51,"./rest":83}],85:[function(require,module,exports){
+},{"../models/search_results":67,"./rest":103}],105:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4142,7 +4719,7 @@ class RestShadowEntityFeed extends rest_1.Rest {
 }
 exports.RestShadowEntityFeed = RestShadowEntityFeed;
 
-},{"../models/feed":32,"./rest":83}],86:[function(require,module,exports){
+},{"../models/feed":41,"./rest":103}],106:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4187,7 +4764,7 @@ class RestShadowEntityFeedMessage extends rest_1.Rest {
 }
 exports.RestShadowEntityFeedMessage = RestShadowEntityFeedMessage;
 
-},{"../models/feed":32,"./rest":83}],87:[function(require,module,exports){
+},{"../models/feed":41,"./rest":103}],107:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4230,7 +4807,7 @@ class RestShadowEntityPhoto extends rest_1.Rest {
 }
 exports.RestShadowEntityPhoto = RestShadowEntityPhoto;
 
-},{"../models/feed":32,"../models/generic_form_data":35,"./rest":83}],88:[function(require,module,exports){
+},{"../models/feed":41,"../models/generic_form_data":47,"./rest":103}],108:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4261,7 +4838,7 @@ class RestShadowEntityProfileCoverPhoto extends rest_1.Rest {
 }
 exports.RestShadowEntityProfileCoverPhoto = RestShadowEntityProfileCoverPhoto;
 
-},{"../models/generic_form_data":35,"../models/photo":46,"./rest":83}],89:[function(require,module,exports){
+},{"../models/generic_form_data":47,"../models/photo":60,"./rest":103}],109:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4292,7 +4869,7 @@ class RestShadowEntityProfilePhoto extends rest_1.Rest {
 }
 exports.RestShadowEntityProfilePhoto = RestShadowEntityProfilePhoto;
 
-},{"../models/generic_form_data":35,"../models/photo":46,"./rest":83}],90:[function(require,module,exports){
+},{"../models/generic_form_data":47,"../models/photo":60,"./rest":103}],110:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4334,7 +4911,7 @@ class RestStatus extends rest_1.Rest {
 }
 exports.RestStatus = RestStatus;
 
-},{"../models/status":53,"./rest":83}],91:[function(require,module,exports){
+},{"../models/status":71,"./rest":103}],111:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4383,7 +4960,7 @@ class RestStatusComment extends rest_1.Rest {
 }
 exports.RestStatusComment = RestStatusComment;
 
-},{"../models/comment":22,"../models/generic_form_data":35,"../models/photo":46,"./rest":83}],92:[function(require,module,exports){
+},{"../models/comment":26,"../models/generic_form_data":47,"../models/photo":60,"./rest":103}],112:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4416,7 +4993,7 @@ class RestStatusLike extends rest_1.Rest {
 }
 exports.RestStatusLike = RestStatusLike;
 
-},{"../models/empty":29,"../models/like":39,"./rest":83}],93:[function(require,module,exports){
+},{"../models/empty":34,"../models/like":53,"./rest":103}],113:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4467,7 +5044,7 @@ class RestUser extends rest_1.Rest {
 }
 exports.RestUser = RestUser;
 
-},{"../models/user":58,"./rest":83}],94:[function(require,module,exports){
+},{"../models/user":77,"./rest":103}],114:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4493,7 +5070,7 @@ class RestUserAlbum extends rest_1.Rest {
 }
 exports.RestUserAlbum = RestUserAlbum;
 
-},{"../models/photo_album":47,"./rest":83}],95:[function(require,module,exports){
+},{"../models/photo_album":61,"./rest":103}],115:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4519,7 +5096,7 @@ class RestUserEvent extends rest_1.Rest {
 }
 exports.RestUserEvent = RestUserEvent;
 
-},{"../models/user":58,"./rest":83}],96:[function(require,module,exports){
+},{"../models/user":77,"./rest":103}],116:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4540,7 +5117,7 @@ class RestUserExternal extends user_1.User {
 }
 exports.RestUserExternal = RestUserExternal;
 
-},{"../models/user":58}],97:[function(require,module,exports){
+},{"../models/user":77}],117:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4577,7 +5154,7 @@ class RestUserFriend extends rest_1.Rest {
 }
 exports.RestUserFriend = RestUserFriend;
 
-},{"../models/empty":29,"../models/user":58,"./rest":83}],98:[function(require,module,exports){
+},{"../models/empty":34,"../models/user":77,"./rest":103}],118:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4603,7 +5180,7 @@ class RestUserGroup extends rest_1.Rest {
 }
 exports.RestUserGroup = RestUserGroup;
 
-},{"../models/group":36,"./rest":83}],99:[function(require,module,exports){
+},{"../models/group":48,"./rest":103}],119:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4627,7 +5204,7 @@ class RestUserWall extends rest_1.Rest {
 }
 exports.RestUserWall = RestUserWall;
 
-},{"../models/feed":32,"./rest":83}],100:[function(require,module,exports){
+},{"../models/feed":41,"./rest":103}],120:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4670,7 +5247,7 @@ class RestUserWallMessage extends rest_1.Rest {
 }
 exports.RestUserWallMessage = RestUserWallMessage;
 
-},{"../models/feed":32,"./rest":83}],101:[function(require,module,exports){
+},{"../models/feed":41,"./rest":103}],121:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4767,7 +5344,7 @@ class Session {
 }
 exports.Session = Session;
 
-},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_friend":9,"./fluent_group":10,"./fluent_news_feed":11,"./fluent_notification":12,"./fluent_photo":13,"./fluent_photo_album":14,"./fluent_user":15,"./models/login_credentials":42,"./websocket_service":102}],102:[function(require,module,exports){
+},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_friend":9,"./fluent_group":10,"./fluent_news_feed":11,"./fluent_notification":12,"./fluent_photo":13,"./fluent_photo_album":14,"./fluent_user":15,"./models/login_credentials":56,"./websocket_service":122}],122:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const notification_1 = require("./models/notification");
@@ -4910,9 +5487,9 @@ class WebsocketService {
 }
 exports.WebsocketService = WebsocketService;
 
-},{"./models/conversation_message":26,"./models/event":30,"./models/feed":32,"./models/notification":44,"./models/user":58,"websocket":135}],103:[function(require,module,exports){
+},{"./models/conversation_message":30,"./models/event":36,"./models/feed":41,"./models/notification":58,"./models/user":77,"websocket":155}],123:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":105}],104:[function(require,module,exports){
+},{"./lib/axios":125}],124:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -5096,7 +5673,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":111,"./../core/settle":114,"./../helpers/btoa":118,"./../helpers/buildURL":119,"./../helpers/cookies":121,"./../helpers/isURLSameOrigin":123,"./../helpers/parseHeaders":125,"./../utils":127,"_process":134}],105:[function(require,module,exports){
+},{"../core/createError":131,"./../core/settle":134,"./../helpers/btoa":138,"./../helpers/buildURL":139,"./../helpers/cookies":141,"./../helpers/isURLSameOrigin":143,"./../helpers/parseHeaders":145,"./../utils":147,"_process":154}],125:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -5150,7 +5727,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":106,"./cancel/CancelToken":107,"./cancel/isCancel":108,"./core/Axios":109,"./defaults":116,"./helpers/bind":117,"./helpers/spread":126,"./utils":127}],106:[function(require,module,exports){
+},{"./cancel/Cancel":126,"./cancel/CancelToken":127,"./cancel/isCancel":128,"./core/Axios":129,"./defaults":136,"./helpers/bind":137,"./helpers/spread":146,"./utils":147}],126:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5171,7 +5748,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],107:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -5230,14 +5807,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":106}],108:[function(require,module,exports){
+},{"./Cancel":126}],128:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],109:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -5318,7 +5895,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":116,"./../utils":127,"./InterceptorManager":110,"./dispatchRequest":112}],110:[function(require,module,exports){
+},{"./../defaults":136,"./../utils":147,"./InterceptorManager":130,"./dispatchRequest":132}],130:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5372,7 +5949,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":127}],111:[function(require,module,exports){
+},{"./../utils":147}],131:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -5392,7 +5969,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":113}],112:[function(require,module,exports){
+},{"./enhanceError":133}],132:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5480,7 +6057,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":108,"../defaults":116,"./../helpers/combineURLs":120,"./../helpers/isAbsoluteURL":122,"./../utils":127,"./transformData":115}],113:[function(require,module,exports){
+},{"../cancel/isCancel":128,"../defaults":136,"./../helpers/combineURLs":140,"./../helpers/isAbsoluteURL":142,"./../utils":147,"./transformData":135}],133:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5503,7 +6080,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],114:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -5531,7 +6108,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":111}],115:[function(require,module,exports){
+},{"./createError":131}],135:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5553,7 +6130,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":127}],116:[function(require,module,exports){
+},{"./../utils":147}],136:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -5649,7 +6226,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":104,"./adapters/xhr":104,"./helpers/normalizeHeaderName":124,"./utils":127,"_process":134}],117:[function(require,module,exports){
+},{"./adapters/http":124,"./adapters/xhr":124,"./helpers/normalizeHeaderName":144,"./utils":147,"_process":154}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -5662,7 +6239,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],118:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -5700,7 +6277,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],119:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5770,7 +6347,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":127}],120:[function(require,module,exports){
+},{"./../utils":147}],140:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5786,7 +6363,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],121:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5841,7 +6418,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":127}],122:[function(require,module,exports){
+},{"./../utils":147}],142:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5857,7 +6434,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],123:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5927,7 +6504,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":127}],124:[function(require,module,exports){
+},{"./../utils":147}],144:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -5941,7 +6518,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":127}],125:[function(require,module,exports){
+},{"../utils":147}],145:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5996,7 +6573,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":127}],126:[function(require,module,exports){
+},{"./../utils":147}],146:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6025,7 +6602,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],127:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -6330,7 +6907,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":117,"is-buffer":131}],128:[function(require,module,exports){
+},{"./helpers/bind":137,"is-buffer":151}],148:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -6483,7 +7060,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],129:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -8262,7 +8839,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":128,"ieee754":130}],130:[function(require,module,exports){
+},{"base64-js":148,"ieee754":150}],150:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -8348,7 +8925,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],131:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -8371,7 +8948,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],132:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -25480,7 +26057,7 @@ function isSlowBuffer (obj) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],133:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 //! moment.js
 
 ;(function (global, factory) {
@@ -29988,7 +30565,7 @@ function isSlowBuffer (obj) {
 
 })));
 
-},{}],134:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -30174,7 +30751,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],135:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 var _global = (function() { return this; })();
 var NativeWebSocket = _global.WebSocket || _global.MozWebSocket;
 var websocket_version = require('./version');
@@ -30218,10 +30795,10 @@ module.exports = {
     'version'      : websocket_version
 };
 
-},{"./version":136}],136:[function(require,module,exports){
+},{"./version":156}],156:[function(require,module,exports){
 module.exports = require('../package.json').version;
 
-},{"../package.json":137}],137:[function(require,module,exports){
+},{"../package.json":157}],157:[function(require,module,exports){
 module.exports={
   "_from": "websocket@^1.0.26",
   "_id": "websocket@1.0.26",
@@ -30319,5 +30896,5 @@ module.exports={
   "version": "1.0.26"
 }
 
-},{}]},{},[62])(62)
+},{}]},{},[82])(82)
 });

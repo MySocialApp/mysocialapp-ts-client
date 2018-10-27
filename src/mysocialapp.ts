@@ -4,6 +4,7 @@ import {ClientConfiguration} from "./client_configuration";
 import {ClientService} from "./client_service";
 import {Account} from "./models/account";
 import {AuthenticationToken} from "./models/authentication_token";
+import {models} from "./models";
 
 
 export class MySocialApp {
@@ -12,6 +13,7 @@ export class MySocialApp {
 
     private _appId: string;
     private _apiEndpoint: string;
+    models = models;
 
     constructor() {
 

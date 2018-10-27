@@ -21,18 +21,25 @@ export class RestEvent extends Rest {
             params['latitude'] = location.latitude;
             params['longitude'] = location.longitude;
         }
-        return this.conf.getList(new Event(), "/event?" + Rest.encodeQueryData(params)) as Promise<Event[]>;
+        return this.listFromParams(params);
     }
 
     async listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number,
                      upperLatitude: number, upperLongitude: number): Promise<Event[]> {
         let params = {
+            page: page,
+            limited: limited,
+            size: size,
             lower_latitude: lowerLatitude,
             lower_longitude: lowerLongitude,
             upper_latitude: upperLatitude,
             upper_longitude: upperLongitude
         };
-        return this.list(page, limited, size, undefined, params);
+        return this.listFromParams(params);
+    }
+
+    async listFromParams(queryParams: {}): Promise<Event[]> {
+        return this.conf.getList(new Event(), "/event?" + Rest.encodeQueryData(queryParams)) as Promise<Event[]>;
     }
 
     async get(id: string): Promise<Event> {

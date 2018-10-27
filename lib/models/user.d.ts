@@ -8,6 +8,8 @@ import { Gender } from "./gender";
 import { Feed } from "./feed";
 import { FeedPost } from "./feed_post";
 import { PhotoAlbum } from "./photo_album";
+import { ConversationMessagePost } from "./conversation_message_post";
+import { ConversationMessage } from "./conversation_message";
 export declare class User extends Model {
     private _profile_photo?;
     private _custom_fields?;
@@ -56,4 +58,5 @@ export declare class User extends Model {
     acceptFriendRequest(): Promise<User>;
     refuseFriendRequest(): Promise<void>;
     listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]>;
+    sendPrivateMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
 }

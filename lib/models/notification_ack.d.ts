@@ -10,4 +10,5 @@ export declare class NotificationAck extends Model {
     notification_key?: string;
     notification_action?: string;
     location: BaseLocation;
+    setAppPlatform(v: AppPlatform): NotificationAck;
 }

@@ -6,6 +6,8 @@ import { GroupMemberAccessControl } from "./group_member_access_control";
 import { Location } from "./location";
 import { Feed } from "./feed";
 import { TextWallMessage } from "./text_wall_message";
+import { FileData } from "./file";
+import { FeedPost } from "./feed_post";
 export declare class Group extends BaseWall {
     private _location?;
     private _profile_photo?;
@@ -21,6 +23,8 @@ export declare class Group extends BaseWall {
     total_members: number;
     group_member_access_control: GroupMemberAccessControl;
     getJsonParameters(): {};
+    listNewsFeed(page: number, size: number): Promise<Feed[]>;
+    createFeedPost(feedPost: FeedPost): Promise<Feed>;
     join(): Promise<GroupMember>;
     leave(): Promise<void>;
     update(): Promise<Group>;
@@ -31,7 +35,11 @@ export declare class Group extends BaseWall {
     setLocation(l: Location): Group;
     custom_fields: CustomField[];
     members: GroupMember[];
+    readonly cover_image: Photo;
     profile_cover_photo: Photo;
+    readonly image: Photo;
     profile_photo: Photo;
     location: Location;
+    updateImage(file: FileData): Promise<Photo>;
+    updateCoverImage(file: FileData): Promise<Photo>;
 }

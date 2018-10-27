@@ -1,10 +1,15 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Event} from "./models/event";
 import {CustomField} from "./models/custom_field";
+import {EventOptions} from "./models/event_options";
 
 export class FluentEvent extends FluentAbstract {
-    async list(page: number, size: number = 10, options: {} = {}): Promise<Event[]> {
-        return this.session.clientService.event.list(page, undefined, size, undefined, options);
+    async list(page: number, size: number = 10, search?: EventOptions): Promise<Event[]> {
+        if (!search) {
+            search = new EventOptions();
+        }
+        search.setPage(page).setSize(size);
+        return this.session.clientService.event.listFromParams(search.toQueryParams());
     }
 
     async* stream() {

@@ -1,5 +1,6 @@
 import { User } from "./user";
 import { Model } from "./model";
+import { NotificationAck } from "./notification_ack";
 export declare class Notification extends Model {
     private _owner?;
     config_id?: string;
@@ -19,4 +20,5 @@ export declare class Notification extends Model {
     readonly owner: User;
     readonly recipient_user_id: string;
     readonly recipient_device_id: string;
+    ack(n: NotificationAck): Promise<NotificationAck>;
 }

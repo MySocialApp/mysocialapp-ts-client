@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import { FluentAbstract } from "./fluent_abstract";
 import { Group } from "./models/group";
+import { CustomField } from "./models/custom_field";
 export declare class FluentGroup extends FluentAbstract {
     list(page: number, size?: number, options?: {}): Promise<Group[]>;
     stream(): AsyncIterableIterator<Group>;
@@ -14,4 +15,5 @@ export declare class FluentGroup extends FluentAbstract {
      * @returns {Promise<Group[]>}
      */
     search(search: {}, page: number, size?: number): Promise<Group[]>;
+    getAvailableCustomFields(): Promise<CustomField[]>;
 }
