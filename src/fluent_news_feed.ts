@@ -1,7 +1,8 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Feed} from "./models/feed";
 import {FeedPost} from "./models/feed_post";
-import {FeedsSearchResult} from "./models/search_result_types";
+import {SearchResults} from "./models/search_results";
+import {SearchFeed} from "./search/feed";
 
 
 export class FluentNewsFeed extends FluentAbstract {
@@ -35,15 +36,7 @@ export class FluentNewsFeed extends FluentAbstract {
         return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities);
     }
 
-
-    /**
-     * TODO
-     * @param {{}} search
-     * @param {number} page
-     * @param {number} size
-     * @returns {Promise<FeedsSearchResult>}
-     */
-    async search(search: {}, page: number, size: number = 10): Promise<FeedsSearchResult> {
-        return null;
+    async search(search: SearchFeed, page: number, size: number = 10): Promise<SearchResults> {
+        return this.session.clientService.search.get(page, size, search.toQueryParams());
     }
 }

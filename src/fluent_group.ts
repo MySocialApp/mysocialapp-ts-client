@@ -2,6 +2,8 @@ import {FluentAbstract} from "./fluent_abstract";
 import {Group} from "./models/group";
 import {CustomField} from "./models/custom_field";
 import {GroupOptions} from "./models/group_options";
+import {SearchGroup} from "./search/group";
+import {SearchResults} from "./models/search_results";
 
 export class FluentGroup extends FluentAbstract {
 
@@ -31,15 +33,8 @@ export class FluentGroup extends FluentAbstract {
         return this.session.clientService.group.create(group);
     }
 
-    /**
-     * TODO : complete search with search builder
-     * @param {{}} search
-     * @param {number} page
-     * @param {number} size
-     * @returns {Promise<Group[]>}
-     */
-    async search(search: {}, page: number, size: number = 10): Promise<Group[]> {
-        return this.session.clientService.group.list(page, undefined, size);
+    async search(search: SearchGroup, page: number, size: number = 10): Promise<SearchResults> {
+        return this.session.clientService.search.get(page, size, search.toQueryParams());
     }
 
     async getAvailableCustomFields(): Promise<CustomField[]> {

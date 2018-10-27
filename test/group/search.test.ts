@@ -1,7 +1,5 @@
 import {catchErrorFunc, createAccountAndGetSession} from "../common";
 import {Location} from "../../src/models/location";
-import {TextWallMessage} from "../../src/models/text_wall_message";
-import {AccessControl} from "../../src/models/access_control";
 import {Group} from "../../src/models/group";
 import {GroupMemberAccessControl} from "../../src/models/group_member_access_control";
 import {GroupOptions} from "../../src/models/group_options";
@@ -25,9 +23,9 @@ describe("addMessage account", () => {
             expect(groupCreated.id.length).toBeGreaterThan(5);
 
             let groupList = await session1.group
-                                .list(0, 1, new GroupOptions()
-                                    .setLocation(new BaseLocation(locationValue))
-                                );
+                .list(0, 1, new GroupOptions()
+                    .setLocation(new BaseLocation(locationValue))
+                );
             expect(groupList.length == 1).toBeTruthy();
 
 

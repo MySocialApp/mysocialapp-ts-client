@@ -47,6 +47,7 @@ export declare class MySocialApp {
         Group: typeof import("./models/group").Group;
         GroupMember: typeof import("./models/group_member").GroupMember;
         GroupMemberAccessControl: typeof import("./models/group_member_access_control").GroupMemberAccessControl;
+        GroupOptions: typeof import("./models/group_options").GroupOptions;
         GroupStatus: typeof import("./models/group_status").GroupStatus;
         HashTag: typeof import("./models/hash_tag").HashTag;
         Like: typeof import("./models/like").Like;
@@ -57,13 +58,7 @@ export declare class MySocialApp {
         };
         LoginCredentials: typeof import("./models/login_credentials").LoginCredentials;
         Model: typeof import("./models/model").Model;
-        Notification: {
-            new (title: string, options?: NotificationOptions): Notification;
-            prototype: Notification;
-            readonly maxActions: number;
-            readonly permission: NotificationPermission;
-            requestPermission(deprecatedCallback?: NotificationPermissionCallback): Promise<NotificationPermission>;
-        };
+        Notification: typeof import("./models/notification").Notification;
         NotificationAck: typeof import("./models/notification_ack").NotificationAck;
         Photo: typeof import("./models/photo").Photo;
         PhotoAlbum: typeof import("./models/photo_album").PhotoAlbum;

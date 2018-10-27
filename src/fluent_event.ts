@@ -2,6 +2,8 @@ import {FluentAbstract} from "./fluent_abstract";
 import {Event} from "./models/event";
 import {CustomField} from "./models/custom_field";
 import {EventOptions} from "./models/event_options";
+import {SearchEvent} from "./search/event";
+import {SearchResults} from "./models/search_results";
 
 export class FluentEvent extends FluentAbstract {
     async list(page: number, size: number = 10, search?: EventOptions): Promise<Event[]> {
@@ -33,15 +35,8 @@ export class FluentEvent extends FluentAbstract {
         return this.session.clientService.event.create(event);
     }
 
-    /**
-     * TODO : complete search with search builder
-     * @param {{}} search
-     * @param {number} page
-     * @param {number} size
-     * @returns {Promise<Event[]>}
-     */
-    async search(search: {}, page: number, size: number = 10): Promise<Event[]> {
-        return this.session.clientService.event.list(page, undefined, size);
+    async search(search: SearchEvent, page: number, size: number = 10): Promise<SearchResults> {
+        return this.session.clientService.search.get(page, size, search.toQueryParams());
     }
 
     async getAvailableCustomFields(): Promise<CustomField[]> {

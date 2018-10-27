@@ -3,17 +3,13 @@ import {Gender} from "../models/gender";
 import {SimpleLocation} from "../models/simple_location";
 import {SortOrder} from "../models/sort_order";
 import {SearchType} from "../models/search_type";
+import {BaseLocation} from "../models/base_location";
 
 export class SearchUser extends SearchBuilder {
 
     constructor() {
         super();
         this.params.set("type", SearchType.User);
-    }
-
-    setFullName(value: string): SearchUser {
-        this.params.set("q", value);
-        return this;
     }
 
     setFirstName(value: string): SearchUser {
@@ -31,8 +27,9 @@ export class SearchUser extends SearchBuilder {
         return this;
     }
 
-    setLocation(loc: SimpleLocation): SearchUser {
-        this.params.set("location", String(loc.latitude) + "," + String(loc.longitude));
+    setLocation(loc: BaseLocation): SearchUser {
+        this.params.set("latitude", String(loc.latitude));
+        this.params.set("longitude", String(loc.longitude));
         return this;
     }
 

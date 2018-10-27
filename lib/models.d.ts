@@ -35,6 +35,7 @@ import { Like } from "./models/like";
 import { LikeBlob } from "./models/like_blob";
 import { LoginCredentials } from "./models/login_credentials";
 import { Model } from "./models/model";
+import { Notification } from "./models/notification";
 import { NotificationAck } from "./models/notification_ack";
 import { Photo } from "./models/photo";
 import { PhotoAlbum } from "./models/photo_album";
@@ -57,6 +58,7 @@ import { User } from "./models/user";
 import { UserMentionTag } from "./models/user_mention_tag";
 import { UserSettings } from "./models/user_settings";
 import { UserStat } from "./models/user_stat";
+import { GroupOptions } from "./models/group_options";
 export declare const models: {
     AccessControl: typeof AccessControl;
     Account: typeof Account;
@@ -97,6 +99,7 @@ export declare const models: {
     Group: typeof Group;
     GroupMember: typeof GroupMember;
     GroupMemberAccessControl: typeof GroupMemberAccessControl;
+    GroupOptions: typeof GroupOptions;
     GroupStatus: typeof GroupStatus;
     HashTag: typeof HashTag;
     Like: typeof Like;
@@ -107,13 +110,7 @@ export declare const models: {
     };
     LoginCredentials: typeof LoginCredentials;
     Model: typeof Model;
-    Notification: {
-        new (title: string, options?: NotificationOptions): Notification;
-        prototype: Notification;
-        readonly maxActions: number;
-        readonly permission: NotificationPermission;
-        requestPermission(deprecatedCallback?: NotificationPermissionCallback): Promise<NotificationPermission>;
-    };
+    Notification: typeof Notification;
     NotificationAck: typeof NotificationAck;
     Photo: typeof Photo;
     PhotoAlbum: typeof PhotoAlbum;

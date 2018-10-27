@@ -16,12 +16,6 @@ export class FluentUser extends FluentAbstract {
         return this.session.clientService.userExternal.get(id);
     }
 
-    /**
-     * @param {{}} search
-     * @param {number} page
-     * @param {number} size
-     * @returns {Promise<User[]>}
-     */
     async search(search: SearchUser, page: number, size: number = 10): Promise<SearchResults> {
         return this.session.clientService.search.get(page, size, search.toQueryParams());
     }
