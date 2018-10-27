@@ -64,6 +64,10 @@ export declare class MySocialApp {
         PhotoAlbum: typeof import("./models/photo_album").PhotoAlbum;
         PreviewNotification: typeof import("./models/preview_notification").PreviewNotification;
         ResetIdentifier: typeof import("./models/reset_identifier").ResetIdentifier;
+        SearchEvent: typeof import("./search/event").SearchEvent;
+        SearchFeed: typeof import("./search/feed").SearchFeed;
+        SearchGroup: typeof import("./search/group").SearchGroup;
+        SearchUser: typeof import("./search/user").SearchUser;
         SearchQuery: typeof import("./models/search_query").SearchQuery;
         SearchResult: typeof import("./models/search_result").SearchResult;
         SearchResultTypes: typeof import("./models/search_result_types").SearchResultTypes;

@@ -287,7 +287,7 @@ class Configuration {
 }
 exports.Configuration = Configuration;
 
-},{"./models/user_settings":80,"./rest/error":87,"axios":124}],3:[function(require,module,exports){
+},{"./models/user_settings":80,"./rest/error":87,"axios":129}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // format ex : 2018-08-15T16:48:06Z
@@ -909,6 +909,10 @@ const user_mention_tag_1 = require("./models/user_mention_tag");
 const user_settings_1 = require("./models/user_settings");
 const user_stat_1 = require("./models/user_stat");
 const group_options_1 = require("./models/group_options");
+const event_1 = require("./search/event");
+const feed_2 = require("./search/feed");
+const group_2 = require("./search/group");
+const user_2 = require("./search/user");
 exports.models = {
     AccessControl: access_control_1.AccessControl,
     Account: account_1.Account,
@@ -956,6 +960,10 @@ exports.models = {
     PhotoAlbum: photo_album_1.PhotoAlbum,
     PreviewNotification: preview_notification_1.PreviewNotification,
     ResetIdentifier: reset_identifier_1.ResetIdentifier,
+    SearchEvent: event_1.SearchEvent,
+    SearchFeed: feed_2.SearchFeed,
+    SearchGroup: group_2.SearchGroup,
+    SearchUser: user_2.SearchUser,
     SearchQuery: search_query_1.SearchQuery,
     SearchResult: search_result_1.SearchResult,
     SearchResultTypes: search_result_types_1.SearchResultTypes,
@@ -975,7 +983,7 @@ exports.models = {
     UserStat: user_stat_1.UserStat,
 };
 
-},{"./models/access_control":17,"./models/account":18,"./models/account_events":19,"./models/activity_type":20,"./models/app_platform":21,"./models/authentication_token":22,"./models/base":23,"./models/base_location":24,"./models/base_wall":25,"./models/comment":26,"./models/comment_blob":27,"./models/comment_post":28,"./models/conversation":29,"./models/conversation_message":30,"./models/conversation_message_post":31,"./models/conversation_messages":32,"./models/custom_field":33,"./models/entity_type":35,"./models/event_member":37,"./models/event_member_access_control":38,"./models/event_options":39,"./models/event_status":40,"./models/feed":41,"./models/feed_post":42,"./models/file":43,"./models/flag":44,"./models/friend_requests":45,"./models/gender":46,"./models/group":48,"./models/group_member":49,"./models/group_member_access_control":50,"./models/group_options":51,"./models/group_status":52,"./models/hash_tag":53,"./models/like":54,"./models/like_blob":55,"./models/login_credentials":57,"./models/model":58,"./models/notification":59,"./models/notification_ack":60,"./models/photo":61,"./models/photo_album":62,"./models/preview_notification":63,"./models/reset_identifier":64,"./models/search_query":65,"./models/search_result":66,"./models/search_result_types":67,"./models/search_results":68,"./models/search_type":69,"./models/simple_location":70,"./models/sort_order":71,"./models/status":72,"./models/tag_entities":73,"./models/tag_entity":74,"./models/tag_entity_abstract":75,"./models/text_wall_message":76,"./models/url_tag":77,"./models/user":78,"./models/user_mention_tag":79,"./models/user_settings":80,"./models/user_stat":81}],17:[function(require,module,exports){
+},{"./models/access_control":17,"./models/account":18,"./models/account_events":19,"./models/activity_type":20,"./models/app_platform":21,"./models/authentication_token":22,"./models/base":23,"./models/base_location":24,"./models/base_wall":25,"./models/comment":26,"./models/comment_blob":27,"./models/comment_post":28,"./models/conversation":29,"./models/conversation_message":30,"./models/conversation_message_post":31,"./models/conversation_messages":32,"./models/custom_field":33,"./models/entity_type":35,"./models/event_member":37,"./models/event_member_access_control":38,"./models/event_options":39,"./models/event_status":40,"./models/feed":41,"./models/feed_post":42,"./models/file":43,"./models/flag":44,"./models/friend_requests":45,"./models/gender":46,"./models/group":48,"./models/group_member":49,"./models/group_member_access_control":50,"./models/group_options":51,"./models/group_status":52,"./models/hash_tag":53,"./models/like":54,"./models/like_blob":55,"./models/login_credentials":57,"./models/model":58,"./models/notification":59,"./models/notification_ack":60,"./models/photo":61,"./models/photo_album":62,"./models/preview_notification":63,"./models/reset_identifier":64,"./models/search_query":65,"./models/search_result":66,"./models/search_result_types":67,"./models/search_results":68,"./models/search_type":69,"./models/simple_location":70,"./models/sort_order":71,"./models/status":72,"./models/tag_entities":73,"./models/tag_entity":74,"./models/tag_entity_abstract":75,"./models/text_wall_message":76,"./models/url_tag":77,"./models/user":78,"./models/user_mention_tag":79,"./models/user_settings":80,"./models/user_stat":81,"./search/event":122,"./search/feed":123,"./search/group":124,"./search/user":126}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AccessControl;
@@ -1182,7 +1190,7 @@ class Base extends model_1.Model {
 }
 exports.Base = Base;
 
-},{"./model":58,"./photo":61,"./user":78,"moment":154}],24:[function(require,module,exports){
+},{"./model":58,"./photo":61,"./user":78,"moment":159}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1695,7 +1703,7 @@ var CustomFieldType;
     CustomFieldType["InputCheckbox"] = "INPUT_CHECKBOX";
 })(CustomFieldType = exports.CustomFieldType || (exports.CustomFieldType = {}));
 
-},{"../constant":3,"./model":58,"./simple_location":70,"moment":154}],34:[function(require,module,exports){
+},{"../constant":3,"./model":58,"./simple_location":70,"moment":159}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2315,7 +2323,7 @@ class GenericFormDataValue {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":150}],48:[function(require,module,exports){
+},{"buffer":155}],48:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2651,7 +2659,7 @@ class Location {
 }
 exports.Location = Location;
 
-},{"./simple_location":70,"lodash":153}],57:[function(require,module,exports){
+},{"./simple_location":70,"lodash":158}],57:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2702,7 +2710,7 @@ class Model {
 }
 exports.Model = Model;
 
-},{"lodash":153}],59:[function(require,module,exports){
+},{"lodash":158}],59:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3612,7 +3620,7 @@ class MySocialApp {
 }
 exports.MySocialApp = MySocialApp;
 
-},{"./client_service":1,"./configuration":2,"./models":16,"./models/account":18,"./models/authentication_token":22,"./session":122}],84:[function(require,module,exports){
+},{"./client_service":1,"./configuration":2,"./models":16,"./models/account":18,"./models/authentication_token":22,"./session":127}],84:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5260,6 +5268,227 @@ exports.RestUserWallMessage = RestUserWallMessage;
 
 },{"../models/feed":41,"./rest":104}],122:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const search_1 = require("./search");
+const search_type_1 = require("../models/search_type");
+const constant_1 = require("../constant");
+const event_options_1 = require("../models/event_options");
+class SearchEvent extends search_1.SearchBuilder {
+    constructor() {
+        super();
+        this.params.set("type", search_type_1.SearchType.Event);
+        this.setDateField(event_options_1.EventDateField.StartDate);
+    }
+    setFromDate(d) {
+        this.params.set("start_date", d.format(constant_1.apiDateFormat));
+        return this;
+    }
+    setToDate(d) {
+        this.params.set("end_date", d.format(constant_1.apiDateFormat));
+        return this;
+    }
+    setName(value) {
+        this.params.set("name", value);
+        return this;
+    }
+    setDescription(value) {
+        this.params.set("content", value);
+        return this;
+    }
+    setOwnerFirstName(value) {
+        this.params.set("first_name", value);
+        return this;
+    }
+    setOwnerLastName(value) {
+        this.params.set("last_name", value);
+        return this;
+    }
+    setLocation(loc) {
+        this.params.set("latitude", String(loc.latitude));
+        this.params.set("longitude", String(loc.longitude));
+        return this;
+    }
+    setLocationMaximumDistanceInMeters(distance) {
+        this.params.set('maximum_distance_in_meters', String(distance));
+        return this;
+    }
+    setLocationMaximumDistanceInKilometers(distance) {
+        this.setLocationMaximumDistanceInMeters(distance * 1000);
+        return this;
+    }
+    setOrder(order) {
+        this.params.set('sort_order', order);
+        return this;
+    }
+    setDateField(f) {
+        this.params.set('date_field', f);
+        return this;
+    }
+}
+exports.SearchEvent = SearchEvent;
+
+},{"../constant":3,"../models/event_options":39,"../models/search_type":69,"./search":125}],123:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const search_1 = require("./search");
+const search_type_1 = require("../models/search_type");
+class SearchFeed extends search_1.SearchBuilder {
+    constructor() {
+        super();
+        this.params.set("type", search_type_1.SearchType.Feed);
+    }
+    setName(value) {
+        this.params.set("name", value);
+        return this;
+    }
+    setOwnerFirstName(value) {
+        this.params.set("first_name", value);
+        return this;
+    }
+    setOwnerLastName(value) {
+        this.params.set("last_name", value);
+        return this;
+    }
+    setOwnerGender(value) {
+        this.params.set("gender", value);
+        return this;
+    }
+    setOwnerLivingLocation(loc) {
+        this.params.set("latitude", String(loc.latitude));
+        this.params.set("longitude", String(loc.longitude));
+        return this;
+    }
+    setOwnerLivingLocationMaximumDistanceInMeters(distance) {
+        this.params.set('maximum_distance_in_meters', String(distance));
+        return this;
+    }
+    setOwnerLivingLocationMaximumDistanceInKilometers(distance) {
+        this.setOwnerLivingLocationMaximumDistanceInMeters(distance * 1000);
+        return this;
+    }
+    setTextToSearch(text) {
+        this.params.set("q", text);
+        return this;
+    }
+    setOrder(order) {
+        this.params.set('sort_order', order);
+        return this;
+    }
+}
+exports.SearchFeed = SearchFeed;
+
+},{"../models/search_type":69,"./search":125}],124:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const search_1 = require("./search");
+const search_type_1 = require("../models/search_type");
+class SearchGroup extends search_1.SearchBuilder {
+    constructor() {
+        super();
+        this.params.set("type", search_type_1.SearchType.Group);
+    }
+    setName(value) {
+        this.params.set("name", value);
+        return this;
+    }
+    setOwnerFirstName(value) {
+        this.params.set("first_name", value);
+        return this;
+    }
+    setOwnerLastName(value) {
+        this.params.set("last_name", value);
+        return this;
+    }
+    setGender(value) {
+        this.params.set("gender", value);
+        return this;
+    }
+    setLocation(loc) {
+        this.params.set("latitude", String(loc.latitude));
+        this.params.set("longitude", String(loc.longitude));
+        return this;
+    }
+    setLocationMaximumDistanceInMeters(distance) {
+        this.params.set('maximum_distance_in_meters', String(distance));
+        return this;
+    }
+    setLocationMaximumDistanceInKilometers(distance) {
+        this.setLocationMaximumDistanceInMeters(distance * 1000);
+        return this;
+    }
+    setOrder(order) {
+        this.params.set('sort_order', order);
+        return this;
+    }
+}
+exports.SearchGroup = SearchGroup;
+
+},{"../models/search_type":69,"./search":125}],125:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class SearchBuilder {
+    constructor() {
+        this.params = new Map();
+    }
+    toQueryParams() {
+        let values = {};
+        for (let k of this.params.keys()) {
+            values[k] = this.params.get(k);
+        }
+        values['date_field'] = this.params.get('date_field') ? this.params.get('date_field') : 'created_date';
+        return values;
+    }
+}
+exports.SearchBuilder = SearchBuilder;
+
+},{}],126:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const search_1 = require("./search");
+const search_type_1 = require("../models/search_type");
+class SearchUser extends search_1.SearchBuilder {
+    constructor() {
+        super();
+        this.params.set("type", search_type_1.SearchType.User);
+    }
+    setFirstName(value) {
+        this.params.set("first_name", value);
+        return this;
+    }
+    setLastName(value) {
+        this.params.set("last_name", value);
+        return this;
+    }
+    setGender(value) {
+        this.params.set("gender_name", value);
+        return this;
+    }
+    setLocation(loc) {
+        this.params.set("latitude", String(loc.latitude));
+        this.params.set("longitude", String(loc.longitude));
+        return this;
+    }
+    setLivingLocationMaximumDistanceInMeters(distance) {
+        this.params.set('maximum_distance_in_meters', String(distance));
+        return this;
+    }
+    setLivingLocationMaximumDistanceInKilometers(distance) {
+        this.setLivingLocationMaximumDistanceInMeters(distance * 1000);
+        return this;
+    }
+    setPresentation(value) {
+        this.params.set("presentation", value);
+        return this;
+    }
+    setOrder(order) {
+        this.params.set('sort_order', order);
+        return this;
+    }
+}
+exports.SearchUser = SearchUser;
+
+},{"../models/search_type":69,"./search":125}],127:[function(require,module,exports){
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -5355,7 +5584,7 @@ class Session {
 }
 exports.Session = Session;
 
-},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_friend":9,"./fluent_group":10,"./fluent_news_feed":11,"./fluent_notification":12,"./fluent_photo":13,"./fluent_photo_album":14,"./fluent_user":15,"./models/login_credentials":57,"./websocket_service":123}],123:[function(require,module,exports){
+},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_friend":9,"./fluent_group":10,"./fluent_news_feed":11,"./fluent_notification":12,"./fluent_photo":13,"./fluent_photo_album":14,"./fluent_user":15,"./models/login_credentials":57,"./websocket_service":128}],128:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const notification_1 = require("./models/notification");
@@ -5498,9 +5727,9 @@ class WebsocketService {
 }
 exports.WebsocketService = WebsocketService;
 
-},{"./models/conversation_message":30,"./models/event":36,"./models/feed":41,"./models/notification":59,"./models/user":78,"websocket":156}],124:[function(require,module,exports){
+},{"./models/conversation_message":30,"./models/event":36,"./models/feed":41,"./models/notification":59,"./models/user":78,"websocket":161}],129:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":126}],125:[function(require,module,exports){
+},{"./lib/axios":131}],130:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -5684,7 +5913,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":132,"./../core/settle":135,"./../helpers/btoa":139,"./../helpers/buildURL":140,"./../helpers/cookies":142,"./../helpers/isURLSameOrigin":144,"./../helpers/parseHeaders":146,"./../utils":148,"_process":155}],126:[function(require,module,exports){
+},{"../core/createError":137,"./../core/settle":140,"./../helpers/btoa":144,"./../helpers/buildURL":145,"./../helpers/cookies":147,"./../helpers/isURLSameOrigin":149,"./../helpers/parseHeaders":151,"./../utils":153,"_process":160}],131:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -5738,7 +5967,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":127,"./cancel/CancelToken":128,"./cancel/isCancel":129,"./core/Axios":130,"./defaults":137,"./helpers/bind":138,"./helpers/spread":147,"./utils":148}],127:[function(require,module,exports){
+},{"./cancel/Cancel":132,"./cancel/CancelToken":133,"./cancel/isCancel":134,"./core/Axios":135,"./defaults":142,"./helpers/bind":143,"./helpers/spread":152,"./utils":153}],132:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5759,7 +5988,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],128:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -5818,14 +6047,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":127}],129:[function(require,module,exports){
+},{"./Cancel":132}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],130:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -5906,7 +6135,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":137,"./../utils":148,"./InterceptorManager":131,"./dispatchRequest":133}],131:[function(require,module,exports){
+},{"./../defaults":142,"./../utils":153,"./InterceptorManager":136,"./dispatchRequest":138}],136:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -5960,7 +6189,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":148}],132:[function(require,module,exports){
+},{"./../utils":153}],137:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -5980,7 +6209,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":134}],133:[function(require,module,exports){
+},{"./enhanceError":139}],138:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -6068,7 +6297,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":129,"../defaults":137,"./../helpers/combineURLs":141,"./../helpers/isAbsoluteURL":143,"./../utils":148,"./transformData":136}],134:[function(require,module,exports){
+},{"../cancel/isCancel":134,"../defaults":142,"./../helpers/combineURLs":146,"./../helpers/isAbsoluteURL":148,"./../utils":153,"./transformData":141}],139:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6091,7 +6320,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],135:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -6119,7 +6348,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":132}],136:[function(require,module,exports){
+},{"./createError":137}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -6141,7 +6370,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":148}],137:[function(require,module,exports){
+},{"./../utils":153}],142:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -6237,7 +6466,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":125,"./adapters/xhr":125,"./helpers/normalizeHeaderName":145,"./utils":148,"_process":155}],138:[function(require,module,exports){
+},{"./adapters/http":130,"./adapters/xhr":130,"./helpers/normalizeHeaderName":150,"./utils":153,"_process":160}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -6250,7 +6479,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],139:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -6288,7 +6517,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],140:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -6358,7 +6587,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":148}],141:[function(require,module,exports){
+},{"./../utils":153}],146:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6374,7 +6603,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],142:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -6429,7 +6658,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":148}],143:[function(require,module,exports){
+},{"./../utils":153}],148:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6445,7 +6674,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],144:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -6515,7 +6744,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":148}],145:[function(require,module,exports){
+},{"./../utils":153}],150:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -6529,7 +6758,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":148}],146:[function(require,module,exports){
+},{"../utils":153}],151:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -6584,7 +6813,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":148}],147:[function(require,module,exports){
+},{"./../utils":153}],152:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6613,7 +6842,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],148:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -6918,7 +7147,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":138,"is-buffer":152}],149:[function(require,module,exports){
+},{"./helpers/bind":143,"is-buffer":157}],154:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -7071,7 +7300,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],150:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -8850,7 +9079,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":149,"ieee754":151}],151:[function(require,module,exports){
+},{"base64-js":154,"ieee754":156}],156:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -8936,7 +9165,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],152:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -8959,7 +9188,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],153:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -26068,7 +26297,7 @@ function isSlowBuffer (obj) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],154:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 //! moment.js
 
 ;(function (global, factory) {
@@ -30576,7 +30805,7 @@ function isSlowBuffer (obj) {
 
 })));
 
-},{}],155:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -30762,7 +30991,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],156:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 var _global = (function() { return this; })();
 var NativeWebSocket = _global.WebSocket || _global.MozWebSocket;
 var websocket_version = require('./version');
@@ -30806,10 +31035,10 @@ module.exports = {
     'version'      : websocket_version
 };
 
-},{"./version":157}],157:[function(require,module,exports){
+},{"./version":162}],162:[function(require,module,exports){
 module.exports = require('../package.json').version;
 
-},{"../package.json":158}],158:[function(require,module,exports){
+},{"../package.json":163}],163:[function(require,module,exports){
 module.exports={
   "_from": "websocket@^1.0.26",
   "_id": "websocket@1.0.26",

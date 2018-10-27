@@ -59,6 +59,10 @@ import { UserMentionTag } from "./models/user_mention_tag";
 import { UserSettings } from "./models/user_settings";
 import { UserStat } from "./models/user_stat";
 import { GroupOptions } from "./models/group_options";
+import { SearchEvent } from "./search/event";
+import { SearchFeed } from "./search/feed";
+import { SearchGroup } from "./search/group";
+import { SearchUser } from "./search/user";
 export declare const models: {
     AccessControl: typeof AccessControl;
     Account: typeof Account;
@@ -116,6 +120,10 @@ export declare const models: {
     PhotoAlbum: typeof PhotoAlbum;
     PreviewNotification: typeof PreviewNotification;
     ResetIdentifier: typeof ResetIdentifier;
+    SearchEvent: typeof SearchEvent;
+    SearchFeed: typeof SearchFeed;
+    SearchGroup: typeof SearchGroup;
+    SearchUser: typeof SearchUser;
     SearchQuery: typeof SearchQuery;
     SearchResult: typeof SearchResult;
     SearchResultTypes: typeof SearchResultTypes;
