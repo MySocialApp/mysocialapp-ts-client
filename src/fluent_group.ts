@@ -1,11 +1,12 @@
 import {FluentAbstract} from "./fluent_abstract";
 import {Group} from "./models/group";
 import {CustomField} from "./models/custom_field";
+import {GroupOptions} from "./models/group_options";
 
 export class FluentGroup extends FluentAbstract {
 
-    async list(page: number, size: number = 10, options: {} = {}): Promise<Group[]> {
-        return this.session.clientService.group.list(page, undefined, size, undefined, options);
+    async list(page: number, size: number = 10, options?: GroupOptions): Promise<Group[]> {
+        return this.session.clientService.group.list(page, undefined, size, undefined, options.toQueryParams());
     }
 
     async* stream() {

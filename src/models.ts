@@ -35,6 +35,7 @@ import {Like} from "./models/like";
 import {LikeBlob} from "./models/like_blob";
 import {LoginCredentials} from "./models/login_credentials";
 import {Model} from "./models/model";
+import {Notification} from "./models/notification";
 import {NotificationAck} from "./models/notification_ack";
 import {Photo} from "./models/photo";
 import {PhotoAlbum} from "./models/photo_album";
@@ -57,6 +58,7 @@ import {User} from "./models/user";
 import {UserMentionTag} from "./models/user_mention_tag";
 import {UserSettings} from "./models/user_settings";
 import {UserStat} from "./models/user_stat";
+import {GroupOptions} from "./models/group_options";
 
 export const models = {
     AccessControl: AccessControl,
@@ -91,6 +93,7 @@ export const models = {
     Group: Group,
     GroupMember: GroupMember,
     GroupMemberAccessControl: GroupMemberAccessControl,
+    GroupOptions: GroupOptions,
     GroupStatus: GroupStatus,
     HashTag: HashTag,
     Like: Like,

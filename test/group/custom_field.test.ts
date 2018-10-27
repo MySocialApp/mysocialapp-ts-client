@@ -1,8 +1,5 @@
 import {catchErrorFunc, createAccountAndGetSession, fillCustomFields} from "../common";
-import {EventMemberAccessControl} from "../../src/models/event_member_access_control";
 import {Location} from "../../src/models/location";
-import {Event} from "../../src/models/event";
-import moment = require("moment");
 import {Group} from "../../src/models/group";
 import {GroupMemberAccessControl} from "../../src/models/group_member_access_control";
 
@@ -21,7 +18,7 @@ describe("group custom field", () => {
             groupCreated.custom_fields = fillCustomFields(groupCreated.custom_fields);
             let groupUpdated = await groupCreated.update();
 
-            for(let field of groupUpdated.custom_fields) {
+            for (let field of groupUpdated.custom_fields) {
                 expect(field.data != undefined).toBeTruthy();
                 expect(field.data && field.data.field_id && field.data.field_id.length).toBeTruthy();
             }

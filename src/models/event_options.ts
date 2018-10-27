@@ -51,7 +51,6 @@ export class EventOptions {
             limited: this._limited,
             from_date: this._from_date,
             date_field: this._date_field,
-            type: 'EVENT',
         };
         if (this._location !== undefined && this._location.latitude && this._location.longitude) {
             params['latitude'] = this._location.latitude;
