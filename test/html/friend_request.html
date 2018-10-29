@@ -1,0 +1,22 @@
+<html>
+<body>
+<script type="text/javascript" src="../../dist/mysocialapp.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript">
+    getSession().then(function(session1){
+        getSession().then(function(session2){
+            session1.user.get(session2._account._account.id).then((user2)=> {
+                user2.requestAsFriend().then(()=> {
+                    session2.friend.listIncomingFriendRequests().then((requests)=> {
+                        console.info("incoming requests", requests);
+                        requests[0].acceptFriendRequest().then(()=> {
+                            console.log("request accepted!");
+                        });
+                    });
+                });
+            })
+        });
+    });
+</script>
+</body>
+</html>

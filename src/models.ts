@@ -64,72 +64,72 @@ import {SearchFeed} from "./search/feed";
 import {SearchGroup} from "./search/group";
 import {SearchUser} from "./search/user";
 
-export const models = {
-    AccessControl: AccessControl,
-    Account: Account,
-    AccountEvents: AccountEvents,
-    ActivityType: ActivityType,
-    AppPlatform: AppPlatform,
-    AuthenticationToken: AuthenticationToken,
-    Base: Base,
-    BaseLocation: BaseLocation,
-    BaseWall: BaseWall,
-    Comment: Comment,
-    CommentBlob: CommentBlob,
-    CommentPost: CommentPost,
-    Conversation: Conversation,
-    ConversationMessage: ConversationMessage,
-    ConversationMessagePost: ConversationMessagePost,
-    ConversationMessages: ConversationMessages,
-    CustomField: CustomField,
-    EntityType: EntityType,
-    Event: Event,
-    EventMember: EventMember,
-    EventMemberAccessControl: EventMemberAccessControl,
-    EventOptions: EventOptions,
-    EventStatus: EventStatus,
-    Feed: Feed,
-    FeedPost: FeedPost,
-    FileData: FileData,
-    Flag: Flag,
-    FriendRequests: FriendRequests,
-    Gender: Gender,
-    Group: Group,
-    GroupMember: GroupMember,
-    GroupMemberAccessControl: GroupMemberAccessControl,
-    GroupOptions: GroupOptions,
-    GroupStatus: GroupStatus,
-    HashTag: HashTag,
-    Like: Like,
-    LikeBlob: LikeBlob,
-    Location: Location,
-    LoginCredentials: LoginCredentials,
-    Model: Model,
-    Notification: Notification,
-    NotificationAck: NotificationAck,
-    Photo: Photo,
-    PhotoAlbum: PhotoAlbum,
-    PreviewNotification: PreviewNotification,
-    ResetIdentifier: ResetIdentifier,
-    SearchEvent: SearchEvent,
-    SearchFeed: SearchFeed,
-    SearchGroup: SearchGroup,
-    SearchUser: SearchUser,
-    SearchQuery: SearchQuery,
-    SearchResult: SearchResult,
-    SearchResultTypes: SearchResultTypes,
-    SearchResults: SearchResults,
-    SearchType: SearchType,
-    SimpleLocation: SimpleLocation,
-    SortOrder: SortOrder,
-    Status: Status,
-    TagEntities: TagEntities,
-    TagEntity: TagEntity,
-    TagEntityAbstract: TagEntityAbstract,
-    TextWallMessage: TextWallMessage,
-    URLTag: URLTag,
-    User: User,
-    UserMentionTag: UserMentionTag,
-    UserSettings: UserSettings,
-    UserStat: UserStat,
-};
+export class models {
+    AccessControl = AccessControl;
+    Account = Account;
+    AccountEvents = AccountEvents;
+    ActivityType = ActivityType;
+    AppPlatform = AppPlatform;
+    AuthenticationToken = AuthenticationToken;
+    Base = Base;
+    BaseLocation = BaseLocation;
+    BaseWall = BaseWall;
+    Comment = Comment;
+    CommentBlob = CommentBlob;
+    CommentPost = CommentPost;
+    Conversation = Conversation;
+    ConversationMessage = ConversationMessage;
+    ConversationMessagePost = ConversationMessagePost;
+    ConversationMessages = ConversationMessages;
+    CustomField = CustomField;
+    EntityType = EntityType;
+    Event = Event;
+    EventMember = EventMember;
+    EventMemberAccessControl = EventMemberAccessControl;
+    EventOptions = EventOptions;
+    EventStatus = EventStatus;
+    Feed = Feed;
+    FeedPost = FeedPost;
+    FileData = FileData;
+    Flag = Flag;
+    FriendRequests = FriendRequests;
+    Gender = Gender;
+    Group = Group;
+    GroupMember = GroupMember;
+    GroupMemberAccessControl = GroupMemberAccessControl;
+    GroupOptions = GroupOptions;
+    GroupStatus = GroupStatus;
+    HashTag = HashTag;
+    Like = Like;
+    LikeBlob = LikeBlob;
+    Location = Location;
+    LoginCredentials = LoginCredentials;
+    Model = Model;
+    Notification = Notification;
+    NotificationAck = NotificationAck;
+    Photo = Photo;
+    PhotoAlbum = PhotoAlbum;
+    PreviewNotification = PreviewNotification;
+    ResetIdentifier = ResetIdentifier;
+    SearchEvent = SearchEvent;
+    SearchFeed = SearchFeed;
+    SearchGroup = SearchGroup;
+    SearchUser = SearchUser;
+    SearchQuery = SearchQuery;
+    SearchResult = SearchResult;
+    SearchResultTypes = SearchResultTypes;
+    SearchResults = SearchResults;
+    SearchType = SearchType;
+    SimpleLocation = SimpleLocation;
+    SortOrder = SortOrder;
+    Status = Status;
+    TagEntities = TagEntities;
+    TagEntity = TagEntity;
+    TagEntityAbstract = TagEntityAbstract;
+    TextWallMessage = TextWallMessage;
+    URLTag = URLTag;
+    User = User;
+    UserMentionTag = UserMentionTag;
+    UserSettings = UserSettings;
+    UserStat = UserStat;
+}

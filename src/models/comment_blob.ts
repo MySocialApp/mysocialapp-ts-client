@@ -11,7 +11,7 @@ export class CommentBlob extends Model {
 
     set samples(comments: Comment[]) {
         let list = [] as Comment[];
-        for (let comment in comments) {
+        for (let comment of comments) {
             list.push(new Comment(comment, this.conf));
         }
         this._samples = list;

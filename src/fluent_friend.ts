@@ -9,11 +9,11 @@ export class FluentFriend extends FluentAbstract {
 
     async listIncomingFriendRequests(): Promise<User[]> {
         let req = await this.session.clientService.friend.listRequests();
-        return req.incoming;
+        return req.incoming ? req.incoming : [];
     }
 
     async listOutgoingFriendRequests(): Promise<User[]> {
         let req = await this.session.clientService.friend.listRequests();
-        return req.outgoing;
+        return req.outgoing ? req.outgoing : [];
     }
 }

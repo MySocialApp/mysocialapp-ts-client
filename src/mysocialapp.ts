@@ -13,7 +13,6 @@ export class MySocialApp {
 
     private _appId: string;
     private _apiEndpoint: string;
-    models = models;
 
     constructor() {
 
@@ -78,3 +77,5 @@ export class MySocialApp {
         return this.createSession().account.resetPassword(email);
     }
 }
+
+export const Models = new models();

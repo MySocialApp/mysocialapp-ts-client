@@ -6,9 +6,9 @@ export class FriendRequests extends Model {
     _outgoing: User[];
 
     set incoming(list: User[]) {
-        let users: User[];
-        for (let u in list) {
-            users.push(new User(u));
+        let users: User[] = [];
+        for (let u of list) {
+            users.push(new User(u, this.conf));
         }
         this._incoming = users;
     }
@@ -18,9 +18,9 @@ export class FriendRequests extends Model {
     }
 
     set outgoing(list: User[]) {
-        let users: User[];
-        for (let u in list) {
-            users.push(new User(u));
+        let users: User[] = [];
+        for (let u of list) {
+            users.push(new User(u, this.conf));
         }
         this._outgoing = users;
     }

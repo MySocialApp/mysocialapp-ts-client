@@ -63,7 +63,7 @@ import { SearchEvent } from "./search/event";
 import { SearchFeed } from "./search/feed";
 import { SearchGroup } from "./search/group";
 import { SearchUser } from "./search/user";
-export declare const models: {
+export declare class models {
     AccessControl: typeof AccessControl;
     Account: typeof Account;
     AccountEvents: typeof AccountEvents;
@@ -141,4 +141,4 @@ export declare const models: {
     UserMentionTag: typeof UserMentionTag;
     UserSettings: typeof UserSettings;
     UserStat: typeof UserStat;
-};
+}

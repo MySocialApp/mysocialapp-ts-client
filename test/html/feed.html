@@ -1,0 +1,19 @@
+<html>
+<body>
+    <script type="text/javascript" src="../../dist/mysocialapp.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript">
+        getSession().then(function(session){
+            let accountPromise = session.account.get();
+            accountPromise.then(function(){
+                let feedPost = new msa.Models.FeedPost()
+                        .setMessage("Good day")
+                        .setVisibility(msa.Models.AccessControl.Friend);
+                session.newsFeed.create(feedPost).then((createdPost)=> {
+                    console.log("createdPost", createdPost);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

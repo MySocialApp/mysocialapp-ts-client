@@ -7,7 +7,7 @@ export class PhotoAlbum extends Model {
 
     set photos(photos: Photo[]) {
         let list = [] as Photo[];
-        for (let p in photos) {
+        for (let p of photos) {
             list.push(new Photo(p, this.conf));
         }
         this._photos = list;

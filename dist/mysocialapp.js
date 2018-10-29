@@ -553,13 +553,13 @@ class FluentFriend extends fluent_abstract_1.FluentAbstract {
     listIncomingFriendRequests() {
         return __awaiter(this, void 0, void 0, function* () {
             let req = yield this.session.clientService.friend.listRequests();
-            return req.incoming;
+            return req.incoming ? req.incoming : [];
         });
     }
     listOutgoingFriendRequests() {
         return __awaiter(this, void 0, void 0, function* () {
             let req = yield this.session.clientService.friend.listRequests();
-            return req.outgoing;
+            return req.outgoing ? req.outgoing : [];
         });
     }
 }
@@ -913,75 +913,78 @@ const event_1 = require("./search/event");
 const feed_2 = require("./search/feed");
 const group_2 = require("./search/group");
 const user_2 = require("./search/user");
-exports.models = {
-    AccessControl: access_control_1.AccessControl,
-    Account: account_1.Account,
-    AccountEvents: account_events_1.AccountEvents,
-    ActivityType: activity_type_1.ActivityType,
-    AppPlatform: app_platform_1.AppPlatform,
-    AuthenticationToken: authentication_token_1.AuthenticationToken,
-    Base: base_1.Base,
-    BaseLocation: base_location_1.BaseLocation,
-    BaseWall: base_wall_1.BaseWall,
-    Comment: comment_1.Comment,
-    CommentBlob: comment_blob_1.CommentBlob,
-    CommentPost: comment_post_1.CommentPost,
-    Conversation: conversation_1.Conversation,
-    ConversationMessage: conversation_message_1.ConversationMessage,
-    ConversationMessagePost: conversation_message_post_1.ConversationMessagePost,
-    ConversationMessages: conversation_messages_1.ConversationMessages,
-    CustomField: custom_field_1.CustomField,
-    EntityType: entity_type_1.EntityType,
-    Event: Event,
-    EventMember: event_member_1.EventMember,
-    EventMemberAccessControl: event_member_access_control_1.EventMemberAccessControl,
-    EventOptions: event_options_1.EventOptions,
-    EventStatus: event_status_1.EventStatus,
-    Feed: feed_1.Feed,
-    FeedPost: feed_post_1.FeedPost,
-    FileData: file_1.FileData,
-    Flag: flag_1.Flag,
-    FriendRequests: friend_requests_1.FriendRequests,
-    Gender: gender_1.Gender,
-    Group: group_1.Group,
-    GroupMember: group_member_1.GroupMember,
-    GroupMemberAccessControl: group_member_access_control_1.GroupMemberAccessControl,
-    GroupOptions: group_options_1.GroupOptions,
-    GroupStatus: group_status_1.GroupStatus,
-    HashTag: hash_tag_1.HashTag,
-    Like: like_1.Like,
-    LikeBlob: like_blob_1.LikeBlob,
-    Location: Location,
-    LoginCredentials: login_credentials_1.LoginCredentials,
-    Model: model_1.Model,
-    Notification: notification_1.Notification,
-    NotificationAck: notification_ack_1.NotificationAck,
-    Photo: photo_1.Photo,
-    PhotoAlbum: photo_album_1.PhotoAlbum,
-    PreviewNotification: preview_notification_1.PreviewNotification,
-    ResetIdentifier: reset_identifier_1.ResetIdentifier,
-    SearchEvent: event_1.SearchEvent,
-    SearchFeed: feed_2.SearchFeed,
-    SearchGroup: group_2.SearchGroup,
-    SearchUser: user_2.SearchUser,
-    SearchQuery: search_query_1.SearchQuery,
-    SearchResult: search_result_1.SearchResult,
-    SearchResultTypes: search_result_types_1.SearchResultTypes,
-    SearchResults: search_results_1.SearchResults,
-    SearchType: search_type_1.SearchType,
-    SimpleLocation: simple_location_1.SimpleLocation,
-    SortOrder: sort_order_1.SortOrder,
-    Status: status_1.Status,
-    TagEntities: tag_entities_1.TagEntities,
-    TagEntity: tag_entity_1.TagEntity,
-    TagEntityAbstract: tag_entity_abstract_1.TagEntityAbstract,
-    TextWallMessage: text_wall_message_1.TextWallMessage,
-    URLTag: url_tag_1.URLTag,
-    User: user_1.User,
-    UserMentionTag: user_mention_tag_1.UserMentionTag,
-    UserSettings: user_settings_1.UserSettings,
-    UserStat: user_stat_1.UserStat,
-};
+class models {
+    constructor() {
+        this.AccessControl = access_control_1.AccessControl;
+        this.Account = account_1.Account;
+        this.AccountEvents = account_events_1.AccountEvents;
+        this.ActivityType = activity_type_1.ActivityType;
+        this.AppPlatform = app_platform_1.AppPlatform;
+        this.AuthenticationToken = authentication_token_1.AuthenticationToken;
+        this.Base = base_1.Base;
+        this.BaseLocation = base_location_1.BaseLocation;
+        this.BaseWall = base_wall_1.BaseWall;
+        this.Comment = comment_1.Comment;
+        this.CommentBlob = comment_blob_1.CommentBlob;
+        this.CommentPost = comment_post_1.CommentPost;
+        this.Conversation = conversation_1.Conversation;
+        this.ConversationMessage = conversation_message_1.ConversationMessage;
+        this.ConversationMessagePost = conversation_message_post_1.ConversationMessagePost;
+        this.ConversationMessages = conversation_messages_1.ConversationMessages;
+        this.CustomField = custom_field_1.CustomField;
+        this.EntityType = entity_type_1.EntityType;
+        this.Event = Event;
+        this.EventMember = event_member_1.EventMember;
+        this.EventMemberAccessControl = event_member_access_control_1.EventMemberAccessControl;
+        this.EventOptions = event_options_1.EventOptions;
+        this.EventStatus = event_status_1.EventStatus;
+        this.Feed = feed_1.Feed;
+        this.FeedPost = feed_post_1.FeedPost;
+        this.FileData = file_1.FileData;
+        this.Flag = flag_1.Flag;
+        this.FriendRequests = friend_requests_1.FriendRequests;
+        this.Gender = gender_1.Gender;
+        this.Group = group_1.Group;
+        this.GroupMember = group_member_1.GroupMember;
+        this.GroupMemberAccessControl = group_member_access_control_1.GroupMemberAccessControl;
+        this.GroupOptions = group_options_1.GroupOptions;
+        this.GroupStatus = group_status_1.GroupStatus;
+        this.HashTag = hash_tag_1.HashTag;
+        this.Like = like_1.Like;
+        this.LikeBlob = like_blob_1.LikeBlob;
+        this.Location = Location;
+        this.LoginCredentials = login_credentials_1.LoginCredentials;
+        this.Model = model_1.Model;
+        this.Notification = notification_1.Notification;
+        this.NotificationAck = notification_ack_1.NotificationAck;
+        this.Photo = photo_1.Photo;
+        this.PhotoAlbum = photo_album_1.PhotoAlbum;
+        this.PreviewNotification = preview_notification_1.PreviewNotification;
+        this.ResetIdentifier = reset_identifier_1.ResetIdentifier;
+        this.SearchEvent = event_1.SearchEvent;
+        this.SearchFeed = feed_2.SearchFeed;
+        this.SearchGroup = group_2.SearchGroup;
+        this.SearchUser = user_2.SearchUser;
+        this.SearchQuery = search_query_1.SearchQuery;
+        this.SearchResult = search_result_1.SearchResult;
+        this.SearchResultTypes = search_result_types_1.SearchResultTypes;
+        this.SearchResults = search_results_1.SearchResults;
+        this.SearchType = search_type_1.SearchType;
+        this.SimpleLocation = simple_location_1.SimpleLocation;
+        this.SortOrder = sort_order_1.SortOrder;
+        this.Status = status_1.Status;
+        this.TagEntities = tag_entities_1.TagEntities;
+        this.TagEntity = tag_entity_1.TagEntity;
+        this.TagEntityAbstract = tag_entity_abstract_1.TagEntityAbstract;
+        this.TextWallMessage = text_wall_message_1.TextWallMessage;
+        this.URLTag = url_tag_1.URLTag;
+        this.User = user_1.User;
+        this.UserMentionTag = user_mention_tag_1.UserMentionTag;
+        this.UserSettings = user_settings_1.UserSettings;
+        this.UserStat = user_stat_1.UserStat;
+    }
+}
+exports.models = models;
 
 },{"./models/access_control":17,"./models/account":18,"./models/account_events":19,"./models/activity_type":20,"./models/app_platform":21,"./models/authentication_token":22,"./models/base":23,"./models/base_location":24,"./models/base_wall":25,"./models/comment":26,"./models/comment_blob":27,"./models/comment_post":28,"./models/conversation":29,"./models/conversation_message":30,"./models/conversation_message_post":31,"./models/conversation_messages":32,"./models/custom_field":33,"./models/entity_type":35,"./models/event_member":37,"./models/event_member_access_control":38,"./models/event_options":39,"./models/event_status":40,"./models/feed":41,"./models/feed_post":42,"./models/file":43,"./models/flag":44,"./models/friend_requests":45,"./models/gender":46,"./models/group":48,"./models/group_member":49,"./models/group_member_access_control":50,"./models/group_options":51,"./models/group_status":52,"./models/hash_tag":53,"./models/like":54,"./models/like_blob":55,"./models/login_credentials":57,"./models/model":58,"./models/notification":59,"./models/notification_ack":60,"./models/photo":61,"./models/photo_album":62,"./models/preview_notification":63,"./models/reset_identifier":64,"./models/search_query":65,"./models/search_result":66,"./models/search_result_types":67,"./models/search_results":68,"./models/search_type":69,"./models/simple_location":70,"./models/sort_order":71,"./models/status":72,"./models/tag_entities":73,"./models/tag_entity":74,"./models/tag_entity_abstract":75,"./models/text_wall_message":76,"./models/url_tag":77,"./models/user":78,"./models/user_mention_tag":79,"./models/user_settings":80,"./models/user_stat":81,"./search/event":122,"./search/feed":123,"./search/group":124,"./search/user":126}],17:[function(require,module,exports){
 "use strict";
@@ -1329,7 +1332,7 @@ class CommentBlob extends model_1.Model {
     }
     set samples(comments) {
         let list = [];
-        for (let comment in comments) {
+        for (let comment of comments) {
             list.push(new comment_1.Comment(comment, this.conf));
         }
         this._samples = list;
@@ -2194,9 +2197,9 @@ const model_1 = require("./model");
 const user_1 = require("./user");
 class FriendRequests extends model_1.Model {
     set incoming(list) {
-        let users;
-        for (let u in list) {
-            users.push(new user_1.User(u));
+        let users = [];
+        for (let u of list) {
+            users.push(new user_1.User(u, this.conf));
         }
         this._incoming = users;
     }
@@ -2204,9 +2207,9 @@ class FriendRequests extends model_1.Model {
         return this._incoming;
     }
     set outgoing(list) {
-        let users;
-        for (let u in list) {
-            users.push(new user_1.User(u));
+        let users = [];
+        for (let u of list) {
+            users.push(new user_1.User(u, this.conf));
         }
         this._outgoing = users;
     }
@@ -2814,7 +2817,7 @@ const photo_1 = require("./photo");
 class PhotoAlbum extends model_1.Model {
     set photos(photos) {
         let list = [];
-        for (let p in photos) {
+        for (let p of photos) {
             list.push(new photo_1.Photo(p, this.conf));
         }
         this._photos = list;
@@ -3558,7 +3561,6 @@ const authentication_token_1 = require("./models/authentication_token");
 const models_1 = require("./models");
 class MySocialApp {
     constructor() {
-        this.models = models_1.models;
     }
     setAppId(appId) {
         this._appId = appId;
@@ -3619,6 +3621,7 @@ class MySocialApp {
     }
 }
 exports.MySocialApp = MySocialApp;
+exports.Models = new models_1.models();
 
 },{"./client_service":1,"./configuration":2,"./models":16,"./models/account":18,"./models/authentication_token":22,"./session":127}],84:[function(require,module,exports){
 "use strict";
