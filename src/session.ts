@@ -14,6 +14,10 @@ import {FluentPhotoAlbum} from "./fluent_photo_album";
 import {FluentUser} from "./fluent_user";
 import {FluentDynamicFeed} from "./fluent_dynamic_feed";
 import {WebsocketService} from "./websocket_service";
+import {AppConfig} from "./models/app_config";
+import {AxiosResponse} from "axios";
+import {ModelInterface} from "./models/model";
+import {ErrorResponse} from "./rest/error";
 
 export class Session {
     clientService: ClientService;

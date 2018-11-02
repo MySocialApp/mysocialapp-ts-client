@@ -5,9 +5,15 @@ import {ClientService} from "./client_service";
 import {Account} from "./models/account";
 import {AuthenticationToken} from "./models/authentication_token";
 import {models} from "./models";
+import {AppConfig} from "./models/app_config";
+import axios, {AxiosResponse} from "axios";
+import {ModelInterface} from "./models/model";
+import {ErrorResponse} from "./rest/error";
 
 
 export class MySocialApp {
+
+    private configUrl = 'https://api.mysocialapp.io/api/v1/config/';
 
     private _client_configuration: ClientConfiguration;
 
@@ -75,6 +81,18 @@ export class MySocialApp {
 
     async resetPassword(email: string): Promise<void> {
         return this.createSession().account.resetPassword(email);
+    }
+
+    /**
+     * only works if appId is set
+     */
+    async getConfig(): Promise<AppConfig> {
+        try {
+            const resp = await axios.create().get(this.configUrl + this._appId) as AxiosResponse<ModelInterface>;
+            return new AppConfig(resp.data, this.configuration);
+        } catch (error) {
+            throw new ErrorResponse(error);
+        }
     }
 }
 

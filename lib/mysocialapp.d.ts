@@ -3,7 +3,9 @@ import { Configuration } from "./configuration";
 import { ClientConfiguration } from "./client_configuration";
 import { Account } from "./models/account";
 import { models } from "./models";
+import { AppConfig } from "./models/app_config";
 export declare class MySocialApp {
+    private configUrl;
     private _client_configuration;
     private _appId;
     private _apiEndpoint;
@@ -18,5 +20,9 @@ export declare class MySocialApp {
     connectWithToken(token: string): Session;
     createSession(): Session;
     resetPassword(email: string): Promise<void>;
+    /**
+     * only works if appId is set
+     */
+    getConfig(): Promise<AppConfig>;
 }
 export declare const Models: models;
