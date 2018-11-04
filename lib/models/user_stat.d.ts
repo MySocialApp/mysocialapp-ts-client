@@ -1,9 +1,14 @@
 import { Model } from "./model";
 export declare class UserStat extends Model {
-    private status;
-    private friend;
+    private _status;
+    friend: number;
+    status: UserStatStatus;
 }
-export declare enum UserStatus {
+export declare class UserStatStatus extends Model {
+    state: UserState;
+    last_connection_date: string;
+}
+export declare enum UserState {
     Disabled = "DISABLED",
     Riding = "RIDING",
     Unknown = "UNKNOWN",

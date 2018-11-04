@@ -112,6 +112,16 @@ export class User extends Model {
         return this._current_status;
     }
 
+    get user_stat(): UserStat {
+        return this._user_stat;
+    }
+
+    set user_stat(u: UserStat) {
+        if (u) {
+            this._user_stat = new UserStat(u, this.conf);
+        }
+    }
+
     set custom_fields(list: CustomField[]) {
         this._custom_fields = [] as CustomField[];
         for (let c of list) {

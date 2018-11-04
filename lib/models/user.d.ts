@@ -1,5 +1,6 @@
 import { Photo } from "./photo";
 import { CustomField } from "./custom_field";
+import { UserStat } from "./user_stat";
 import { Status } from "./status";
 import { Location } from "./location";
 import { Flag } from "./flag";
@@ -41,6 +42,7 @@ export declare class User extends Model {
     flag: Flag;
     living_location: Location;
     current_status: Status;
+    user_stat: UserStat;
     custom_fields: CustomField[];
     /**
      * return true if field found

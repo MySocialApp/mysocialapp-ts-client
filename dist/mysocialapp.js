@@ -3305,6 +3305,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const photo_1 = require("./photo");
 const custom_field_1 = require("./custom_field");
+const user_stat_1 = require("./user_stat");
 const status_1 = require("./status");
 const location_1 = require("./location");
 const flag_1 = require("./flag");
@@ -3373,6 +3374,14 @@ class User extends model_1.Model {
     }
     get current_status() {
         return this._current_status;
+    }
+    get user_stat() {
+        return this._user_stat;
+    }
+    set user_stat(u) {
+        if (u) {
+            this._user_stat = new user_stat_1.UserStat(u, this.conf);
+        }
     }
     set custom_fields(list) {
         this._custom_fields = [];
@@ -3456,7 +3465,7 @@ class User extends model_1.Model {
 }
 exports.User = User;
 
-},{"../rest/conversation":86,"../rest/user_album":116,"../rest/user_friend":119,"../rest/user_wall":121,"../rest/user_wall_message":122,"./conversation":30,"./custom_field":34,"./flag":45,"./location":57,"./model":59,"./photo":62,"./status":73}],80:[function(require,module,exports){
+},{"../rest/conversation":86,"../rest/user_album":116,"../rest/user_friend":119,"../rest/user_wall":121,"../rest/user_wall_message":122,"./conversation":30,"./custom_field":34,"./flag":45,"./location":57,"./model":59,"./photo":62,"./status":73,"./user_stat":82}],80:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entity_abstract_1 = require("./tag_entity_abstract");
@@ -3540,17 +3549,26 @@ exports.DefaultInterfaceLanguage = InterfaceLanguage.EN;
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
 class UserStat extends model_1.Model {
+    set status(s) {
+        this._status = new UserStatStatus(s, this.conf);
+    }
+    get status() {
+        return this._status;
+    }
 }
 exports.UserStat = UserStat;
-var UserStatus;
-(function (UserStatus) {
-    UserStatus["Disabled"] = "DISABLED";
-    UserStatus["Riding"] = "RIDING";
-    UserStatus["Unknown"] = "UNKNOWN";
-    UserStatus["Connected"] = "CONNECTED";
-    UserStatus["Away"] = "AWAY";
-    UserStatus["NotConnected"] = "NOT_CONNECTED";
-})(UserStatus = exports.UserStatus || (exports.UserStatus = {}));
+class UserStatStatus extends model_1.Model {
+}
+exports.UserStatStatus = UserStatStatus;
+var UserState;
+(function (UserState) {
+    UserState["Disabled"] = "DISABLED";
+    UserState["Riding"] = "RIDING";
+    UserState["Unknown"] = "UNKNOWN";
+    UserState["Connected"] = "CONNECTED";
+    UserState["Away"] = "AWAY";
+    UserState["NotConnected"] = "NOT_CONNECTED";
+})(UserState = exports.UserState || (exports.UserState = {}));
 
 },{"./model":59}],83:[function(require,module,exports){
 "use strict";
