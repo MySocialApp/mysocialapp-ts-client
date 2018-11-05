@@ -4442,16 +4442,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("./rest");
 const authentication_token_1 = require("../models/authentication_token");
+const empty_1 = require("../models/empty");
 class RestLogin extends rest_1.Rest {
     create(cred) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.conf.post(new authentication_token_1.AuthenticationToken(), '/login', cred);
         });
     }
+    logAs(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.post(new authentication_token_1.AuthenticationToken(), '/login/as/' + userId, new empty_1.Empty());
+        });
+    }
 }
 exports.RestLogin = RestLogin;
 
-},{"../models/authentication_token":23,"./rest":105}],98:[function(require,module,exports){
+},{"../models/authentication_token":23,"../models/empty":35,"./rest":105}],98:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5529,7 +5535,7 @@ class SearchUser extends search_1.SearchBuilder {
         return this;
     }
     setGender(value) {
-        this.params.set("gender_name", value);
+        this.params.set("gender", value);
         return this;
     }
     setLocation(loc) {
@@ -5581,6 +5587,7 @@ const fluent_photo_album_1 = require("./fluent_photo_album");
 const fluent_user_1 = require("./fluent_user");
 const fluent_dynamic_feed_1 = require("./fluent_dynamic_feed");
 const websocket_service_1 = require("./websocket_service");
+const mysocialapp_1 = require("./mysocialapp");
 class Session {
     constructor(clientService) {
         this.clientService = clientService;
@@ -5601,6 +5608,21 @@ class Session {
                     reject(err);
                 }
             })));
+        });
+    }
+    /**
+     * Only works for moderator and administrator
+     * Return a session as a logged user to interact with API
+     * Useful for moderation app
+     * Doesn't work with conversation API
+     * @param userId
+     */
+    getSessionAs(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const authToken = yield this.clientService.login.logAs(userId);
+            return new mysocialapp_1.MySocialApp()
+                .setAppEndpoint(this.clientService.configuration.apiEndpointUrl)
+                .connectWithToken(authToken.access_token);
         });
     }
     updateToken() {
@@ -5653,7 +5675,7 @@ class Session {
 }
 exports.Session = Session;
 
-},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_friend":9,"./fluent_group":10,"./fluent_news_feed":11,"./fluent_notification":12,"./fluent_photo":13,"./fluent_photo_album":14,"./fluent_user":15,"./models/login_credentials":58,"./websocket_service":129}],129:[function(require,module,exports){
+},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_friend":9,"./fluent_group":10,"./fluent_news_feed":11,"./fluent_notification":12,"./fluent_photo":13,"./fluent_photo_album":14,"./fluent_user":15,"./models/login_credentials":58,"./mysocialapp":84,"./websocket_service":129}],129:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const notification_1 = require("./models/notification");

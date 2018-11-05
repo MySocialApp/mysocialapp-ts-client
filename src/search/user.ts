@@ -23,7 +23,7 @@ export class SearchUser extends SearchBuilder {
     }
 
     setGender(value: Gender): SearchUser {
-        this.params.set("gender_name", value);
+        this.params.set("gender", value);
         return this;
     }
 

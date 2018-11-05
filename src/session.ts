@@ -14,10 +14,7 @@ import {FluentPhotoAlbum} from "./fluent_photo_album";
 import {FluentUser} from "./fluent_user";
 import {FluentDynamicFeed} from "./fluent_dynamic_feed";
 import {WebsocketService} from "./websocket_service";
-import {AppConfig} from "./models/app_config";
-import {AxiosResponse} from "axios";
-import {ModelInterface} from "./models/model";
-import {ErrorResponse} from "./rest/error";
+import {MySocialApp} from "./mysocialapp";
 
 export class Session {
     clientService: ClientService;
@@ -54,6 +51,20 @@ export class Session {
                 reject(err);
             }
         }));
+    }
+
+    /**
+     * Only works for moderator and administrator
+     * Return a session as a logged user to interact with API
+     * Useful for moderation app
+     * Doesn't work with conversation API
+     * @param userId
+     */
+    async getSessionAs(userId: string): Promise<Session> {
+        const authToken = await this.clientService.login.logAs(userId);
+        return new MySocialApp()
+            .setAppEndpoint(this.clientService.configuration.apiEndpointUrl)
+            .connectWithToken(authToken.access_token);
     }
 
     updateToken() {

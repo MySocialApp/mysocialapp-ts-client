@@ -30,6 +30,14 @@ export declare class Session {
     private _websocket?;
     constructor(clientService: ClientService);
     connect(username: string, password: string): Promise<User>;
+    /**
+     * Only works for moderator and administrator
+     * Return a session as a logged user to interact with API
+     * Useful for moderation app
+     * Doesn't work with conversation API
+     * @param userId
+     */
+    getSessionAs(userId: string): Promise<Session>;
     updateToken(): void;
     disconnect(): Promise<void>;
     readonly account: FluentAccount;
