@@ -10,7 +10,6 @@ import {RestGroup} from "../rest/group";
 import {RestGroupWall} from "../rest/group_wall";
 import {listToParameters} from "./utils";
 import {FileData} from "./file";
-import {RestEventWall} from "../rest/event_wall";
 import {FeedPost} from "./feed_post";
 
 export class Group extends BaseWall {

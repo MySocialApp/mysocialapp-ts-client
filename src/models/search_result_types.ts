@@ -11,7 +11,7 @@ export class SearchResultTypes extends Model {
     private _events?: EventSearchResult;
 
     set USER(o: UserSearchResult) {
-        this._users = new UserSearchResult(o);
+        this._users = new UserSearchResult(o, this.conf);
     }
 
     get USER(): UserSearchResult {
@@ -23,7 +23,7 @@ export class SearchResultTypes extends Model {
     }
 
     set FEED(o: FeedsSearchResult) {
-        this._feeds = new FeedsSearchResult(o);
+        this._feeds = new FeedsSearchResult(o, this.conf);
     }
 
     get FEED(): FeedsSearchResult {
@@ -35,7 +35,7 @@ export class SearchResultTypes extends Model {
     }
 
     set GROUP(o: GroupSearchResult) {
-        this._groups = new GroupSearchResult(o);
+        this._groups = new GroupSearchResult(o, this.conf);
     }
 
     get GROUP(): GroupSearchResult {
@@ -47,7 +47,7 @@ export class SearchResultTypes extends Model {
     }
 
     set EVENT(o: EventSearchResult) {
-        this._events = new EventSearchResult(o);
+        this._events = new EventSearchResult(o, this.conf);
     }
 
     get EVENT(): EventSearchResult {
@@ -74,7 +74,7 @@ export class UserSearchResult extends Model implements SearchResultValue<User> {
         }
         let list: User[] = [];
         for (let user of users) {
-            list.push(new User(user));
+            list.push(new User(user, this.conf));
         }
         this._data = list;
     }
@@ -94,7 +94,7 @@ export class FeedsSearchResult extends Model implements SearchResultValue<Feed> 
         }
         let list: Feed[] = [];
         for (let feed of feeds) {
-            list.push(new Feed(feed));
+            list.push(new Feed(feed, this.conf));
         }
         this._data = list;
     }
@@ -114,7 +114,7 @@ export class GroupSearchResult extends Model implements SearchResultValue<Group>
         }
         let list: Group[] = [];
         for (let group of groups) {
-            list.push(new Group(group));
+            list.push(new Group(group, this.conf));
         }
         this._data = list;
     }
@@ -134,7 +134,7 @@ export class EventSearchResult extends Model implements SearchResultValue<Event>
         }
         let list: Event[] = [];
         for (let event of events) {
-            list.push(new Event(event));
+            list.push(new Event(event, this.conf));
         }
         this._data = list;
     }

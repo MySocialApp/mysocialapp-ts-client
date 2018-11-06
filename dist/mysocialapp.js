@@ -2933,7 +2933,7 @@ const event_1 = require("./event");
 const model_1 = require("./model");
 class SearchResultTypes extends model_1.Model {
     set USER(o) {
-        this._users = new UserSearchResult(o);
+        this._users = new UserSearchResult(o, this.conf);
     }
     get USER() {
         return this._users;
@@ -2942,7 +2942,7 @@ class SearchResultTypes extends model_1.Model {
         return this.USER;
     }
     set FEED(o) {
-        this._feeds = new FeedsSearchResult(o);
+        this._feeds = new FeedsSearchResult(o, this.conf);
     }
     get FEED() {
         return this._feeds;
@@ -2951,7 +2951,7 @@ class SearchResultTypes extends model_1.Model {
         return this.FEED;
     }
     set GROUP(o) {
-        this._groups = new GroupSearchResult(o);
+        this._groups = new GroupSearchResult(o, this.conf);
     }
     get GROUP() {
         return this._groups;
@@ -2960,7 +2960,7 @@ class SearchResultTypes extends model_1.Model {
         return this.GROUP;
     }
     set EVENT(o) {
-        this._events = new EventSearchResult(o);
+        this._events = new EventSearchResult(o, this.conf);
     }
     get EVENT() {
         return this._events;
@@ -2977,7 +2977,7 @@ class UserSearchResult extends model_1.Model {
         }
         let list = [];
         for (let user of users) {
-            list.push(new user_1.User(user));
+            list.push(new user_1.User(user, this.conf));
         }
         this._data = list;
     }
@@ -2993,7 +2993,7 @@ class FeedsSearchResult extends model_1.Model {
         }
         let list = [];
         for (let feed of feeds) {
-            list.push(new feed_1.Feed(feed));
+            list.push(new feed_1.Feed(feed, this.conf));
         }
         this._data = list;
     }
@@ -3009,7 +3009,7 @@ class GroupSearchResult extends model_1.Model {
         }
         let list = [];
         for (let group of groups) {
-            list.push(new group_1.Group(group));
+            list.push(new group_1.Group(group, this.conf));
         }
         this._data = list;
     }
@@ -3025,7 +3025,7 @@ class EventSearchResult extends model_1.Model {
         }
         let list = [];
         for (let event of events) {
-            list.push(new event_1.Event(event));
+            list.push(new event_1.Event(event, this.conf));
         }
         this._data = list;
     }
@@ -3042,7 +3042,7 @@ const search_result_types_1 = require("./search_result_types");
 const model_1 = require("./model");
 class SearchResults extends model_1.Model {
     set results_by_type(results) {
-        this._results_by_type = new search_result_types_1.SearchResultTypes(results);
+        this._results_by_type = new search_result_types_1.SearchResultTypes(results, this.conf);
     }
     get results_by_type() {
         return this._results_by_type;

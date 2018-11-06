@@ -11,7 +11,7 @@ export class SearchResults extends Model {
     private _results_by_type?: SearchResultTypes;
 
     set results_by_type(results: SearchResultTypes) {
-        this._results_by_type = new SearchResultTypes(results);
+        this._results_by_type = new SearchResultTypes(results, this.conf);
     }
 
     get results_by_type(): SearchResultTypes {
