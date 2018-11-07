@@ -7,8 +7,9 @@ import {RestFeed} from "../rest/feed";
 import {Like} from "./like";
 import {CommentPost} from "./comment_post";
 import {Comment} from "./comment";
-import moment = require('moment');
 import {TextWallMessage} from "./text_wall_message";
+import moment = require('moment');
+import {convertModel} from "./convert";
 
 export enum ActionType {
     Publish = 'PUBLISH',
@@ -16,6 +17,7 @@ export enum ActionType {
 }
 
 export class Feed extends Model implements Wallable {
+    type: string;
     action?: string = ActionType.Publish;
     access_control?: AccessControl.Private | AccessControl.Friend | AccessControl.Public;
     summary?: string;
@@ -32,7 +34,7 @@ export class Feed extends Model implements Wallable {
     }
 
     set target(o: BaseWall) {
-        this._target = new BaseWall(o, this.conf);
+        this._target = convertModel(o, this.conf) as BaseWall;
     }
 
     get target(): BaseWall {
@@ -40,7 +42,7 @@ export class Feed extends Model implements Wallable {
     }
 
     set object(o: BaseWall) {
-        this._object = new BaseWall(o, this.conf);
+        this._object = convertModel(o, this.conf) as BaseWall;
     }
 
     get object(): BaseWall {
@@ -68,6 +70,14 @@ export class Feed extends Model implements Wallable {
 
     get bodyMessage(): string {
         return this.object.bodyMessage ? this.object.bodyMessage : '';
+    }
+
+    get bodyImageUrl(): string {
+        return this.object.body_image_url;
+    }
+
+    get bodyImageText(): string {
+        return this.object.body_image_text;
     }
 
     async addLike(): Promise<Like> {

@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-import {Serializable} from "./model";
+import {Model, Serializable} from "./model";
 import {SimpleLocation} from "./simple_location";
 
-export class Location implements Serializable {
+export class Location extends Model implements Serializable {
     country?: string;
     distrinct?: string;
     state?: string;
@@ -13,12 +13,6 @@ export class Location implements Serializable {
     complete_address?: string;
     complete_city_address?: string;
     _location: SimpleLocation;
-
-    constructor(o?: {}) {
-        _.forOwn(o, (value, key) => {
-            this[key] = value
-        });
-    }
 
     getJsonParameters(): {} {
         return {

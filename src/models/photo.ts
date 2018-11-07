@@ -1,8 +1,9 @@
 import {Model} from "./model";
 import {TagEntities} from "./tag_entities";
 import {Base} from "./base";
+import {BaseWall} from "./base_wall";
 
-export class Photo extends Model {
+export class Photo extends BaseWall {
     message: string;
     url: string;
     small_url: string;
@@ -26,5 +27,9 @@ export class Photo extends Model {
 
     set target(o: Base) {
         this._target = new Base(o);
+    }
+
+    get body_image_url(): string {
+        return this.high_url;
     }
 }
