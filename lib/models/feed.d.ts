@@ -11,6 +11,7 @@ export declare enum ActionType {
     Publish = "PUBLISH"
 }
 export declare class Feed extends Model implements Wallable {
+    type: string;
     action?: string;
     access_control?: AccessControl.Private | AccessControl.Friend | AccessControl.Public;
     summary?: string;
@@ -24,6 +25,8 @@ export declare class Feed extends Model implements Wallable {
     created_date: string;
     readonly createdDate: moment.Moment;
     readonly bodyMessage: string;
+    readonly bodyImageUrl: string;
+    readonly bodyImageText: string;
     addLike(): Promise<Like>;
     getLikes(): Promise<Like[]>;
     deleteLike(): Promise<void>;

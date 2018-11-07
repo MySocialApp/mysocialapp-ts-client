@@ -1,7 +1,7 @@
-import { Model } from "./model";
 import { TagEntities } from "./tag_entities";
 import { Base } from "./base";
-export declare class Photo extends Model {
+import { BaseWall } from "./base_wall";
+export declare class Photo extends BaseWall {
     message: string;
     url: string;
     small_url: string;
@@ -12,4 +12,5 @@ export declare class Photo extends Model {
     _target: Base;
     tag_entities: TagEntities;
     target: Base;
+    readonly body_image_url: string;
 }
