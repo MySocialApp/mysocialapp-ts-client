@@ -63,7 +63,7 @@ export class Session {
     async getSessionAs(userId: string): Promise<Session> {
         const authToken = await this.clientService.login.logAs(userId);
         return new MySocialApp()
-            .setAppEndpoint(this.clientService.configuration.apiEndpointUrl)
+            .setAppEndpoint(this.clientService.configuration.apiEndpointUrl.replace('/api/v1/', ''))
             .connectWithToken(authToken.access_token);
     }
 
