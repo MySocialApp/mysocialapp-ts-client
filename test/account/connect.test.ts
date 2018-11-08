@@ -1,6 +1,7 @@
 import {catchErrorFunc} from "../common";
 import {MySocialApp} from "../../src/mysocialapp";
 
+jest.setTimeout(60000);
 describe("account connect & get", () => {
     it("account interaction", async () => {
         try {

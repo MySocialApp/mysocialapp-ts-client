@@ -12,5 +12,5 @@ export declare class Photo extends BaseWall {
     _target: Base;
     tag_entities: TagEntities;
     target: Base;
-    readonly body_image_url: string;
+    body_image_url: string;
 }

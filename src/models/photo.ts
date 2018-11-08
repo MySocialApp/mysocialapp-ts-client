@@ -32,4 +32,8 @@ export class Photo extends BaseWall {
     get body_image_url(): string {
         return this.high_url;
     }
+
+    set body_image_url(s: string) {
+
+    }
 }

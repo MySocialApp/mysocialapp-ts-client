@@ -592,7 +592,7 @@ const fluent_abstract_1 = require("./fluent_abstract");
 class FluentGroup extends fluent_abstract_1.FluentAbstract {
     list(page, size = 10, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.session.clientService.group.list(page, undefined, size, undefined, options.toQueryParams());
+            return this.session.clientService.group.list(page, undefined, size, undefined, options ? options.toQueryParams() : {});
         });
     }
     stream() {
@@ -1847,7 +1847,7 @@ const custom_field_1 = require("./custom_field");
 const utils_1 = require("./utils");
 class Event extends base_wall_1.BaseWall {
     getJsonParameters() {
-        return {
+        let o = {
             id: this.id,
             name: this.name,
             description: this.description,
@@ -1855,9 +1855,14 @@ class Event extends base_wall_1.BaseWall {
             start_date: this.start_date,
             end_date: this.end_date,
             event_member_access_control: this.event_member_access_control,
-            location: this.location ? this.location.getJsonParameters() : null,
-            custom_fields: this._custom_fields ? utils_1.listToParameters(this._custom_fields) : null,
         };
+        if (this.custom_fields) {
+            o['custom_fields'] = utils_1.listToParameters(this.custom_fields);
+        }
+        if (this.location) {
+            o['location'] = this.location.getJsonParameters();
+        }
+        return o;
     }
     listNewsFeed(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2437,7 +2442,7 @@ const group_wall_1 = require("../rest/group_wall");
 const utils_1 = require("./utils");
 class Group extends base_wall_1.BaseWall {
     getJsonParameters() {
-        return {
+        let o = {
             id: this.id,
             name: this.name,
             description: this.description,
@@ -2445,6 +2450,10 @@ class Group extends base_wall_1.BaseWall {
             location: this.location ? this.location.getJsonParameters() : null,
             custom_fields: this._custom_fields ? utils_1.listToParameters(this._custom_fields) : null,
         };
+        if (this.custom_fields) {
+            o['custom_fields'] = utils_1.listToParameters(this.custom_fields);
+        }
+        return o;
     }
     listNewsFeed(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2886,6 +2895,8 @@ class Photo extends base_wall_1.BaseWall {
     }
     get body_image_url() {
         return this.high_url;
+    }
+    set body_image_url(s) {
     }
 }
 exports.Photo = Photo;

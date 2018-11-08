@@ -1,5 +1,6 @@
 import {catchErrorFunc, getMysocialApp} from "../common";
 
+jest.setTimeout(60000);
 describe("Conf", () => {
     it("should get conf", async () => {
         try {

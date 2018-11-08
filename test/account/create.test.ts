@@ -1,5 +1,6 @@
 import {catchErrorFunc, createAccountAndGetSession} from "../common";
 
+jest.setTimeout(60000);
 describe("addMessage account", () => {
     it("user creation api", async () => {
         try {

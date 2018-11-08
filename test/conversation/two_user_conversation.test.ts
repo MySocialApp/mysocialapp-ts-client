@@ -1,4 +1,3 @@
-import {ErrorResponse} from "../../src/rest/error";
 import {catchErrorFunc, createAccountAndGetSession} from "../common";
 import {Conversation} from "../../src/models/conversation";
 import {ConversationMessagePost} from "../../src/models/conversation_message_post";

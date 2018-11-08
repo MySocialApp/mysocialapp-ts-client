@@ -1,8 +1,4 @@
-import {catchErrorFunc, createAccountAndGetSession, sleep} from "../common";
-import {AccessControl} from "../../src/models/access_control";
-import {CommentPost} from "../../src/models/comment_post";
-import {TextWallMessage} from "../../src/models/text_wall_message";
-import {Feed} from "../../src/models/feed";
+import {catchErrorFunc, createAccountAndGetSession} from "../common";
 
 jest.setTimeout(60000);
 describe("Test feed generator function", () => {

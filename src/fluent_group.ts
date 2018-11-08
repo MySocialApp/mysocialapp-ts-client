@@ -8,7 +8,7 @@ import {SearchResults} from "./models/search_results";
 export class FluentGroup extends FluentAbstract {
 
     async list(page: number, size: number = 10, options?: GroupOptions): Promise<Group[]> {
-        return this.session.clientService.group.list(page, undefined, size, undefined, options.toQueryParams());
+        return this.session.clientService.group.list(page, undefined, size, undefined, options ? options.toQueryParams(): {});
     }
 
     async* stream() {

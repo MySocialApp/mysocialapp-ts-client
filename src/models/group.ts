@@ -29,7 +29,7 @@ export class Group extends BaseWall {
     group_member_access_control: GroupMemberAccessControl;
 
     getJsonParameters(): {} {
-        return {
+        let o = {
             id: this.id,
             name: this.name,
             description: this.description,
@@ -37,6 +37,10 @@ export class Group extends BaseWall {
             location: this.location ? this.location.getJsonParameters() : null,
             custom_fields: this._custom_fields ? listToParameters(this._custom_fields) : null,
         };
+        if (this.custom_fields) {
+            o['custom_fields'] = listToParameters(this.custom_fields);
+        }
+        return o;
     }
 
     async listNewsFeed(page: number, size: number): Promise<Feed[]> {

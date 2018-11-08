@@ -1,11 +1,8 @@
-import {ErrorResponse} from "../../src/rest/error";
 import {catchErrorFunc, createAccountAndGetSession} from "../common";
 import {Event} from "../../src/models/event";
 import {Location} from "../../src/models/location";
 import {EventMemberAccessControl} from "../../src/models/event_member_access_control";
 import moment = require("moment");
-import {TextWallMessage} from "../../src/models/text_wall_message";
-import {AccessControl} from "../../src/models/access_control";
 
 jest.setTimeout(60000);
 describe("addMessage account", () => {

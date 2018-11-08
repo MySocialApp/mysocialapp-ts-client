@@ -38,7 +38,7 @@ export class Event extends BaseWall {
 
 
     getJsonParameters(): {} {
-        return {
+        let o = {
             id: this.id,
             name: this.name,
             description: this.description,
@@ -46,9 +46,14 @@ export class Event extends BaseWall {
             start_date: this.start_date,
             end_date: this.end_date,
             event_member_access_control: this.event_member_access_control,
-            location: this.location ? this.location.getJsonParameters() : null,
-            custom_fields: this._custom_fields ? listToParameters(this._custom_fields) : null,
         };
+        if (this.custom_fields) {
+            o['custom_fields'] = listToParameters(this.custom_fields);
+        }
+        if (this.location) {
+            o['location'] = this.location.getJsonParameters();
+        }
+        return o;
     }
 
     async listNewsFeed(page: number, size: number): Promise<Feed[]> {

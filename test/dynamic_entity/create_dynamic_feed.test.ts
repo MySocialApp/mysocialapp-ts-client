@@ -4,6 +4,7 @@ import {AccessControl} from "../../src/models/access_control";
 import {Feed} from "../../src/models/feed";
 import {CommentPost} from "../../src/models/comment_post";
 
+jest.setTimeout(60000);
 describe("create dynamic feed", () => {
     it("has created dynamic feed", async () => {
         try {

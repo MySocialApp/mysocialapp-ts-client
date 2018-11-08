@@ -20,7 +20,7 @@ describe("addMessage account", () => {
 
             let comment = await createdPost.object.addComment((new CommentPost()).setMessage("hello world"));
             expect(comment.message == "hello world");
-            await sleep(200);
+            await sleep(1000);
             let likes = await createdPost.getLikes();
             expect(likes.length).toBeGreaterThan(0);
             let comments = await createdPost.getComments();

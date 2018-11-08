@@ -16,7 +16,7 @@ describe("add image to news feed", () => {
 
             const createdPost = await session.newsFeed.create(post);
             expect(createdPost.bodyMessage).toEqual(photoMessage);
-
+            await sleep(1000)
             const message = "nice!";
             let comment = await createdPost.addComment(new CommentPost().setMessage(message));
             expect(message).toEqual(comment.message);

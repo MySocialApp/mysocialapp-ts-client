@@ -3,6 +3,7 @@ import {MySocialApp} from "../../src/mysocialapp";
 import {Session} from "../../src/session";
 import {ErrorResponse} from "../../src/rest/error";
 
+jest.setTimeout(60000);
 describe("addMessage account", () => {
     it("user creation api", async () => {
         try {

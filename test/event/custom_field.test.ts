@@ -4,6 +4,7 @@ import {Location} from "../../src/models/location";
 import {Event} from "../../src/models/event";
 import moment = require("moment");
 
+jest.setTimeout(60000);
 describe("event custom field", () => {
     it("set custom field", async () => {
         try {
