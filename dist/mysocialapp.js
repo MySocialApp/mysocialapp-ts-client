@@ -687,7 +687,7 @@ class FluentNewsFeed extends fluent_abstract_1.FluentAbstract {
             if (!feedPost.hasPhoto()) {
                 return this.session.clientService.userWallMessage.create(account.id, feedPost.textWallMessage);
             }
-            return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities);
+            return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities, feedPost._visibility);
         });
     }
     search(search, page, size = 10) {
@@ -761,7 +761,7 @@ class FluentPhoto extends fluent_abstract_1.FluentAbstract {
     }
     create(file, photo) {
         return __awaiter(this, void 0, void 0, function* () {
-            let resp = yield this.session.clientService.photo.create(file, photo.message, photo.tag_entities);
+            let resp = yield this.session.clientService.photo.create(file, photo.message, photo.tag_entities, photo.access_control);
             return new photo_1.Photo(resp.object);
         });
     }
@@ -2475,9 +2475,22 @@ class Group extends base_wall_1.BaseWall {
             return (new group_1.RestGroup(this.conf)).leave(this.id);
         });
     }
+    /**
+     * only for owner or moderator
+     */
+    delete() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (new group_1.RestGroup(this.conf)).delete(this.id);
+        });
+    }
     update() {
         return __awaiter(this, void 0, void 0, function* () {
             return (new group_1.RestGroup(this.conf)).update(this);
+        });
+    }
+    changeOwner(newOwnerId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (new group_1.RestGroup(this.conf)).changeOwner(newOwnerId);
         });
     }
     addMessage(message) {
@@ -4371,11 +4384,6 @@ class RestGroup extends rest_1.Rest {
             return this.conf.put(new group_1.Group(), "/group/" + group.id, group);
         });
     }
-    cancel(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.delete("/group/" + id);
-        });
-    }
     getCustomFields() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.conf.getList(new custom_field_1.CustomField(), "/group/customfield");
@@ -4391,14 +4399,24 @@ class RestGroup extends rest_1.Rest {
             return this.conf.getList(new group_member_1.GroupMember(), rest_1.Rest.params("/group/{id}/member", { id: id }));
         });
     }
-    join(eventId) {
+    join(groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.post(new group_member_1.GroupMember(), rest_1.Rest.params("/group/{id}/member", { id: eventId }), new empty_1.Empty());
+            return this.conf.post(new group_member_1.GroupMember(), rest_1.Rest.params("/group/{id}/member", { id: groupId }), new empty_1.Empty());
         });
     }
-    leave(eventId) {
+    leave(groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.delete(rest_1.Rest.params("/group/{id}/member", { id: eventId }));
+            return this.conf.delete(rest_1.Rest.params("/group/{id}/member", { id: groupId }));
+        });
+    }
+    delete(groupId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.delete("/group/" + groupId);
+        });
+    }
+    changeOwner(newOwnerId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.put(new group_1.Group(), rest_1.Rest.params("/group/{id}/owner", { id: newOwnerId }), new group_1.Group({ owner: { id_str: newOwnerId } }));
         });
     }
     getPhotos(eventId, page) {
@@ -4611,6 +4629,7 @@ const rest_1 = require("./rest");
 const photo_1 = require("../models/photo");
 const feed_1 = require("../models/feed");
 const generic_form_data_1 = require("../models/generic_form_data");
+const access_control_1 = require("../models/access_control");
 class RestPhoto extends rest_1.Rest {
     list(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -4628,7 +4647,7 @@ class RestPhoto extends rest_1.Rest {
             return this.conf.delete("/photo/" + photoId);
         });
     }
-    create(photo, message, tagEntities, albumName) {
+    create(photo, message, tagEntities, albumName, visibility = access_control_1.AccessControl.Friend) {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, photo.blob ? photo.blob.type : null, "image");
@@ -4641,6 +4660,9 @@ class RestPhoto extends rest_1.Rest {
             if (albumName !== undefined) {
                 f.append("album", albumName);
             }
+            if (visibility !== undefined) {
+                f.append("access_control", visibility);
+            }
             return this.conf.postMultipart(new feed_1.Feed(), "/photo/base64", f);
         });
     }
@@ -4652,7 +4674,7 @@ class RestPhoto extends rest_1.Rest {
 }
 exports.RestPhoto = RestPhoto;
 
-},{"../models/feed":43,"../models/generic_form_data":49,"../models/photo":63,"./rest":106}],102:[function(require,module,exports){
+},{"../models/access_control":17,"../models/feed":43,"../models/generic_form_data":49,"../models/photo":63,"./rest":106}],102:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {

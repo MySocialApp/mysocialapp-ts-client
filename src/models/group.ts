@@ -59,8 +59,19 @@ export class Group extends BaseWall {
         return (new RestGroup(this.conf)).leave(this.id);
     }
 
+    /**
+     * only for owner or moderator
+     */
+    async delete(): Promise<void> {
+        return (new RestGroup(this.conf)).delete(this.id);
+    }
+
     async update(): Promise<Group> {
         return (new RestGroup(this.conf)).update(this);
+    }
+
+    async changeOwner(newOwnerId: string): Promise<Group> {
+        return (new RestGroup(this.conf)).changeOwner(newOwnerId);
     }
 
     async addMessage(message: TextWallMessage): Promise<Feed> {

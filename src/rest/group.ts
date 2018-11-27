@@ -47,10 +47,6 @@ export class RestGroup extends Rest {
         return this.conf.put(new Group(), "/group/" + group.id, group) as Promise<Group>;
     }
 
-    async cancel(id: string): Promise<void> {
-        return this.conf.delete("/group/" + id);
-    }
-
     async getCustomFields(): Promise<CustomField[]> {
         return this.conf.getList(new CustomField(), "/group/customfield") as Promise<CustomField[]>;
     }
@@ -63,12 +59,20 @@ export class RestGroup extends Rest {
         return this.conf.getList(new GroupMember(), Rest.params("/group/{id}/member", {id: id})) as Promise<GroupMember[]>;
     }
 
-    async join(eventId: string): Promise<GroupMember> {
-        return this.conf.post(new GroupMember(), Rest.params("/group/{id}/member", {id: eventId}), new Empty()) as Promise<GroupMember>;
+    async join(groupId: string): Promise<GroupMember> {
+        return this.conf.post(new GroupMember(), Rest.params("/group/{id}/member", {id: groupId}), new Empty()) as Promise<GroupMember>;
     }
 
-    async leave(eventId: string): Promise<void> {
-        return this.conf.delete(Rest.params("/group/{id}/member", {id: eventId}));
+    async leave(groupId: string): Promise<void> {
+        return this.conf.delete(Rest.params("/group/{id}/member", {id: groupId}));
+    }
+
+    async delete(groupId: string): Promise<void> {
+        return this.conf.delete("/group/" + groupId);
+    }
+
+    async changeOwner(newOwnerId: string): Promise<Group> {
+        return this.conf.put(new Group(), Rest.params("/group/{id}/owner", {id: newOwnerId}), new Group({owner: {id_str: newOwnerId}})) as Promise<Group>;
     }
 
     async getPhotos(eventId: string, page?: number): Promise<Photo[]> {

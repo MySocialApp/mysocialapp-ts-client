@@ -4,6 +4,7 @@ import {TagEntities} from "../models/tag_entities";
 import {Feed} from "../models/feed";
 import {FileData} from "../models/file";
 import {GenericFormData} from "../models/generic_form_data";
+import {AccessControl} from "../models/access_control";
 
 export class RestPhoto extends Rest {
     async list(page: number, size?: number): Promise<Photo[]> {
@@ -19,7 +20,7 @@ export class RestPhoto extends Rest {
         return this.conf.delete("/photo/" + photoId);
     }
 
-    async create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string): Promise<Feed> {
+    async create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string, visibility: AccessControl = AccessControl.Friend): Promise<Feed> {
         let f = new GenericFormData();
         f.set("file", photo.blob, photo.blob ? photo.blob.type : null, "image");
         if (message !== undefined) {
@@ -30,6 +31,9 @@ export class RestPhoto extends Rest {
         }
         if (albumName !== undefined) {
             f.append("album", albumName);
+        }
+        if (visibility !== undefined) {
+            f.append("access_control", visibility);
         }
         return this.conf.postMultipart(new Feed(), "/photo/base64", f) as Promise<Feed>;
     }

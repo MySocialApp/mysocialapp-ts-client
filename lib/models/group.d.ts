@@ -27,7 +27,12 @@ export declare class Group extends BaseWall {
     createFeedPost(feedPost: FeedPost): Promise<Feed>;
     join(): Promise<GroupMember>;
     leave(): Promise<void>;
+    /**
+     * only for owner or moderator
+     */
+    delete(): Promise<void>;
     update(): Promise<Group>;
+    changeOwner(newOwnerId: string): Promise<Group>;
     addMessage(message: TextWallMessage): Promise<Feed>;
     setName(name: string): Group;
     setDescription(desc: string): Group;

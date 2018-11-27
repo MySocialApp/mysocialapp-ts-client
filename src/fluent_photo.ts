@@ -12,7 +12,7 @@ export class FluentPhoto extends FluentAbstract {
     }
 
     async create(file: FileData, photo: Photo): Promise<Photo> {
-        let resp = await this.session.clientService.photo.create(file, photo.message, photo.tag_entities);
+        let resp = await this.session.clientService.photo.create(file, photo.message, photo.tag_entities, photo.access_control);
         return new Photo(resp.object);
     }
 
