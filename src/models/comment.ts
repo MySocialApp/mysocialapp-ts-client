@@ -7,10 +7,10 @@ import {CommentPost} from "./comment_post";
 
 export class Comment extends Base implements Taggable {
 
-    _photo: Photo;
-    _tag_entities?: TagEntities;
+    private _photo: Photo;
+    private _tag_entities?: TagEntities;
+    private _parent: Base;
     message: string;
-    parent: Base;
 
     set photo(o: Photo) {
         this._photo = new Photo(o, this.conf);
@@ -20,6 +20,13 @@ export class Comment extends Base implements Taggable {
         return this._photo;
     }
 
+    set parent(o: Base) {
+        this._parent = new Base(o, this.conf);
+    }
+
+    get parent(): Base {
+        return this._parent;
+    }
 
     get tag_entities(): TagEntities {
         return this._tag_entities;

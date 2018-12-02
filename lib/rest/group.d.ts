@@ -14,12 +14,13 @@ export declare class RestGroup extends Rest {
     get(id: string): Promise<Group>;
     create(group: Group): Promise<Group>;
     update(group: Group): Promise<Group>;
-    cancel(id: string): Promise<void>;
     getCustomFields(): Promise<CustomField[]>;
     getGroupCustomFields(id: string): Promise<CustomField[]>;
     getMembers(id: string): Promise<GroupMember[]>;
-    join(eventId: string): Promise<GroupMember>;
-    leave(eventId: string): Promise<void>;
+    join(groupId: string): Promise<GroupMember>;
+    leave(groupId: string): Promise<void>;
+    delete(groupId: string): Promise<void>;
+    changeOwner(newOwnerId: string): Promise<Group>;
     getPhotos(eventId: string, page?: number): Promise<Photo[]>;
     createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed>;
     getProfilePhoto(eventId: string): Promise<Photo>;

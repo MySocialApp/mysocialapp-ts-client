@@ -1329,6 +1329,12 @@ class Comment extends base_1.Base {
     get photo() {
         return this._photo;
     }
+    set parent(o) {
+        this._parent = new base_1.Base(o, this.conf);
+    }
+    get parent() {
+        return this._parent;
+    }
     get tag_entities() {
         return this._tag_entities;
     }
