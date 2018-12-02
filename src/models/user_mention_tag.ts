@@ -12,6 +12,10 @@ export class UserMentionTag extends TagEntityAbstract {
         return this.mentioned_user ? this.mentioned_user.displayed_name : "";
     }
 
+    set text(t: string) {
+        // TODO?
+    }
+
     get text_shown(): string {
         // TODO
         return ""

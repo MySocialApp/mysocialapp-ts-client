@@ -15,6 +15,10 @@ export class URLTag extends TagEntityAbstract {
         return this.original_url;
     }
 
+    set text(t: string) {
+        this.original_url = t;
+    }
+
     get text_shown(): string {
         return this.original_url_to_display;
     }
