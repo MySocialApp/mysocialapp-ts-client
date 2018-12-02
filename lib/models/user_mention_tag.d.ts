@@ -6,7 +6,7 @@ export declare class UserMentionTag extends TagEntityAbstract {
     private _target?;
     start_index: number;
     end_index: number;
-    readonly text: string;
+    text: string;
     readonly text_shown: string;
     indices: number[];
     mentioned_user: User;

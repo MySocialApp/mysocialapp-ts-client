@@ -169,4 +169,10 @@ export class Group extends BaseWall {
         return new RestGroup(this.conf).updateProfileCoverPhoto(this.id, file);
     }
 
+    async getMembers(): Promise<GroupMember[]> {
+        if (this.members !== undefined) {
+            return this.members;
+        }
+        return new RestGroup(this.conf).getMembers(this.id);
+    }
 }

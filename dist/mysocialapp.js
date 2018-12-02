@@ -2576,6 +2576,14 @@ class Group extends base_wall_1.BaseWall {
     updateCoverImage(file) {
         return new group_1.RestGroup(this.conf).updateProfileCoverPhoto(this.id, file);
     }
+    getMembers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.members !== undefined) {
+                return this.members;
+            }
+            return new group_1.RestGroup(this.conf).getMembers(this.id);
+        });
+    }
 }
 exports.Group = Group;
 
@@ -3357,6 +3365,9 @@ class URLTag extends tag_entity_abstract_1.TagEntityAbstract {
     get text() {
         return this.original_url;
     }
+    set text(t) {
+        this.original_url = t;
+    }
     get text_shown() {
         return this.original_url_to_display;
     }
@@ -3558,6 +3569,9 @@ const feed_1 = require("./feed");
 class UserMentionTag extends tag_entity_abstract_1.TagEntityAbstract {
     get text() {
         return this.mentioned_user ? this.mentioned_user.displayed_name : "";
+    }
+    set text(t) {
+        // TODO?
     }
     get text_shown() {
         // TODO

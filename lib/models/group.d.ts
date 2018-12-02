@@ -47,4 +47,5 @@ export declare class Group extends BaseWall {
     location: Location;
     updateImage(file: FileData): Promise<Photo>;
     updateCoverImage(file: FileData): Promise<Photo>;
+    getMembers(): Promise<GroupMember[]>;
 }
