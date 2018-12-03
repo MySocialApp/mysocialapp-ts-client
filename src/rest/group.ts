@@ -81,7 +81,7 @@ export class RestGroup extends Rest {
         return this.conf.getList(new Photo(), path) as Promise<Photo[]>;
     }
 
-    async createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
+    async createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities, payload?: {}): Promise<Feed> {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
         if (message !== undefined) {
@@ -93,7 +93,10 @@ export class RestGroup extends Rest {
         if (tagEntities !== undefined) {
             f.append("tag_entities", tagEntities.toJson());
         }
-        return this.conf.postMultipart(new Feed(), Rest.params("/group/{id}/photo", {id: eventId}), f) as Promise<Feed>;
+        if (payload !== undefined) {
+            f.append('payload', payload);
+        }
+        return this.conf.postMultipart(new Feed(), Rest.params("/group/{id}/photo/base64", {id: eventId}), f) as Promise<Feed>;
     }
 
     async getProfilePhoto(eventId: string): Promise<Photo> {
@@ -103,7 +106,7 @@ export class RestGroup extends Rest {
     async updateProfilePhoto(eventId: string, photo: FileData): Promise<Photo> {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
-        return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/photo", {id: eventId}), f) as Promise<Photo>;
+        return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/photo/base64", {id: eventId}), f) as Promise<Photo>;
 
     }
 

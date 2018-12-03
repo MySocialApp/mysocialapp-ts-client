@@ -9,6 +9,16 @@ import {RestStatus} from "../rest/status";
 export class Status extends BaseWall {
     message?: string;
 
+    getJsonParameters(): {} {
+        let o = {
+            message: this.message,
+        };
+        if (this.payload !== undefined) {
+            o['payload'] = this.payload;
+        }
+        return o
+    }
+
     get bodyMessage(): string {
         return this.message;
     }

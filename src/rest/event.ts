@@ -84,7 +84,7 @@ export class RestEvent extends Rest {
         return this.conf.getList(new Photo(), path) as Promise<Photo[]>;
     }
 
-    async addPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed> {
+    async createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities, payload?: {}): Promise<Feed> {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
         if (message !== undefined) {
@@ -95,6 +95,9 @@ export class RestEvent extends Rest {
         }
         if (tagEntities !== undefined) {
             f.append("tag_entities", tagEntities.toJson());
+        }
+        if (payload !== undefined) {
+            f.append("payload", payload);
         }
         return this.conf.postMultipart(new Feed(), Rest.params("/event/{id}/photo", {id: eventId}), f) as Promise<Feed>;
     }

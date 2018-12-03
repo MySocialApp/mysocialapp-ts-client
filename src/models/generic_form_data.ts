@@ -6,16 +6,16 @@ export class GenericFormData {
         this.parts = [];
     }
 
-    set(name: string, value: any, contentType?: string, filename?: string) {
+    set(name: string, value: any, contentType?: string, filename?: string, transfertEncoding?: string) {
+        this.parts.push(new GenericFormDataValue(name, value, contentType, filename, transfertEncoding));
+    }
+
+    setBase64File(name: string, value: string, contentType?: string, filename?: string) {
         this.parts.push(new GenericFormDataValue(name, value, contentType, filename));
     }
 
-    setBase64File(name: string, value:string, contentType?: string, filename?: string ) {
-        this.parts.push(new GenericFormDataValue(name, value, contentType, filename));
-    }
-
-    append(name: string, value: any, contentType?: string, filename?: string) {
-        this.set(name, value, filename, contentType)
+    append(name: string, value: any, contentType?: string, filename?: string, transfertEncoding?: string) {
+        this.set(name, value, filename, contentType, transfertEncoding)
     }
 
     getHeaders(): {} {
@@ -45,25 +45,30 @@ class GenericFormDataValue {
     value: any;
     filename: string;
     contentType: string;
+    contentTransfertEncoding: string;
 
-    constructor(name: string, value: any, contentType: string = "text/plain", filename: string = null) {
+    constructor(name: string, value: any, contentType: string = "text/plain", filename?: string, transfertEncoding?: string) {
         this.name = name;
         this.value = value;
         this.filename = filename;
         this.contentType = contentType;
+        this.contentTransfertEncoding = transfertEncoding;
     }
 
     async getBodyPart(boundary: string): Promise<string[]> {
         if (this.filename != undefined) {
             return await this.getBase64Part(boundary);
         }
-        return [
+        let parts = [
             '--' + boundary,
             'Content-Disposition: form-data; name="' + this.name + '"',
             'Content-Type: ' + this.contentType + "; charset=UTF-8",
-            '',
-            this.value
         ];
+        if (this.contentTransfertEncoding) {
+            parts.push('Content-Transfer-Encoding: ' + this.contentTransfertEncoding);
+        }
+        parts.push('', this.value);
+        return parts;
     }
 
     async getBase64Part(boundary: string): Promise<string[]> {

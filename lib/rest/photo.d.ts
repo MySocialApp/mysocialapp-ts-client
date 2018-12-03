@@ -8,6 +8,6 @@ export declare class RestPhoto extends Rest {
     list(page: number, size?: number): Promise<Photo[]>;
     get(photoId: string): Promise<Photo>;
     delete(photoId: string): Promise<void>;
-    create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string, visibility?: AccessControl): Promise<Feed>;
+    create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string, visibility?: AccessControl, payload?: {}): Promise<Feed>;
     update(photoId: string, photo: Photo): Promise<Photo>;
 }

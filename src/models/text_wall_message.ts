@@ -11,11 +11,15 @@ export class TextWallMessage extends BaseWall implements Serializable, Taggable 
     private _tag_entities?: TagEntities;
 
     getJsonParameters(): {} {
-        return {
+        let j = {
             message: this.message,
             tag_entities: this.tag_entities ? this.tag_entities.getJsonParameters() : null,
             access_control: this.access_control,
         };
+        if (this.payload) {
+            j['payload'] = this.payload;
+        }
+        return j;
     }
 
     get tag_entities(): TagEntities {

@@ -20,7 +20,7 @@ export class RestPhoto extends Rest {
         return this.conf.delete("/photo/" + photoId);
     }
 
-    async create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string, visibility: AccessControl = AccessControl.Friend): Promise<Feed> {
+    async create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string, visibility: AccessControl = AccessControl.Friend, payload?: {}): Promise<Feed> {
         let f = new GenericFormData();
         f.set("file", photo.blob, photo.blob ? photo.blob.type : null, "image");
         if (message !== undefined) {
@@ -34,6 +34,9 @@ export class RestPhoto extends Rest {
         }
         if (visibility !== undefined) {
             f.append("access_control", visibility);
+        }
+        if (payload !== undefined) {
+            f.set("payload", payload);
         }
         return this.conf.postMultipart(new Feed(), "/photo/base64", f) as Promise<Feed>;
     }

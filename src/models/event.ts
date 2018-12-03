@@ -53,6 +53,9 @@ export class Event extends BaseWall {
         if (this.location) {
             o['location'] = this.location.getJsonParameters();
         }
+        if (this.payload) {
+            o['payload'] = this.payload;
+        }
         return o;
     }
 

@@ -9,6 +9,7 @@ export class FeedPost implements Serializable {
     _image?: FileData;
     _visibility?: AccessControl;
     _tag_entities?: TagEntities;
+    payload?: {};
 
 
     toJson(): string {
@@ -16,10 +17,14 @@ export class FeedPost implements Serializable {
     }
 
     getJsonParameters(): {} {
-        return {
+        let j = {
             message: this._message,
-            access_control: this._visibility !== undefined ? this._visibility : AccessControl.Friend
+            access_control: this._visibility !== undefined ? this._visibility : AccessControl.Friend,
         };
+        if (this.payload) {
+            j['payload'] = this.payload;
+        }
+        return j
     }
 
     setMessage(message: string): FeedPost {
@@ -41,11 +46,16 @@ export class FeedPost implements Serializable {
         return this;
     }
 
+    setPayload(payload: {}): FeedPost {
+        this.payload = payload;
+        return this;
+    }
+
     hasPhoto(): boolean {
         return this._image !== undefined;
     }
 
     get textWallMessage(): TextWallMessage {
-        return new TextWallMessage({}).setVisibility(this._visibility).setMessage(this._message).setTagEntities(this._tag_entities);
+        return new TextWallMessage({}).setVisibility(this._visibility).setMessage(this._message).setTagEntities(this._tag_entities).setPayload(this.payload);
     }
 }

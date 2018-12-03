@@ -27,6 +27,7 @@ export declare class Feed extends Model implements Wallable {
     readonly bodyMessage: string;
     readonly bodyImageUrl: string;
     readonly bodyImageText: string;
+    readonly payload: {};
     addLike(): Promise<Like>;
     getLikes(): Promise<Like[]>;
     deleteLike(): Promise<void>;
@@ -38,4 +39,5 @@ export declare class Feed extends Model implements Wallable {
     save(): Promise<Feed>;
     setBodyMessage(message: string): Feed;
     setAccessControl(ac: AccessControl): Feed;
+    setPayload(payload: {}): Feed;
 }

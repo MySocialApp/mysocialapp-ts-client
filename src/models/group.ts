@@ -35,10 +35,12 @@ export class Group extends BaseWall {
             description: this.description,
             group_member_access_control: this.group_member_access_control,
             location: this.location ? this.location.getJsonParameters() : null,
-            custom_fields: this._custom_fields ? listToParameters(this._custom_fields) : null,
         };
         if (this.custom_fields) {
             o['custom_fields'] = listToParameters(this.custom_fields);
+        }
+        if (this.payload !== undefined) {
+            o['payload'] = this.payload;
         }
         return o;
     }

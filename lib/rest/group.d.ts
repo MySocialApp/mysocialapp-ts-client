@@ -22,7 +22,7 @@ export declare class RestGroup extends Rest {
     delete(groupId: string): Promise<void>;
     changeOwner(newOwnerId: string): Promise<Group>;
     getPhotos(eventId: string, page?: number): Promise<Photo[]>;
-    createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed>;
+    createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities, payload?: {}): Promise<Feed>;
     getProfilePhoto(eventId: string): Promise<Photo>;
     updateProfilePhoto(eventId: string, photo: FileData): Promise<Photo>;
     getProfileCoverPhoto(eventId: string): Promise<Photo>;

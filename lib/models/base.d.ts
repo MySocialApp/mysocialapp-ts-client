@@ -14,6 +14,7 @@ export declare class Base extends Model implements BaseImpl {
     access_control?: AccessControl;
     body_image_url?: string;
     body_image_text?: string;
+    payload?: {};
     id: any;
     bodyMessage: string;
     owner: User;
@@ -21,4 +22,7 @@ export declare class Base extends Model implements BaseImpl {
     readonly getCreatedDate: moment.Moment;
     save(): Promise<any>;
     delete(): Promise<any>;
+    setPayload(payload: {}): this;
+    getPayload(): {};
+    getPayloadValue(index: string): any;
 }

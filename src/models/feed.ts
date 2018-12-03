@@ -8,8 +8,8 @@ import {Like} from "./like";
 import {CommentPost} from "./comment_post";
 import {Comment} from "./comment";
 import {TextWallMessage} from "./text_wall_message";
-import moment = require('moment');
 import {convertModel} from "./convert";
+import moment = require('moment');
 
 export enum ActionType {
     Publish = 'PUBLISH',
@@ -80,6 +80,10 @@ export class Feed extends Model implements Wallable {
         return this.object.body_image_text;
     }
 
+    get payload(): {} {
+        return this.object.payload;
+    }
+
     async addLike(): Promise<Like> {
         return this.object.addLike();
     }
@@ -113,7 +117,7 @@ export class Feed extends Model implements Wallable {
     }
 
     async save(): Promise<Feed> {
-        let wm = new TextWallMessage().setMessage(this.object.displayed_name).setVisibility(this.access_control);
+        let wm = new TextWallMessage().setMessage(this.object.displayed_name).setVisibility(this.access_control).setPayload(this.object.payload);
         return (new RestFeed(this.conf)).updateMessage(this.object.id, wm)
     }
 
@@ -128,6 +132,11 @@ export class Feed extends Model implements Wallable {
         if (this.object) {
             this.access_control = ac;
         }
+        return this;
+    }
+
+    setPayload(payload: {}): Feed {
+        this.object.setPayload(payload);
         return this;
     }
 }

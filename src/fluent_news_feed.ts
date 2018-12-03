@@ -33,7 +33,7 @@ export class FluentNewsFeed extends FluentAbstract {
         if (!feedPost.hasPhoto()) {
             return this.session.clientService.userWallMessage.create(account.id, feedPost.textWallMessage)
         }
-        return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities, feedPost._visibility);
+        return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities, null, feedPost._visibility, feedPost.payload ? JSON.stringify(feedPost.payload) : undefined);
     }
 
     async search(search: SearchFeed, page: number, size: number = 10): Promise<SearchResults> {

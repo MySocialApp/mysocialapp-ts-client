@@ -16,6 +16,7 @@ export class Base extends Model implements BaseImpl {
     access_control?: AccessControl;
     body_image_url?: string = null;
     body_image_text?: string = null;
+    payload?: {};
 
     get id(): any {
         return this.id_str
@@ -65,5 +66,20 @@ export class Base extends Model implements BaseImpl {
         return new Promise(((resolve, reject) => {
             reject()
         }));
+    }
+
+    setPayload(payload: {}) {
+        if (payload) {
+            this.payload = payload;
+        }
+        return this;
+    }
+
+    getPayload(): {} {
+        return this.payload;
+    }
+
+    getPayloadValue(index: string): any {
+        return this.getPayload() ? this.getPayload()[index] : null;
     }
 }

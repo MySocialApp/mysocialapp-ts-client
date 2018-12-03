@@ -22,7 +22,7 @@ export declare class RestEvent extends Rest {
     join(eventId: string): Promise<EventMember>;
     leave(eventId: string): Promise<void>;
     getPhotos(eventId: string, page?: number): Promise<Photo[]>;
-    addPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities): Promise<Feed>;
+    createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities, payload?: {}): Promise<Feed>;
     getProfilePhoto(eventId: string): Promise<Photo>;
     updateProfilePhoto(eventId: string, photo: FileData): Promise<Photo>;
     getProfileCoverPhoto(eventId: string): Promise<Photo>;

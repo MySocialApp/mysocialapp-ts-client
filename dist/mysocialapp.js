@@ -687,7 +687,7 @@ class FluentNewsFeed extends fluent_abstract_1.FluentAbstract {
             if (!feedPost.hasPhoto()) {
                 return this.session.clientService.userWallMessage.create(account.id, feedPost.textWallMessage);
             }
-            return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities, feedPost._visibility);
+            return this.session.clientService.photo.create(feedPost._image, feedPost._message, feedPost._tag_entities, null, feedPost._visibility, feedPost.payload ? JSON.stringify(feedPost.payload) : undefined);
         });
     }
     search(search, page, size = 10) {
@@ -759,9 +759,9 @@ class FluentPhoto extends fluent_abstract_1.FluentAbstract {
             return this.session.clientService.photo.get(id);
         });
     }
-    create(file, photo) {
+    create(file, photo, albumName) {
         return __awaiter(this, void 0, void 0, function* () {
-            let resp = yield this.session.clientService.photo.create(file, photo.message, photo.tag_entities, photo.access_control);
+            let resp = yield this.session.clientService.photo.create(file, photo.message, photo.tag_entities, albumName, photo.access_control, photo.payload);
             return new photo_1.Photo(resp.object);
         });
     }
@@ -1216,6 +1216,18 @@ class Base extends model_1.Model {
                 reject();
             }));
         });
+    }
+    setPayload(payload) {
+        if (payload) {
+            this.payload = payload;
+        }
+        return this;
+    }
+    getPayload() {
+        return this.payload;
+    }
+    getPayloadValue(index) {
+        return this.getPayload() ? this.getPayload()[index] : null;
     }
 }
 exports.Base = Base;
@@ -1868,6 +1880,9 @@ class Event extends base_wall_1.BaseWall {
         if (this.location) {
             o['location'] = this.location.getJsonParameters();
         }
+        if (this.payload) {
+            o['payload'] = this.payload;
+        }
         return o;
     }
     listNewsFeed(page, size) {
@@ -2157,6 +2172,9 @@ class Feed extends model_1.Model {
     get bodyImageText() {
         return this.object.body_image_text;
     }
+    get payload() {
+        return this.object.payload;
+    }
     addLike() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.object.addLike();
@@ -2199,7 +2217,7 @@ class Feed extends model_1.Model {
     }
     save() {
         return __awaiter(this, void 0, void 0, function* () {
-            let wm = new text_wall_message_1.TextWallMessage().setMessage(this.object.displayed_name).setVisibility(this.access_control);
+            let wm = new text_wall_message_1.TextWallMessage().setMessage(this.object.displayed_name).setVisibility(this.access_control).setPayload(this.object.payload);
             return (new feed_1.RestFeed(this.conf)).updateMessage(this.object.id, wm);
         });
     }
@@ -2215,6 +2233,10 @@ class Feed extends model_1.Model {
         }
         return this;
     }
+    setPayload(payload) {
+        this.object.setPayload(payload);
+        return this;
+    }
 }
 exports.Feed = Feed;
 
@@ -2228,10 +2250,14 @@ class FeedPost {
         return JSON.stringify(this.getJsonParameters());
     }
     getJsonParameters() {
-        return {
+        let j = {
             message: this._message,
-            access_control: this._visibility !== undefined ? this._visibility : access_control_1.AccessControl.Friend
+            access_control: this._visibility !== undefined ? this._visibility : access_control_1.AccessControl.Friend,
         };
+        if (this.payload) {
+            j['payload'] = this.payload;
+        }
+        return j;
     }
     setMessage(message) {
         this._message = message;
@@ -2248,11 +2274,15 @@ class FeedPost {
         this._visibility = visible;
         return this;
     }
+    setPayload(payload) {
+        this.payload = payload;
+        return this;
+    }
     hasPhoto() {
         return this._image !== undefined;
     }
     get textWallMessage() {
-        return new text_wall_message_1.TextWallMessage({}).setVisibility(this._visibility).setMessage(this._message).setTagEntities(this._tag_entities);
+        return new text_wall_message_1.TextWallMessage({}).setVisibility(this._visibility).setMessage(this._message).setTagEntities(this._tag_entities).setPayload(this.payload);
     }
 }
 exports.FeedPost = FeedPost;
@@ -2345,14 +2375,14 @@ class GenericFormData {
     constructor() {
         this.parts = [];
     }
-    set(name, value, contentType, filename) {
-        this.parts.push(new GenericFormDataValue(name, value, contentType, filename));
+    set(name, value, contentType, filename, transfertEncoding) {
+        this.parts.push(new GenericFormDataValue(name, value, contentType, filename, transfertEncoding));
     }
     setBase64File(name, value, contentType, filename) {
         this.parts.push(new GenericFormDataValue(name, value, contentType, filename));
     }
-    append(name, value, contentType, filename) {
-        this.set(name, value, filename, contentType);
+    append(name, value, contentType, filename, transfertEncoding) {
+        this.set(name, value, filename, contentType, transfertEncoding);
     }
     getHeaders() {
         return {
@@ -2376,24 +2406,28 @@ class GenericFormData {
 exports.GenericFormData = GenericFormData;
 const allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._-+,@£$€!½§~'=()[]{}0123456789";
 class GenericFormDataValue {
-    constructor(name, value, contentType = "text/plain", filename = null) {
+    constructor(name, value, contentType = "text/plain", filename, transfertEncoding) {
         this.name = name;
         this.value = value;
         this.filename = filename;
         this.contentType = contentType;
+        this.contentTransfertEncoding = transfertEncoding;
     }
     getBodyPart(boundary) {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.filename != undefined) {
                 return yield this.getBase64Part(boundary);
             }
-            return [
+            let parts = [
                 '--' + boundary,
                 'Content-Disposition: form-data; name="' + this.name + '"',
                 'Content-Type: ' + this.contentType + "; charset=UTF-8",
-                '',
-                this.value
             ];
+            if (this.contentTransfertEncoding) {
+                parts.push('Content-Transfer-Encoding: ' + this.contentTransfertEncoding);
+            }
+            parts.push('', this.value);
+            return parts;
         });
     }
     getBase64Part(boundary) {
@@ -2454,10 +2488,12 @@ class Group extends base_wall_1.BaseWall {
             description: this.description,
             group_member_access_control: this.group_member_access_control,
             location: this.location ? this.location.getJsonParameters() : null,
-            custom_fields: this._custom_fields ? utils_1.listToParameters(this._custom_fields) : null,
         };
         if (this.custom_fields) {
             o['custom_fields'] = utils_1.listToParameters(this.custom_fields);
+        }
+        if (this.payload !== undefined) {
+            o['payload'] = this.payload;
         }
         return o;
     }
@@ -3202,6 +3238,15 @@ const status_like_1 = require("../rest/status_like");
 const status_comment_1 = require("../rest/status_comment");
 const status_1 = require("../rest/status");
 class Status extends base_wall_1.BaseWall {
+    getJsonParameters() {
+        let o = {
+            message: this.message,
+        };
+        if (this.payload !== undefined) {
+            o['payload'] = this.payload;
+        }
+        return o;
+    }
     get bodyMessage() {
         return this.message;
     }
@@ -3330,11 +3375,15 @@ const base_wall_1 = require("./base_wall");
 const tag_entities_1 = require("./tag_entities");
 class TextWallMessage extends base_wall_1.BaseWall {
     getJsonParameters() {
-        return {
+        let j = {
             message: this.message,
             tag_entities: this.tag_entities ? this.tag_entities.getJsonParameters() : null,
             access_control: this.access_control,
         };
+        if (this.payload) {
+            j['payload'] = this.payload;
+        }
+        return j;
     }
     get tag_entities() {
         return this._tag_entities;
@@ -4085,7 +4134,7 @@ class RestEvent extends rest_1.Rest {
             return this.conf.getList(new photo_1.Photo(), path);
         });
     }
-    addPhoto(eventId, photo, message, accessControl, tagEntities) {
+    createPhoto(eventId, photo, message, accessControl, tagEntities, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
@@ -4097,6 +4146,9 @@ class RestEvent extends rest_1.Rest {
             }
             if (tagEntities !== undefined) {
                 f.append("tag_entities", tagEntities.toJson());
+            }
+            if (payload !== undefined) {
+                f.append("payload", payload);
             }
             return this.conf.postMultipart(new feed_1.Feed(), rest_1.Rest.params("/event/{id}/photo", { id: eventId }), f);
         });
@@ -4446,7 +4498,7 @@ class RestGroup extends rest_1.Rest {
             return this.conf.getList(new photo_1.Photo(), path);
         });
     }
-    createPhoto(eventId, photo, message, accessControl, tagEntities) {
+    createPhoto(eventId, photo, message, accessControl, tagEntities, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
@@ -4459,7 +4511,10 @@ class RestGroup extends rest_1.Rest {
             if (tagEntities !== undefined) {
                 f.append("tag_entities", tagEntities.toJson());
             }
-            return this.conf.postMultipart(new feed_1.Feed(), rest_1.Rest.params("/group/{id}/photo", { id: eventId }), f);
+            if (payload !== undefined) {
+                f.append('payload', payload);
+            }
+            return this.conf.postMultipart(new feed_1.Feed(), rest_1.Rest.params("/group/{id}/photo/base64", { id: eventId }), f);
         });
     }
     getProfilePhoto(eventId) {
@@ -4471,7 +4526,7 @@ class RestGroup extends rest_1.Rest {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
-            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/group/{id}/profile/photo", { id: eventId }), f);
+            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/group/{id}/profile/photo/base64", { id: eventId }), f);
         });
     }
     getProfileCoverPhoto(eventId) {
@@ -4667,7 +4722,7 @@ class RestPhoto extends rest_1.Rest {
             return this.conf.delete("/photo/" + photoId);
         });
     }
-    create(photo, message, tagEntities, albumName, visibility = access_control_1.AccessControl.Friend) {
+    create(photo, message, tagEntities, albumName, visibility = access_control_1.AccessControl.Friend, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, photo.blob ? photo.blob.type : null, "image");
@@ -4682,6 +4737,9 @@ class RestPhoto extends rest_1.Rest {
             }
             if (visibility !== undefined) {
                 f.append("access_control", visibility);
+            }
+            if (payload !== undefined) {
+                f.set("payload", payload);
             }
             return this.conf.postMultipart(new feed_1.Feed(), "/photo/base64", f);
         });
