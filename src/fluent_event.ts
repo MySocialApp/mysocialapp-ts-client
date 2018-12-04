@@ -27,8 +27,17 @@ export class FluentEvent extends FluentAbstract {
         }
     }
 
-    async get(id: string): Promise<Event> {
-        return this.session.clientService.event.get(id);
+    /**
+     * if limited = true in received full information about event
+     * - free_seats
+     * - taken_seats
+     * - members
+     *
+     * @param id
+     * @param limited
+     */
+    async get(id: string, limited: boolean = true): Promise<Event> {
+        return this.session.clientService.event.get(id, limited);
     }
 
     async create(event: Event): Promise<Event> {

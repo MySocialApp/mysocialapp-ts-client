@@ -25,7 +25,7 @@ export class RestFeedComment extends Rest {
         if (tagEntities !== undefined) {
             f.append("tag_entities", tagEntities.toJson());
         }
-        return this.conf.postMultipart(new Comment(), Rest.params("/feed/{id}/comment/photo", {id: id}), f) as Promise<Comment>;
+        return this.conf.postMultipart(new Comment(), Rest.params("/feed/{id}/comment/photo/base64", {id: id}), f) as Promise<Comment>;
     }
 
     async update(feedId: string, commentId: string, comment: CommentPost): Promise<Comment> {

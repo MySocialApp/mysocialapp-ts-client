@@ -1,17 +1,24 @@
 import {Serializable} from "./model";
 import {FileData} from "./file";
+import {TagEntities} from "./tag_entities";
 
 export class CommentPost implements Serializable {
-    private mMessage: string;
-    private mFile: FileData;
+    _message: string;
+    _file: FileData;
+    _tag_entities: TagEntities;
 
     setMessage(message: string): CommentPost {
-        this.mMessage = message;
+        this._message = message;
         return this;
     }
 
     setImage(file: FileData): CommentPost {
-        this.mFile = file;
+        this._file = file;
+        return this;
+    }
+
+    setTagEntities(tagEntities: TagEntities): CommentPost {
+        this._tag_entities = tagEntities;
         return this;
     }
 
@@ -20,7 +27,11 @@ export class CommentPost implements Serializable {
     }
 
     getJsonParameters(): {} {
-        return {message: this.mMessage};
+        return {message: this._message};
+    }
+
+    hasPhoto(): boolean {
+        return this._file !== undefined;
     }
 
 }

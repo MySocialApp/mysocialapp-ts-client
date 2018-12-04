@@ -42,8 +42,12 @@ export class RestEvent extends Rest {
         return this.conf.getList(new Event(), "/event?" + Rest.encodeQueryData(queryParams)) as Promise<Event[]>;
     }
 
-    async get(id: string): Promise<Event> {
-        return this.conf.get(new Event(), "/event/" + id) as Promise<Event>;
+    async get(id: string, limited: boolean = true): Promise<Event> {
+        let path = "/event/" + id;
+        if (!limited) {
+            path += '?limited=false';
+        }
+        return this.conf.get(new Event(), path) as Promise<Event>;
     }
 
     async create(event: Event): Promise<Event> {
@@ -99,7 +103,7 @@ export class RestEvent extends Rest {
         if (payload !== undefined) {
             f.append("payload", payload);
         }
-        return this.conf.postMultipart(new Feed(), Rest.params("/event/{id}/photo", {id: eventId}), f) as Promise<Feed>;
+        return this.conf.postMultipart(new Feed(), Rest.params("/event/{id}/photo/base64", {id: eventId}), f) as Promise<Feed>;
     }
 
     async getProfilePhoto(eventId: string): Promise<Photo> {
@@ -109,7 +113,7 @@ export class RestEvent extends Rest {
     async updateProfilePhoto(eventId: string, photo: FileData): Promise<Photo> {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
-        return this.conf.postMultipart(new Photo(), Rest.params("/event/{id}/profile/photo", {id: eventId}), f) as Promise<Photo>;
+        return this.conf.postMultipart(new Photo(), Rest.params("/event/{id}/profile/photo/base64", {id: eventId}), f) as Promise<Photo>;
 
     }
 
@@ -120,7 +124,7 @@ export class RestEvent extends Rest {
     async updateProfileCoverPhoto(eventId: string, photo: FileData): Promise<Photo> {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
-        return this.conf.postMultipart(new Photo(), Rest.params("/event/{id}/profile/cover/photo", {id: eventId}), f) as Promise<Photo>;
+        return this.conf.postMultipart(new Photo(), Rest.params("/event/{id}/profile/cover/photo/base64", {id: eventId}), f) as Promise<Photo>;
 
     }
 

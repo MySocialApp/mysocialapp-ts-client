@@ -117,7 +117,7 @@ export class RestGroup extends Rest {
     async updateProfileCoverPhoto(eventId: string, photo: FileData): Promise<Photo> {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
-        return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/cover/photo", {id: eventId}), f) as Promise<Photo>;
+        return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/cover/photo/base64", {id: eventId}), f) as Promise<Photo>;
 
     }
 }

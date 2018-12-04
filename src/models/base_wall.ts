@@ -59,7 +59,10 @@ export class BaseWall extends Base implements Likable, Commentable {
     }
 
     async addComment(comment: CommentPost): Promise<Comment> {
-        return (new RestFeedComment(this.conf)).create(this.id_str, comment);
+        if(comment.hasPhoto()) {
+            return new RestFeedComment(this.conf).addPhoto(this.id, comment._file, comment._message, comment._tag_entities);
+        }
+        return (new RestFeedComment(this.conf)).create(this.id, comment);
     }
 
     async delete(): Promise<void> {
