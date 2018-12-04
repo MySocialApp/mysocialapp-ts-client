@@ -509,9 +509,18 @@ class FluentEvent extends fluent_abstract_1.FluentAbstract {
             }
         });
     }
-    get(id) {
+    /**
+     * if limited = true in received full information about event
+     * - free_seats
+     * - taken_seats
+     * - members
+     *
+     * @param id
+     * @param limited
+     */
+    get(id, limited = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.session.clientService.event.get(id);
+            return this.session.clientService.event.get(id, limited);
         });
     }
     create(event) {
@@ -1301,7 +1310,10 @@ class BaseWall extends base_1.Base {
     }
     addComment(comment) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (new feed_comment_1.RestFeedComment(this.conf)).create(this.id_str, comment);
+            if (comment.hasPhoto()) {
+                return new feed_comment_1.RestFeedComment(this.conf).addPhoto(this.id, comment._file, comment._message, comment._tag_entities);
+            }
+            return (new feed_comment_1.RestFeedComment(this.conf)).create(this.id, comment);
         });
     }
     delete() {
@@ -1390,18 +1402,25 @@ exports.CommentBlob = CommentBlob;
 Object.defineProperty(exports, "__esModule", { value: true });
 class CommentPost {
     setMessage(message) {
-        this.mMessage = message;
+        this._message = message;
         return this;
     }
     setImage(file) {
-        this.mFile = file;
+        this._file = file;
+        return this;
+    }
+    setTagEntities(tagEntities) {
+        this._tag_entities = tagEntities;
         return this;
     }
     toJson() {
         return JSON.stringify(this.getJsonParameters());
     }
     getJsonParameters() {
-        return { message: this.mMessage };
+        return { message: this._message };
+    }
+    hasPhoto() {
+        return this._file !== undefined;
     }
 }
 exports.CommentPost = CommentPost;
@@ -3876,7 +3895,7 @@ class RestAccount extends rest_1.Rest {
         return __awaiter(this, void 0, void 0, function* () {
             let fd = new generic_form_data_1.GenericFormData();
             fd.set("file", image.blob, 'image/png', "image.png");
-            return this.conf.postMultipart(new photo_1.Photo(), "/account/profile/cover/photo", fd);
+            return this.conf.postMultipart(new photo_1.Photo(), "/account/profile/cover/photo/base64", fd);
         });
     }
     getProfilePhoto() {
@@ -4082,9 +4101,13 @@ class RestEvent extends rest_1.Rest {
             return this.conf.getList(new event_1.Event(), "/event?" + rest_1.Rest.encodeQueryData(queryParams));
         });
     }
-    get(id) {
+    get(id, limited = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.get(new event_1.Event(), "/event/" + id);
+            let path = "/event/" + id;
+            if (!limited) {
+                path += '?limited=false';
+            }
+            return this.conf.get(new event_1.Event(), path);
         });
     }
     create(event) {
@@ -4150,7 +4173,7 @@ class RestEvent extends rest_1.Rest {
             if (payload !== undefined) {
                 f.append("payload", payload);
             }
-            return this.conf.postMultipart(new feed_1.Feed(), rest_1.Rest.params("/event/{id}/photo", { id: eventId }), f);
+            return this.conf.postMultipart(new feed_1.Feed(), rest_1.Rest.params("/event/{id}/photo/base64", { id: eventId }), f);
         });
     }
     getProfilePhoto(eventId) {
@@ -4162,7 +4185,7 @@ class RestEvent extends rest_1.Rest {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
-            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/event/{id}/profile/photo", { id: eventId }), f);
+            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/event/{id}/profile/photo/base64", { id: eventId }), f);
         });
     }
     getProfileCoverPhoto(eventId) {
@@ -4174,7 +4197,7 @@ class RestEvent extends rest_1.Rest {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
-            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/event/{id}/profile/cover/photo", { id: eventId }), f);
+            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/event/{id}/profile/cover/photo/base64", { id: eventId }), f);
         });
     }
 }
@@ -4313,7 +4336,7 @@ class RestFeedComment extends rest_1.Rest {
             if (tagEntities !== undefined) {
                 f.append("tag_entities", tagEntities.toJson());
             }
-            return this.conf.postMultipart(new comment_1.Comment(), rest_1.Rest.params("/feed/{id}/comment/photo", { id: id }), f);
+            return this.conf.postMultipart(new comment_1.Comment(), rest_1.Rest.params("/feed/{id}/comment/photo/base64", { id: id }), f);
         });
     }
     update(feedId, commentId, comment) {
@@ -4538,7 +4561,7 @@ class RestGroup extends rest_1.Rest {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
-            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/group/{id}/profile/cover/photo", { id: eventId }), f);
+            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/group/{id}/profile/cover/photo/base64", { id: eventId }), f);
         });
     }
 }
@@ -5091,7 +5114,7 @@ class RestShadowEntityProfileCoverPhoto extends rest_1.Rest {
         return __awaiter(this, void 0, void 0, function* () {
             let f = new generic_form_data_1.GenericFormData();
             f.set("file", photo.blob, 'image/png', "image.png");
-            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/shadow/entity/{id}/profile/cover/photo", { id: id }), f);
+            return this.conf.postMultipart(new photo_1.Photo(), rest_1.Rest.params("/shadow/entity/{id}/profile/cover/photo/base64", { id: id }), f);
         });
     }
 }

@@ -12,7 +12,7 @@ export declare class RestEvent extends Rest {
     list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<Event[]>;
     listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number, upperLatitude: number, upperLongitude: number): Promise<Event[]>;
     listFromParams(queryParams: {}): Promise<Event[]>;
-    get(id: string): Promise<Event>;
+    get(id: string, limited?: boolean): Promise<Event>;
     create(event: Event): Promise<Event>;
     update(event: Event): Promise<Event>;
     cancel(id: string): Promise<void>;
