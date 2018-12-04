@@ -26,6 +26,9 @@ describe("addMessage account", () => {
             let comments = await createdPost.getComments();
             expect(comments.length).toBeGreaterThan(0);
 
+            let likedPost = await session.newsFeed.get(createdPost.id);
+            expect(likedPost.object.isLiked()).toBeTruthy();
+
             await createdPost.object.delete();
 
         } catch (err) {

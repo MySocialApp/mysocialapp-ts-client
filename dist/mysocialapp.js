@@ -1277,7 +1277,7 @@ class BaseWall extends base_1.Base {
         this.likes.total = i;
     }
     isLiked() {
-        return this.likes.hasLike === true;
+        return this.likes.has_like === true;
     }
     getLikes() {
         return __awaiter(this, void 0, void 0, function* () {

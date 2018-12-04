@@ -39,7 +39,7 @@ export class BaseWall extends Base implements Likable, Commentable {
     }
 
     isLiked(): boolean {
-        return this.likes.hasLike === true;
+        return this.likes.has_like === true;
     }
 
     async getLikes(): Promise<Like[]> {
