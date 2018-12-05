@@ -25,7 +25,7 @@ export class RestFeed extends Rest {
     }
 
     async updateMessage(messageId: string, message: TextWallMessage): Promise<Feed> {
-        return this.conf.post(new Feed(), "/feed/message/" + messageId, message) as Promise<Feed>;
+        return this.conf.put(new Feed(), "/user/0/feed/message/" + messageId, message) as Promise<Feed>;
     }
 
     async abuse(id: string): Promise<void> {

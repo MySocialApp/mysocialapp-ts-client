@@ -7,14 +7,18 @@ jest.setTimeout(60000);
 describe("addMessage account", () => {
     it("user creation api", async () => {
         try {
-            let post = (new FeedPost()).setMessage("Good day").setVisibility(AccessControl.Friend);
+            let post = (new FeedPost()).setMessage("Good").setVisibility(AccessControl.Friend);
 
             const session = await createAccountAndGetSession();
             const account = await session.account.get();
-            const createdPost = await session.newsFeed.create(post);
-            expect(createdPost.object.id != "").toBeTruthy();
-            expect(createdPost.object.bodyMessage != "").toBeTruthy();
-            expect(createdPost.object.access_control == AccessControl.Friend);
+            let precreatedPost = await session.newsFeed.create(post);
+            expect(precreatedPost.object.id != "").toBeTruthy();
+            expect(precreatedPost.object.bodyMessage != "").toBeTruthy();
+            expect(precreatedPost.object.access_control == AccessControl.Friend);
+
+            const createdPost = await precreatedPost.setBodyMessage("Good day").save();
+            expect(createdPost.id === precreatedPost.id);
+            expect(createdPost.bodyMessage === "Good day");
 
             let like = await createdPost.object.addLike();
             expect(like.id != "").toBeTruthy();
