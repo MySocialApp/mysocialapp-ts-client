@@ -11,7 +11,7 @@ import { FileData } from "../models/file";
 export declare class RestGroup extends Rest {
     list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<Group[]>;
     listByZone(page: number, limited: boolean, size: number, lowerLatitude: number, lowerLongitude: number, upperLatitude: number, upperLongitude: number): Promise<Group[]>;
-    get(id: string): Promise<Group>;
+    get(id: string, limited?: boolean): Promise<Group>;
     create(group: Group): Promise<Group>;
     update(group: Group): Promise<Group>;
     getCustomFields(): Promise<CustomField[]>;

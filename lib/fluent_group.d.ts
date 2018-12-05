@@ -8,7 +8,7 @@ import { SearchResults } from "./models/search_results";
 export declare class FluentGroup extends FluentAbstract {
     list(page: number, size?: number, options?: GroupOptions): Promise<Group[]>;
     stream(): AsyncIterableIterator<Group>;
-    get(id: string): Promise<Group>;
+    get(id: string, limited?: boolean): Promise<Group>;
     create(group: Group): Promise<Group>;
     search(search: SearchGroup, page: number, size?: number): Promise<SearchResults>;
     getAvailableCustomFields(): Promise<CustomField[]>;

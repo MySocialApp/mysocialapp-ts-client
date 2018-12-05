@@ -618,9 +618,9 @@ class FluentGroup extends fluent_abstract_1.FluentAbstract {
             }
         });
     }
-    get(id) {
+    get(id, limited = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.session.clientService.group.get(id);
+            return this.session.clientService.group.get(id, limited);
         });
     }
     create(group) {
@@ -4285,7 +4285,7 @@ class RestFeed extends rest_1.Rest {
     }
     updateMessage(messageId, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.post(new feed_1.Feed(), "/feed/message/" + messageId, message);
+            return this.conf.put(new feed_1.Feed(), "/user/0/feed/message/" + messageId, message);
         });
     }
     abuse(id) {
@@ -4464,9 +4464,13 @@ class RestGroup extends rest_1.Rest {
             return this.list(page, limited, size, undefined, params);
         });
     }
-    get(id) {
+    get(id, limited = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.get(new group_1.Group(), "/group/" + id);
+            let path = "/group/" + id;
+            if (!limited) {
+                path += "?limited=false";
+            }
+            return this.conf.get(new group_1.Group(), path);
         });
     }
     create(group) {
