@@ -2,7 +2,7 @@ import { Like } from "./like";
 import { Model } from "./model";
 export declare class LikeBlob extends Model {
     total: number;
-    hasLike: boolean;
+    has_like: boolean;
     _samples: Like[];
     samples: Like[];
 }

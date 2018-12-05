@@ -35,8 +35,12 @@ export class RestGroup extends Rest {
         return this.list(page, limited, size, undefined, params);
     }
 
-    async get(id: string): Promise<Group> {
-        return this.conf.get(new Group(), "/group/" + id) as Promise<Group>;
+    async get(id: string, limited: boolean = true): Promise<Group> {
+        let path = "/group/" + id;
+        if (!limited) {
+            path += "?limited=false";
+        }
+        return this.conf.get(new Group(), path) as Promise<Group>;
     }
 
     async create(group: Group): Promise<Group> {
@@ -107,7 +111,6 @@ export class RestGroup extends Rest {
         let f = new GenericFormData();
         f.set("file", photo.blob, 'image/png', "image.png");
         return this.conf.postMultipart(new Photo(), Rest.params("/group/{id}/profile/photo/base64", {id: eventId}), f) as Promise<Photo>;
-
     }
 
     async getProfileCoverPhoto(eventId: string): Promise<Photo> {

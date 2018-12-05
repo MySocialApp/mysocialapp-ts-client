@@ -24,8 +24,8 @@ export class FluentGroup extends FluentAbstract {
         }
     }
 
-    async get(id: string): Promise<Group> {
-        return this.session.clientService.group.get(id);
+    async get(id: string, limited: boolean = true): Promise<Group> {
+        return this.session.clientService.group.get(id, limited);
     }
 
 
