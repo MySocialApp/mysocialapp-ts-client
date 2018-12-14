@@ -34,6 +34,8 @@ export declare class User extends Model {
     authorities?: string[];
     is_friend?: boolean;
     is_requested_as_friend?: boolean;
+    is_following?: boolean;
+    is_follower?: boolean;
     getJsonParameters(): {};
     id: any;
     displayed_photo: Photo;
@@ -59,6 +61,10 @@ export declare class User extends Model {
     cancelFriendRequest(): Promise<void>;
     acceptFriendRequest(): Promise<User>;
     refuseFriendRequest(): Promise<void>;
+    follow(): Promise<User>;
+    unfollow(): Promise<void>;
+    listFollowers(page: number, size: number): Promise<User[]>;
+    listFollowings(page: number, size: number): Promise<User[]>;
     listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]>;
     sendPrivateMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
 }

@@ -17,6 +17,8 @@ import {ConversationMessagePost} from "./conversation_message_post";
 import {ConversationMessage} from "./conversation_message";
 import {RestConversation} from "../rest/conversation";
 import {Conversation} from "./conversation";
+import {RestUserFollowing} from "../rest/user_following";
+import {RestUserFollower} from "../rest/user_follower";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -42,6 +44,8 @@ export class User extends Model {
     authorities?: string[];
     is_friend?: boolean;
     is_requested_as_friend?: boolean;
+    is_following?: boolean;
+    is_follower?: boolean;
 
     getJsonParameters(): {} {
         return {
@@ -182,6 +186,22 @@ export class User extends Model {
 
     async refuseFriendRequest(): Promise<void> {
         return new RestUserFriend(this.conf).delete(this.id);
+    }
+
+    async follow(): Promise<User> {
+        return new RestUserFollowing(this.conf).create(this.id);
+    }
+
+    async unfollow(): Promise<void> {
+        return new RestUserFollowing(this.conf).delete(this.id);
+    }
+
+    async listFollowers(page: number, size: number): Promise<User[]> {
+        return new RestUserFollower(this.conf).list(this.id, page, size);
+    }
+
+    async listFollowings(page: number, size: number): Promise<User[]> {
+        return new RestUserFollowing(this.conf).list(this.id, page, size);
     }
 
     async listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]> {

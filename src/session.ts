@@ -15,6 +15,7 @@ import {FluentUser} from "./fluent_user";
 import {FluentDynamicFeed} from "./fluent_dynamic_feed";
 import {WebsocketService} from "./websocket_service";
 import {MySocialApp} from "./mysocialapp";
+import {FluentFollow} from "./fluent_follow";
 
 export class Session {
     clientService: ClientService;
@@ -24,6 +25,7 @@ export class Session {
     private _conversation?: FluentConversation;
     private _event?: FluentEvent;
     private _friend?: FluentFriend;
+    private _follow?: FluentFollow;
     private _group?: FluentGroup;
     private _newFeed?: FluentNewsFeed;
     private _dynamicFeed?: FluentDynamicFeed;
@@ -92,6 +94,10 @@ export class Session {
 
     get friend(): FluentFriend {
         return this._friend !== undefined ? this._friend : this._friend = new FluentFriend(this);
+    }
+
+    get follow(): FluentFollow {
+        return this._follow !== undefined ? this._follow : this._follow = new FluentFollow(this);
     }
 
     get group(): FluentGroup {

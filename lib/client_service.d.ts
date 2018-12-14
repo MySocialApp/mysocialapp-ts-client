@@ -35,6 +35,8 @@ import { RestShadowEntityFeedMessage } from "./rest/shadow_entity_feed_message";
 import { RestShadowEntityProfilePhoto } from "./rest/shadow_entity_profile_photo";
 import { RestShadowEntityProfileCoverPhoto } from "./rest/shadow_entity_profile_cover_photo";
 import { RestShadowEntityPhoto } from "./rest/shadow_entity_photo";
+import { RestUserFollowing } from "./rest/user_following";
+import { RestUserFollower } from "./rest/user_follower";
 export declare class ClientService {
     clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
@@ -65,6 +67,8 @@ export declare class ClientService {
     private restUserEvent?;
     private restUserExternal?;
     private restUserFriend?;
+    private restUserFollowing?;
+    private restUserFollower?;
     private restUserGroup?;
     private restUserWall?;
     private restUserWallMessage?;
@@ -106,6 +110,8 @@ export declare class ClientService {
     readonly userEvent: RestUserEvent;
     readonly userExternal: RestUserExternal;
     readonly userFriend: RestUserFriend;
+    readonly userFollowing: RestUserFollowing;
+    readonly userFollower: RestUserFollower;
     readonly userGroup: RestUserGroup;
     readonly userWall: RestUserWall;
     readonly userWallMessage: RestUserWallMessage;

@@ -2,9 +2,10 @@ import {FluentAbstract} from "./fluent_abstract";
 import {User} from "./models/user";
 import {SearchUser} from "./search/user";
 import {SearchResults} from "./models/search_results";
+import {Users} from "./models/users";
 
 export class FluentUser extends FluentAbstract {
-    async list(page: number, size: number = 10, params = {}): Promise<User[]> {
+    async list(page: number, size: number = 10, params = {}): Promise<Users> {
         return this.session.clientService.user.list(page, undefined, size, undefined, params);
     }
 

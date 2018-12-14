@@ -35,6 +35,8 @@ import {RestShadowEntityFeedMessage} from "./rest/shadow_entity_feed_message";
 import {RestShadowEntityProfilePhoto} from "./rest/shadow_entity_profile_photo";
 import {RestShadowEntityProfileCoverPhoto} from "./rest/shadow_entity_profile_cover_photo";
 import {RestShadowEntityPhoto} from "./rest/shadow_entity_photo";
+import {RestUserFollowing} from "./rest/user_following";
+import {RestUserFollower} from "./rest/user_follower";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
@@ -67,6 +69,8 @@ export class ClientService {
     private restUserEvent?: RestUserEvent;
     private restUserExternal?: RestUserExternal;
     private restUserFriend?: RestUserFriend;
+    private restUserFollowing?: RestUserFollowing;
+    private restUserFollower?: RestUserFollower;
     private restUserGroup?: RestUserGroup;
     private restUserWall?: RestUserWall;
     private restUserWallMessage?: RestUserWallMessage;
@@ -75,7 +79,6 @@ export class ClientService {
     private restShadowEntityFeedMessage?: RestShadowEntityFeedMessage;
     private restShadowEntityProfilePhoto?: RestShadowEntityProfilePhoto;
     private restShadowEntityProfileCoverPhoto?: RestShadowEntityProfileCoverPhoto;
-
 
     /**
      *
@@ -193,6 +196,14 @@ export class ClientService {
 
     get userFriend(): RestUserFriend {
         return this.restUserFriend !== undefined ? this.restUserFriend : this.restUserFriend = new RestUserFriend(this.configuration);
+    }
+
+    get userFollowing(): RestUserFollowing {
+        return this.restUserFollowing !== undefined ? this.restUserFollowing : this.restUserFollowing = new RestUserFollowing(this.configuration);
+    }
+
+    get userFollower(): RestUserFollower {
+        return this.restUserFollower !== undefined ? this.restUserFollower : this.restUserFollower = new RestUserFollower(this.configuration);
     }
 
     get userGroup(): RestUserGroup {

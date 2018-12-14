@@ -63,6 +63,7 @@ import {SearchEvent} from "./search/event";
 import {SearchFeed} from "./search/feed";
 import {SearchGroup} from "./search/group";
 import {SearchUser} from "./search/user";
+import {Users} from "./models/users";
 
 export class models {
     AccessControl = AccessControl;
@@ -129,6 +130,7 @@ export class models {
     TextWallMessage = TextWallMessage;
     URLTag = URLTag;
     User = User;
+    Users = Users;
     UserMentionTag = UserMentionTag;
     UserSettings = UserSettings;
     UserStat = UserStat;

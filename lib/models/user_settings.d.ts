@@ -36,4 +36,4 @@ export declare enum InterfaceLanguage {
     FR = "FR",
     DE = "DE"
 }
-export declare const DefaultInterfaceLanguage: InterfaceLanguage;
+export declare const DefaultInterfaceLanguage = InterfaceLanguage.EN;

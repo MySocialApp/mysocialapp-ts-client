@@ -63,6 +63,7 @@ import { SearchEvent } from "./search/event";
 import { SearchFeed } from "./search/feed";
 import { SearchGroup } from "./search/group";
 import { SearchUser } from "./search/user";
+import { Users } from "./models/users";
 export declare class models {
     AccessControl: typeof AccessControl;
     Account: typeof Account;
@@ -83,7 +84,7 @@ export declare class models {
     CustomField: typeof CustomField;
     EntityType: typeof EntityType;
     Event: {
-        new (typeArg: string, eventInitDict?: EventInit): Event;
+        new (type: string, eventInitDict?: EventInit): Event;
         prototype: Event;
         readonly AT_TARGET: number;
         readonly BUBBLING_PHASE: number;
@@ -138,6 +139,7 @@ export declare class models {
     TextWallMessage: typeof TextWallMessage;
     URLTag: typeof URLTag;
     User: typeof User;
+    Users: typeof Users;
     UserMentionTag: typeof UserMentionTag;
     UserSettings: typeof UserSettings;
     UserStat: typeof UserStat;

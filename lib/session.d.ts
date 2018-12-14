@@ -13,6 +13,7 @@ import { FluentPhotoAlbum } from "./fluent_photo_album";
 import { FluentUser } from "./fluent_user";
 import { FluentDynamicFeed } from "./fluent_dynamic_feed";
 import { WebsocketService } from "./websocket_service";
+import { FluentFollow } from "./fluent_follow";
 export declare class Session {
     clientService: ClientService;
     auth?: AuthenticationToken;
@@ -20,6 +21,7 @@ export declare class Session {
     private _conversation?;
     private _event?;
     private _friend?;
+    private _follow?;
     private _group?;
     private _newFeed?;
     private _dynamicFeed?;
@@ -44,6 +46,7 @@ export declare class Session {
     readonly conversation: FluentConversation;
     readonly event: FluentEvent;
     readonly friend: FluentFriend;
+    readonly follow: FluentFollow;
     readonly group: FluentGroup;
     readonly newsFeed: FluentNewsFeed;
     readonly dynamicFeed: FluentDynamicFeed;
