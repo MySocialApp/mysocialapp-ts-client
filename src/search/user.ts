@@ -1,6 +1,5 @@
 import {SearchBuilder} from "./search";
 import {Gender} from "../models/gender";
-import {SimpleLocation} from "../models/simple_location";
 import {SortOrder} from "../models/sort_order";
 import {SearchType} from "../models/search_type";
 import {BaseLocation} from "../models/base_location";
@@ -19,6 +18,11 @@ export class SearchUser extends SearchBuilder {
 
     setLastName(value: string): SearchUser {
         this.params.set("last_name", value);
+        return this;
+    }
+
+    setFullName(value: string): SearchUser {
+        this.params.set("q", value);
         return this;
     }
 

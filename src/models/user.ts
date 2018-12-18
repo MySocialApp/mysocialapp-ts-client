@@ -31,11 +31,11 @@ export class User extends Model {
     private _profile_cover_photo: Photo;
     id_str?: string;
     type?: string;
-
     displayed_name: string;
     updated_date?: string;
     first_name?: string;
     last_name?: string;
+    full_name?: string;
     password?: string;
     email?: string;
     gender?: Gender;
@@ -52,6 +52,7 @@ export class User extends Model {
             id: this.id,
             first_name: this.first_name,
             last_name: this.last_name,
+            full_name: this.full_name,
             password: this.password,
             email: this.email,
             gender: this.gender,
