@@ -3529,6 +3529,7 @@ class User extends model_1.Model {
             id: this.id,
             first_name: this.first_name,
             last_name: this.last_name,
+            full_name: this.full_name,
             password: this.password,
             email: this.email,
             gender: this.gender,
@@ -3781,11 +3782,37 @@ class UserStat extends model_1.Model {
     get status() {
         return this._status;
     }
+
+    set friend(f) {
+        this._friend = new UserStatFriend(f, this.conf);
+    }
+
+    get friend() {
+        return this._friend;
+    }
+
+    set follow(f) {
+        this._follow = new UserStatFollow(f, this.conf);
+    }
+
+    get follow() {
+        return this._follow;
+    }
 }
 exports.UserStat = UserStat;
 class UserStatStatus extends model_1.Model {
 }
 exports.UserStatStatus = UserStatStatus;
+
+        class UserStatFriend extends model_1.Model {
+        }
+
+        exports.UserStatFriend = UserStatFriend;
+
+        class UserStatFollow extends model_1.Model {
+        }
+
+        exports.UserStatFollow = UserStatFollow;
 var UserState;
 (function (UserState) {
     UserState["Disabled"] = "DISABLED";
@@ -5871,6 +5898,11 @@ class SearchUser extends search_1.SearchBuilder {
     }
     setLastName(value) {
         this.params.set("last_name", value);
+        return this;
+    }
+
+    setFullName(value) {
+        this.params.set("q", value);
         return this;
     }
     setGender(value) {

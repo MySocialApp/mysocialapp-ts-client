@@ -1,16 +1,17 @@
-import { Photo } from "./photo";
-import { CustomField } from "./custom_field";
-import { UserStat } from "./user_stat";
-import { Status } from "./status";
-import { Location } from "./location";
-import { Flag } from "./flag";
-import { Model } from "./model";
-import { Gender } from "./gender";
-import { Feed } from "./feed";
-import { FeedPost } from "./feed_post";
-import { PhotoAlbum } from "./photo_album";
-import { ConversationMessagePost } from "./conversation_message_post";
-import { ConversationMessage } from "./conversation_message";
+import {Photo} from "./photo";
+import {CustomField} from "./custom_field";
+import {UserStat} from "./user_stat";
+import {Status} from "./status";
+import {Location} from "./location";
+import {Flag} from "./flag";
+import {Model} from "./model";
+import {Gender} from "./gender";
+import {Feed} from "./feed";
+import {FeedPost} from "./feed_post";
+import {PhotoAlbum} from "./photo_album";
+import {ConversationMessagePost} from "./conversation_message_post";
+import {ConversationMessage} from "./conversation_message";
+
 export declare class User extends Model {
     private _profile_photo?;
     private _custom_fields?;
@@ -26,6 +27,7 @@ export declare class User extends Model {
     updated_date?: string;
     first_name?: string;
     last_name?: string;
+    full_name?: string;
     password?: string;
     email?: string;
     gender?: Gender;
