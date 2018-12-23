@@ -38,6 +38,7 @@ const shadow_entity_profile_cover_photo_1 = require("./rest/shadow_entity_profil
 const shadow_entity_photo_1 = require("./rest/shadow_entity_photo");
 const user_following_1 = require("./rest/user_following");
 const user_follower_1 = require("./rest/user_follower");
+        const user_stat_1 = require("./rest/user_stat");
 class ClientService {
     /**
      *
@@ -120,6 +121,10 @@ class ClientService {
     get user() {
         return this.restUser !== undefined ? this.restUser : this.restUser = new user_1.RestUser(this.configuration);
     }
+
+    get userStat() {
+        return this.restUserStat !== undefined ? this.restUserStat : this.restUserStat = new user_stat_1.RestUserStat(this.configuration);
+    }
     get userEvent() {
         return this.restUserEvent !== undefined ? this.restUserEvent : this.restUserEvent = new user_event_1.RestUserEvent(this.configuration);
     }
@@ -162,7 +167,47 @@ class ClientService {
 }
 exports.ClientService = ClientService;
 
-},{"./rest/account":88,"./rest/conversation":89,"./rest/conversation_message":90,"./rest/event":92,"./rest/event_wall":93,"./rest/feed":94,"./rest/feed_comment":95,"./rest/feed_like":96,"./rest/friend":97,"./rest/group":98,"./rest/group_wall":99,"./rest/login":100,"./rest/logout":101,"./rest/notification":102,"./rest/photo":103,"./rest/photo_album":104,"./rest/photo_comment":105,"./rest/photo_like":106,"./rest/register":107,"./rest/search":109,"./rest/shadow_entity_feed":110,"./rest/shadow_entity_feed_message":111,"./rest/shadow_entity_photo":112,"./rest/shadow_entity_profile_cover_photo":113,"./rest/shadow_entity_profile_photo":114,"./rest/status":115,"./rest/status_comment":116,"./rest/status_like":117,"./rest/user":118,"./rest/user_event":120,"./rest/user_external":121,"./rest/user_follower":122,"./rest/user_following":123,"./rest/user_friend":124,"./rest/user_group":125,"./rest/user_wall":126,"./rest/user_wall_message":127}],2:[function(require,module,exports){
+    }, {
+        "./rest/account": 88,
+        "./rest/conversation": 89,
+        "./rest/conversation_message": 90,
+        "./rest/event": 92,
+        "./rest/event_wall": 93,
+        "./rest/feed": 94,
+        "./rest/feed_comment": 95,
+        "./rest/feed_like": 96,
+        "./rest/friend": 97,
+        "./rest/group": 98,
+        "./rest/group_wall": 99,
+        "./rest/login": 100,
+        "./rest/logout": 101,
+        "./rest/notification": 102,
+        "./rest/photo": 103,
+        "./rest/photo_album": 104,
+        "./rest/photo_comment": 105,
+        "./rest/photo_like": 106,
+        "./rest/register": 107,
+        "./rest/search": 109,
+        "./rest/shadow_entity_feed": 110,
+        "./rest/shadow_entity_feed_message": 111,
+        "./rest/shadow_entity_photo": 112,
+        "./rest/shadow_entity_profile_cover_photo": 113,
+        "./rest/shadow_entity_profile_photo": 114,
+        "./rest/status": 115,
+        "./rest/status_comment": 116,
+        "./rest/status_like": 117,
+        "./rest/user": 118,
+        "./rest/user_event": 120,
+        "./rest/user_external": 121,
+        "./rest/user_follower": 122,
+        "./rest/user_following": 123,
+        "./rest/user_friend": 124,
+        "./rest/user_group": 125,
+        "./rest/user_stat": 126,
+        "./rest/user_wall": 127,
+        "./rest/user_wall_message": 128
+    }],
+    2: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -295,7 +340,8 @@ class Configuration {
 }
 exports.Configuration = Configuration;
 
-},{"./models/user_settings":83,"./rest/error":91,"axios":135}],3:[function(require,module,exports){
+    }, {"./models/user_settings": 83, "./rest/error": 91, "axios": 136}],
+    3: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // format ex : 2018-08-15T16:48:06Z
@@ -1033,7 +1079,75 @@ class models {
 }
 exports.models = models;
 
-},{"./models/access_control":18,"./models/account":19,"./models/account_events":20,"./models/activity_type":21,"./models/app_platform":23,"./models/authentication_token":24,"./models/base":25,"./models/base_location":26,"./models/base_wall":27,"./models/comment":28,"./models/comment_blob":29,"./models/comment_post":30,"./models/conversation":31,"./models/conversation_message":32,"./models/conversation_message_post":33,"./models/conversation_messages":34,"./models/custom_field":36,"./models/entity_type":38,"./models/event_member":40,"./models/event_member_access_control":41,"./models/event_options":42,"./models/event_status":43,"./models/feed":44,"./models/feed_post":45,"./models/file":46,"./models/flag":47,"./models/friend_requests":48,"./models/gender":49,"./models/group":51,"./models/group_member":52,"./models/group_member_access_control":53,"./models/group_options":54,"./models/group_status":55,"./models/hash_tag":56,"./models/like":57,"./models/like_blob":58,"./models/login_credentials":60,"./models/model":61,"./models/notification":62,"./models/notification_ack":63,"./models/photo":64,"./models/photo_album":65,"./models/preview_notification":66,"./models/reset_identifier":67,"./models/search_query":68,"./models/search_result":69,"./models/search_result_types":70,"./models/search_results":71,"./models/search_type":72,"./models/simple_location":73,"./models/sort_order":74,"./models/status":75,"./models/tag_entities":76,"./models/tag_entity":77,"./models/tag_entity_abstract":78,"./models/text_wall_message":79,"./models/url_tag":80,"./models/user":81,"./models/user_mention_tag":82,"./models/user_settings":83,"./models/user_stat":84,"./models/users":85,"./search/event":128,"./search/feed":129,"./search/group":130,"./search/user":132}],18:[function(require,module,exports){
+    }, {
+        "./models/access_control": 18,
+        "./models/account": 19,
+        "./models/account_events": 20,
+        "./models/activity_type": 21,
+        "./models/app_platform": 23,
+        "./models/authentication_token": 24,
+        "./models/base": 25,
+        "./models/base_location": 26,
+        "./models/base_wall": 27,
+        "./models/comment": 28,
+        "./models/comment_blob": 29,
+        "./models/comment_post": 30,
+        "./models/conversation": 31,
+        "./models/conversation_message": 32,
+        "./models/conversation_message_post": 33,
+        "./models/conversation_messages": 34,
+        "./models/custom_field": 36,
+        "./models/entity_type": 38,
+        "./models/event_member": 40,
+        "./models/event_member_access_control": 41,
+        "./models/event_options": 42,
+        "./models/event_status": 43,
+        "./models/feed": 44,
+        "./models/feed_post": 45,
+        "./models/file": 46,
+        "./models/flag": 47,
+        "./models/friend_requests": 48,
+        "./models/gender": 49,
+        "./models/group": 51,
+        "./models/group_member": 52,
+        "./models/group_member_access_control": 53,
+        "./models/group_options": 54,
+        "./models/group_status": 55,
+        "./models/hash_tag": 56,
+        "./models/like": 57,
+        "./models/like_blob": 58,
+        "./models/login_credentials": 60,
+        "./models/model": 61,
+        "./models/notification": 62,
+        "./models/notification_ack": 63,
+        "./models/photo": 64,
+        "./models/photo_album": 65,
+        "./models/preview_notification": 66,
+        "./models/reset_identifier": 67,
+        "./models/search_query": 68,
+        "./models/search_result": 69,
+        "./models/search_result_types": 70,
+        "./models/search_results": 71,
+        "./models/search_type": 72,
+        "./models/simple_location": 73,
+        "./models/sort_order": 74,
+        "./models/status": 75,
+        "./models/tag_entities": 76,
+        "./models/tag_entity": 77,
+        "./models/tag_entity_abstract": 78,
+        "./models/text_wall_message": 79,
+        "./models/url_tag": 80,
+        "./models/user": 81,
+        "./models/user_mention_tag": 82,
+        "./models/user_settings": 83,
+        "./models/user_stat": 84,
+        "./models/users": 85,
+        "./search/event": 129,
+        "./search/feed": 130,
+        "./search/group": 131,
+        "./search/user": 133
+    }],
+    18: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AccessControl;
@@ -1279,7 +1393,8 @@ class Base extends model_1.Model {
 }
 exports.Base = Base;
 
-},{"./model":61,"./photo":64,"./user":81,"moment":165}],26:[function(require,module,exports){
+    }, {"./model": 61, "./photo": 64, "./user": 81, "moment": 166}],
+    26: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1865,7 +1980,8 @@ var CustomFieldType;
     CustomFieldType["InputCheckbox"] = "INPUT_CHECKBOX";
 })(CustomFieldType = exports.CustomFieldType || (exports.CustomFieldType = {}));
 
-},{"../constant":3,"./model":61,"./simple_location":73,"moment":165}],37:[function(require,module,exports){
+    }, {"../constant": 3, "./model": 61, "./simple_location": 73, "moment": 166}],
+    37: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2518,7 +2634,8 @@ class GenericFormDataValue {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":161}],51:[function(require,module,exports){
+    }, {"buffer": 162}],
+    51: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2920,7 +3037,8 @@ class Model {
 }
 exports.Model = Model;
 
-},{"lodash":164}],62:[function(require,module,exports){
+    }, {"lodash": 165}],
+    62: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3519,6 +3637,7 @@ const conversation_1 = require("../rest/conversation");
 const conversation_2 = require("./conversation");
 const user_following_1 = require("../rest/user_following");
 const user_follower_1 = require("../rest/user_follower");
+        const user_stat_2 = require("../rest/user_stat");
 class User extends model_1.Model {
     constructor() {
         super(...arguments);
@@ -3614,6 +3733,12 @@ class User extends model_1.Model {
         }
         return false;
     }
+
+    userStat() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new user_stat_2.RestUserStat(this.conf).get(this.id);
+        });
+    }
     listNewsFeed(page, size) {
         return __awaiter(this, void 0, void 0, function* () {
             return new user_wall_1.RestUserWall(this.conf).list(this.id, page, size);
@@ -3689,7 +3814,25 @@ class User extends model_1.Model {
 }
 exports.User = User;
 
-},{"../rest/conversation":89,"../rest/user_album":119,"../rest/user_follower":122,"../rest/user_following":123,"../rest/user_friend":124,"../rest/user_wall":126,"../rest/user_wall_message":127,"./conversation":31,"./custom_field":36,"./flag":47,"./location":59,"./model":61,"./photo":64,"./status":75,"./user_stat":84}],82:[function(require,module,exports){
+    }, {
+        "../rest/conversation": 89,
+        "../rest/user_album": 119,
+        "../rest/user_follower": 122,
+        "../rest/user_following": 123,
+        "../rest/user_friend": 124,
+        "../rest/user_stat": 126,
+        "../rest/user_wall": 127,
+        "../rest/user_wall_message": 128,
+        "./conversation": 31,
+        "./custom_field": 36,
+        "./flag": 47,
+        "./location": 59,
+        "./model": 61,
+        "./photo": 64,
+        "./status": 75,
+        "./user_stat": 84
+    }],
+    82: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entity_abstract_1 = require("./tag_entity_abstract");
@@ -3782,19 +3925,15 @@ class UserStat extends model_1.Model {
     get status() {
         return this._status;
     }
-
     set friend(f) {
         this._friend = new UserStatFriend(f, this.conf);
     }
-
     get friend() {
         return this._friend;
     }
-
     set follow(f) {
         this._follow = new UserStatFollow(f, this.conf);
     }
-
     get follow() {
         return this._follow;
     }
@@ -3965,7 +4104,18 @@ class MySocialApp {
 exports.MySocialApp = MySocialApp;
 exports.Models = new models_1.models();
 
-},{"./client_service":1,"./configuration":2,"./models":17,"./models/account":19,"./models/app_config":22,"./models/authentication_token":24,"./rest/error":91,"./session":133,"axios":135}],88:[function(require,module,exports){
+    }, {
+        "./client_service": 1,
+        "./configuration": 2,
+        "./models": 17,
+        "./models/account": 19,
+        "./models/app_config": 22,
+        "./models/authentication_token": 24,
+        "./rest/error": 91,
+        "./session": 134,
+        "axios": 136
+    }],
+    88: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5481,12 +5631,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("./rest");
 const user_1 = require("../models/user");
 class RestUserEvent extends rest_1.Rest {
-    list(eventId, page, size, params) {
+    list(userId, page, size, params) {
         return __awaiter(this, void 0, void 0, function* () {
             params = params !== undefined ? params : {};
             params['page'] = page;
             params['size'] = size;
-            let path = rest_1.Rest.params("/user/{id}/event?", { id: eventId }) + rest_1.Rest.encodeQueryData(params);
+            let path = rest_1.Rest.params("/user/{id}/event?", {id: userId}) + rest_1.Rest.encodeQueryData(params);
             return this.conf.getList(new user_1.User(), path);
         });
     }
@@ -5633,7 +5783,7 @@ class RestUserGroup extends rest_1.Rest {
             params = params !== undefined ? params : {};
             params['page'] = page;
             params['size'] = size;
-            let path = rest_1.Rest.params("/user/{userId}/group", { userId: userId }) + rest_1.Rest.encodeQueryData(params);
+            let path = rest_1.Rest.params("/user/{userId}/group?", {userId: userId}) + rest_1.Rest.encodeQueryData(params);
             return this.conf.getList(new group_1.Group(), path);
         });
     }
@@ -5650,6 +5800,52 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+        Object.defineProperty(exports, "__esModule", {value: true});
+        const rest_1 = require("./rest");
+        const user_1 = require("../models/user");
+
+        class RestUserStat extends rest_1.Rest {
+            get(userId, params) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    params = params !== undefined ? params : {};
+                    let path = rest_1.Rest.params("/user/{id}/stat?", {id: userId}) + rest_1.Rest.encodeQueryData(params);
+                    return this.conf.get(new user_1.User(), path);
+                });
+            }
+        }
+
+        exports.RestUserStat = RestUserStat;
+
+    }, {"../models/user": 81, "./rest": 108}],
+    127: [function (require, module, exports) {
+        "use strict";
+        var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+            return new (P || (P = Promise))(function (resolve, reject) {
+                function fulfilled(value) {
+                    try {
+                        step(generator.next(value));
+                    } catch (e) {
+                        reject(e);
+                    }
+                }
+
+                function rejected(value) {
+                    try {
+                        step(generator["throw"](value));
+                    } catch (e) {
+                        reject(e);
+                    }
+                }
+
+                function step(result) {
+                    result.done ? resolve(result.value) : new P(function (resolve) {
+                        resolve(result.value);
+                    }).then(fulfilled, rejected);
+                }
+
+                step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("./rest");
 const feed_1 = require("../models/feed");
@@ -5664,7 +5860,8 @@ class RestUserWall extends rest_1.Rest {
 }
 exports.RestUserWall = RestUserWall;
 
-},{"../models/feed":44,"./rest":108}],127:[function(require,module,exports){
+    }, {"../models/feed": 44, "./rest": 108}],
+    128: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5707,7 +5904,8 @@ class RestUserWallMessage extends rest_1.Rest {
 }
 exports.RestUserWallMessage = RestUserWallMessage;
 
-},{"../models/feed":44,"./rest":108}],128:[function(require,module,exports){
+    }, {"../models/feed": 44, "./rest": 108}],
+    129: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -5768,7 +5966,8 @@ class SearchEvent extends search_1.SearchBuilder {
 }
 exports.SearchEvent = SearchEvent;
 
-},{"../constant":3,"../models/event_options":42,"../models/search_type":72,"./search":131}],129:[function(require,module,exports){
+    }, {"../constant": 3, "../models/event_options": 42, "../models/search_type": 72, "./search": 132}],
+    130: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -5818,7 +6017,8 @@ class SearchFeed extends search_1.SearchBuilder {
 }
 exports.SearchFeed = SearchFeed;
 
-},{"../models/search_type":72,"./search":131}],130:[function(require,module,exports){
+    }, {"../models/search_type": 72, "./search": 132}],
+    131: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -5864,7 +6064,8 @@ class SearchGroup extends search_1.SearchBuilder {
 }
 exports.SearchGroup = SearchGroup;
 
-},{"../models/search_type":72,"./search":131}],131:[function(require,module,exports){
+    }, {"../models/search_type": 72, "./search": 132}],
+    132: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class SearchBuilder {
@@ -5882,7 +6083,8 @@ class SearchBuilder {
 }
 exports.SearchBuilder = SearchBuilder;
 
-},{}],132:[function(require,module,exports){
+    }, {}],
+    133: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -5900,7 +6102,6 @@ class SearchUser extends search_1.SearchBuilder {
         this.params.set("last_name", value);
         return this;
     }
-
     setFullName(value) {
         this.params.set("q", value);
         return this;
@@ -5933,7 +6134,8 @@ class SearchUser extends search_1.SearchBuilder {
 }
 exports.SearchUser = SearchUser;
 
-},{"../models/search_type":72,"./search":131}],133:[function(require,module,exports){
+    }, {"../models/search_type": 72, "./search": 132}],
+    134: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -6050,7 +6252,25 @@ class Session {
 }
 exports.Session = Session;
 
-},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_follow":9,"./fluent_friend":10,"./fluent_group":11,"./fluent_news_feed":12,"./fluent_notification":13,"./fluent_photo":14,"./fluent_photo_album":15,"./fluent_user":16,"./models/login_credentials":60,"./mysocialapp":87,"./websocket_service":134}],134:[function(require,module,exports){
+    }, {
+        "./client_service": 1,
+        "./fluent_account": 5,
+        "./fluent_conversation": 6,
+        "./fluent_dynamic_feed": 7,
+        "./fluent_event": 8,
+        "./fluent_follow": 9,
+        "./fluent_friend": 10,
+        "./fluent_group": 11,
+        "./fluent_news_feed": 12,
+        "./fluent_notification": 13,
+        "./fluent_photo": 14,
+        "./fluent_photo_album": 15,
+        "./fluent_user": 16,
+        "./models/login_credentials": 60,
+        "./mysocialapp": 87,
+        "./websocket_service": 135
+    }],
+    135: [function (require, module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const notification_1 = require("./models/notification");
@@ -6193,9 +6413,18 @@ class WebsocketService {
 }
 exports.WebsocketService = WebsocketService;
 
-},{"./models/conversation_message":32,"./models/event":39,"./models/feed":44,"./models/notification":62,"./models/user":81,"websocket":167}],135:[function(require,module,exports){
+    }, {
+        "./models/conversation_message": 32,
+        "./models/event": 39,
+        "./models/feed": 44,
+        "./models/notification": 62,
+        "./models/user": 81,
+        "websocket": 168
+    }],
+    136: [function (require, module, exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":137}],136:[function(require,module,exports){
+    }, {"./lib/axios": 138}],
+    137: [function (require, module, exports) {
 (function (process){
 'use strict';
 
@@ -6379,7 +6608,18 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":143,"./../core/settle":146,"./../helpers/btoa":150,"./../helpers/buildURL":151,"./../helpers/cookies":153,"./../helpers/isURLSameOrigin":155,"./../helpers/parseHeaders":157,"./../utils":159,"_process":166}],137:[function(require,module,exports){
+    }, {
+        "../core/createError": 144,
+        "./../core/settle": 147,
+        "./../helpers/btoa": 151,
+        "./../helpers/buildURL": 152,
+        "./../helpers/cookies": 154,
+        "./../helpers/isURLSameOrigin": 156,
+        "./../helpers/parseHeaders": 158,
+        "./../utils": 160,
+        "_process": 167
+    }],
+    138: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./utils');
@@ -6433,7 +6673,17 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":138,"./cancel/CancelToken":139,"./cancel/isCancel":140,"./core/Axios":141,"./defaults":148,"./helpers/bind":149,"./helpers/spread":158,"./utils":159}],138:[function(require,module,exports){
+    }, {
+        "./cancel/Cancel": 139,
+        "./cancel/CancelToken": 140,
+        "./cancel/isCancel": 141,
+        "./core/Axios": 142,
+        "./defaults": 149,
+        "./helpers/bind": 150,
+        "./helpers/spread": 159,
+        "./utils": 160
+    }],
+    139: [function (require, module, exports) {
 'use strict';
 
 /**
@@ -6454,7 +6704,8 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],139:[function(require,module,exports){
+    }, {}],
+    140: [function (require, module, exports) {
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -6513,14 +6764,16 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":138}],140:[function(require,module,exports){
+    }, {"./Cancel": 139}],
+    141: [function (require, module, exports) {
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],141:[function(require,module,exports){
+    }, {}],
+    142: [function (require, module, exports) {
 'use strict';
 
 var defaults = require('./../defaults');
@@ -6601,7 +6854,8 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":148,"./../utils":159,"./InterceptorManager":142,"./dispatchRequest":144}],142:[function(require,module,exports){
+    }, {"./../defaults": 149, "./../utils": 160, "./InterceptorManager": 143, "./dispatchRequest": 145}],
+    143: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -6655,7 +6909,8 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":159}],143:[function(require,module,exports){
+    }, {"./../utils": 160}],
+    144: [function (require, module, exports) {
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -6675,7 +6930,8 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":145}],144:[function(require,module,exports){
+    }, {"./enhanceError": 146}],
+    145: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -6763,7 +7019,15 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":140,"../defaults":148,"./../helpers/combineURLs":152,"./../helpers/isAbsoluteURL":154,"./../utils":159,"./transformData":147}],145:[function(require,module,exports){
+    }, {
+        "../cancel/isCancel": 141,
+        "../defaults": 149,
+        "./../helpers/combineURLs": 153,
+        "./../helpers/isAbsoluteURL": 155,
+        "./../utils": 160,
+        "./transformData": 148
+    }],
+    146: [function (require, module, exports) {
 'use strict';
 
 /**
@@ -6786,7 +7050,8 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],146:[function(require,module,exports){
+    }, {}],
+    147: [function (require, module, exports) {
 'use strict';
 
 var createError = require('./createError');
@@ -6814,7 +7079,8 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":143}],147:[function(require,module,exports){
+    }, {"./createError": 144}],
+    148: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -6836,7 +7102,8 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":159}],148:[function(require,module,exports){
+    }, {"./../utils": 160}],
+    149: [function (require, module, exports) {
 (function (process){
 'use strict';
 
@@ -6932,7 +7199,8 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":136,"./adapters/xhr":136,"./helpers/normalizeHeaderName":156,"./utils":159,"_process":166}],149:[function(require,module,exports){
+    }, {"./adapters/http": 137, "./adapters/xhr": 137, "./helpers/normalizeHeaderName": 157, "./utils": 160, "_process": 167}],
+    150: [function (require, module, exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -6945,7 +7213,8 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],150:[function(require,module,exports){
+    }, {}],
+    151: [function (require, module, exports) {
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -6983,7 +7252,8 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],151:[function(require,module,exports){
+    }, {}],
+    152: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -7053,7 +7323,8 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":159}],152:[function(require,module,exports){
+    }, {"./../utils": 160}],
+    153: [function (require, module, exports) {
 'use strict';
 
 /**
@@ -7069,7 +7340,8 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],153:[function(require,module,exports){
+    }, {}],
+    154: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -7124,7 +7396,8 @@ module.exports = (
   })()
 );
 
-},{"./../utils":159}],154:[function(require,module,exports){
+    }, {"./../utils": 160}],
+    155: [function (require, module, exports) {
 'use strict';
 
 /**
@@ -7140,7 +7413,8 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],155:[function(require,module,exports){
+    }, {}],
+    156: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -7210,7 +7484,8 @@ module.exports = (
   })()
 );
 
-},{"./../utils":159}],156:[function(require,module,exports){
+    }, {"./../utils": 160}],
+    157: [function (require, module, exports) {
 'use strict';
 
 var utils = require('../utils');
@@ -7224,7 +7499,8 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":159}],157:[function(require,module,exports){
+    }, {"../utils": 160}],
+    158: [function (require, module, exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -7279,7 +7555,8 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":159}],158:[function(require,module,exports){
+    }, {"./../utils": 160}],
+    159: [function (require, module, exports) {
 'use strict';
 
 /**
@@ -7308,7 +7585,8 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],159:[function(require,module,exports){
+    }, {}],
+    160: [function (require, module, exports) {
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -7613,7 +7891,8 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":149,"is-buffer":163}],160:[function(require,module,exports){
+    }, {"./helpers/bind": 150, "is-buffer": 164}],
+    161: [function (require, module, exports) {
 'use strict'
 
 exports.byteLength = byteLength
@@ -7766,7 +8045,8 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],161:[function(require,module,exports){
+    }, {}],
+    162: [function (require, module, exports) {
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -9545,7 +9825,8 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":160,"ieee754":162}],162:[function(require,module,exports){
+    }, {"base64-js": 161, "ieee754": 163}],
+    163: [function (require, module, exports) {
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -9631,7 +9912,8 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],163:[function(require,module,exports){
+    }, {}],
+    164: [function (require, module, exports) {
 /*!
  * Determine if an object is a Buffer
  *
@@ -9654,7 +9936,8 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],164:[function(require,module,exports){
+    }, {}],
+    165: [function (require, module, exports) {
 (function (global){
 /**
  * @license
@@ -26765,7 +27048,8 @@ function isSlowBuffer (obj) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],165:[function(require,module,exports){
+    }, {}],
+    166: [function (require, module, exports) {
 //! moment.js
 
 ;(function (global, factory) {
@@ -31278,7 +31562,8 @@ function isSlowBuffer (obj) {
 
 })));
 
-},{}],166:[function(require,module,exports){
+    }, {}],
+    167: [function (require, module, exports) {
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -31464,7 +31749,8 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],167:[function(require,module,exports){
+    }, {}],
+    168: [function (require, module, exports) {
 var _global = (function() { return this; })();
 var NativeWebSocket = _global.WebSocket || _global.MozWebSocket;
 var websocket_version = require('./version');
@@ -31508,10 +31794,12 @@ module.exports = {
     'version'      : websocket_version
 };
 
-},{"./version":168}],168:[function(require,module,exports){
+    }, {"./version": 169}],
+    169: [function (require, module, exports) {
 module.exports = require('../package.json').version;
 
-},{"../package.json":169}],169:[function(require,module,exports){
+    }, {"../package.json": 170}],
+    170: [function (require, module, exports) {
 module.exports={
   "_from": "websocket@1.0.28",
   "_id": "websocket@1.0.28",

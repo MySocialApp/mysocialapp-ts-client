@@ -55,6 +55,8 @@ export declare class User extends Model {
      * @returns {boolean}
      */
     setCustomFieldValueById(id: string, value: any): boolean;
+
+    userStat(): Promise<UserStat>;
     listNewsFeed(page: number, size: number): Promise<Feed[]>;
     createFeedPost(post: FeedPost): Promise<Feed>;
     removeFriend(): Promise<void>;

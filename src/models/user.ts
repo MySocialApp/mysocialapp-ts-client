@@ -19,6 +19,7 @@ import {RestConversation} from "../rest/conversation";
 import {Conversation} from "./conversation";
 import {RestUserFollowing} from "../rest/user_following";
 import {RestUserFollower} from "../rest/user_follower";
+import {RestUserStat} from "../rest/user_stat";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -155,6 +156,10 @@ export class User extends Model {
             }
         }
         return false;
+    }
+
+    async userStat(): Promise<UserStat> {
+        return new RestUserStat(this.conf).get(this.id);
     }
 
     async listNewsFeed(page: number, size: number): Promise<Feed[]> {

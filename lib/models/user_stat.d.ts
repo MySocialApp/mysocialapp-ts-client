@@ -12,11 +12,9 @@ export declare class UserStatStatus extends Model {
     state: UserState;
     last_connection_date: string;
 }
-
 export declare class UserStatFriend extends Model {
     total: number;
 }
-
 export declare class UserStatFollow extends Model {
     total_following: number;
     total_followers: number;

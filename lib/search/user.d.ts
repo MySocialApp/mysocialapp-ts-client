@@ -7,7 +7,6 @@ export declare class SearchUser extends SearchBuilder {
     constructor();
     setFirstName(value: string): SearchUser;
     setLastName(value: string): SearchUser;
-
     setFullName(value: string): SearchUser;
     setGender(value: Gender): SearchUser;
     setLocation(loc: BaseLocation): SearchUser;

@@ -37,6 +37,7 @@ import {RestShadowEntityProfileCoverPhoto} from "./rest/shadow_entity_profile_co
 import {RestShadowEntityPhoto} from "./rest/shadow_entity_photo";
 import {RestUserFollowing} from "./rest/user_following";
 import {RestUserFollower} from "./rest/user_follower";
+import {RestUserStat} from "./rest/user_stat";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
@@ -66,6 +67,7 @@ export class ClientService {
     private restStatusComment?: RestStatusComment;
     private restStatusLike?: RestStatusLike;
     private restUser?: RestUser;
+    private restUserStat?: RestUserStat;
     private restUserEvent?: RestUserEvent;
     private restUserExternal?: RestUserExternal;
     private restUserFriend?: RestUserFriend;
@@ -184,6 +186,10 @@ export class ClientService {
 
     get user(): RestUser {
         return this.restUser !== undefined ? this.restUser : this.restUser = new RestUser(this.configuration);
+    }
+
+    get userStat(): RestUserStat {
+        return this.restUserStat !== undefined ? this.restUserStat : this.restUserStat = new RestUserStat(this.configuration);
     }
 
     get userEvent(): RestUserEvent {
