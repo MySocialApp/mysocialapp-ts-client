@@ -121,7 +121,6 @@ class ClientService {
     get user() {
         return this.restUser !== undefined ? this.restUser : this.restUser = new user_1.RestUser(this.configuration);
     }
-
     get userStat() {
         return this.restUserStat !== undefined ? this.restUserStat : this.restUserStat = new user_stat_1.RestUserStat(this.configuration);
     }
@@ -3733,7 +3732,6 @@ class User extends model_1.Model {
         }
         return false;
     }
-
     userStat() {
         return __awaiter(this, void 0, void 0, function* () {
             return new user_stat_2.RestUserStat(this.conf).get(this.id);

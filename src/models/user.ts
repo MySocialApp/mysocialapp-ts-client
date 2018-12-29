@@ -33,6 +33,7 @@ export class User extends Model {
     id_str?: string;
     type?: string;
     displayed_name: string;
+    created_date?: string;
     updated_date?: string;
     first_name?: string;
     last_name?: string;
@@ -47,6 +48,8 @@ export class User extends Model {
     is_requested_as_friend?: boolean;
     is_following?: boolean;
     is_follower?: boolean;
+    account_enabled?: boolean;
+    account_expired?: boolean;
 
     getJsonParameters(): {} {
         return {

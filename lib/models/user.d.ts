@@ -24,6 +24,7 @@ export declare class User extends Model {
     id_str?: string;
     type?: string;
     displayed_name: string;
+    created_date?: string;
     updated_date?: string;
     first_name?: string;
     last_name?: string;
@@ -38,6 +39,8 @@ export declare class User extends Model {
     is_requested_as_friend?: boolean;
     is_following?: boolean;
     is_follower?: boolean;
+    account_enabled?: boolean;
+    account_expired?: boolean;
     getJsonParameters(): {};
     id: any;
     displayed_photo: Photo;
@@ -55,7 +58,6 @@ export declare class User extends Model {
      * @returns {boolean}
      */
     setCustomFieldValueById(id: string, value: any): boolean;
-
     userStat(): Promise<UserStat>;
     listNewsFeed(page: number, size: number): Promise<Feed[]>;
     createFeedPost(post: FeedPost): Promise<Feed>;
