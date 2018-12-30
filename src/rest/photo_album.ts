@@ -23,7 +23,7 @@ export class RestPhotoAlbum extends Rest {
     }
 
     async delete(id: string): Promise<void> {
-        return this.conf.delete("/photo/album/" + id);
+        return this.conf.deleteVoid("/photo/album/" + id);
     }
 
 }

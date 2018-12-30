@@ -19,6 +19,6 @@ export class RestStatus extends Rest {
     }
 
     async delete(statusId: string): Promise<void> {
-        return this.conf.delete("/status/" + statusId);
+        return this.conf.deleteVoid("/status/" + statusId);
     }
 }

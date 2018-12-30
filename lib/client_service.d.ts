@@ -38,10 +38,12 @@ import {RestShadowEntityPhoto} from "./rest/shadow_entity_photo";
 import {RestUserFollowing} from "./rest/user_following";
 import {RestUserFollower} from "./rest/user_follower";
 import {RestUserStat} from "./rest/user_stat";
+import {RestAdminUserEnable} from "./rest/admin_user_enable";
 
 export declare class ClientService {
     clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
+    private restAdminUserEnable?;
     private restAccount?;
     private restConversation?;
     private restConversationMessage?;
@@ -86,6 +88,8 @@ export declare class ClientService {
      * @param {ClientConfiguration} clientConf
      */
     constructor(configuration: Configuration, clientConf?: ClientConfiguration);
+
+    readonly adminUserEnable: RestAdminUserEnable;
     readonly account: RestAccount;
     readonly conversation: RestConversation;
     readonly conversationMessage: RestConversationMessage;

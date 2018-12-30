@@ -20,6 +20,7 @@ import {Conversation} from "./conversation";
 import {RestUserFollowing} from "../rest/user_following";
 import {RestUserFollower} from "../rest/user_follower";
 import {RestUserStat} from "../rest/user_stat";
+import {RestAdminUserEnable} from "../rest/admin_user_enable";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -222,4 +223,13 @@ export class User extends Model {
         conversation = await new RestConversation(this.conf).create(conversation);
         return conversation.sendMessage(message);
     }
+
+    async enable(): Promise<User> {
+        return new RestAdminUserEnable(this.conf).enable(this.id);
+    }
+
+    async disable(): Promise<User> {
+        return new RestAdminUserEnable(this.conf).disable(this.id);
+    }
+
 }

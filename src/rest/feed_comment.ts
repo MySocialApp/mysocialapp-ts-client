@@ -36,7 +36,7 @@ export class RestFeedComment extends Rest {
     }
 
     async delete(feedId: string, commentId: string): Promise<void> {
-        return this.conf.delete(Rest.params("feed/{id}/comment/{commentId}", {
+        return this.conf.deleteVoid(Rest.params("feed/{id}/comment/{commentId}", {
             id: feedId,
             commentId: commentId
         })) as Promise<void>;

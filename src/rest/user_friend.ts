@@ -16,6 +16,6 @@ export class RestUserFriend extends Rest {
     }
 
     async delete(userId: string): Promise<void> {
-        return this.conf.delete(Rest.params("/user/{userId}/friend?", {userId: userId}));
+        return this.conf.deleteVoid(Rest.params("/user/{userId}/friend?", {userId: userId}));
     }
 }

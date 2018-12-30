@@ -105,7 +105,17 @@ export class Configuration {
         }
     }
 
-    public async delete(path: string, options?: {}): Promise<void> {
+    public async delete(model: Model, path: string, options?: {}): Promise<ModelInterface> {
+        try {
+            const resp = await this.httpClient.delete(path, this.setDefaultOptions(options)) as AxiosResponse<ModelInterface>;
+            model.load(resp.data, this);
+            return model
+        } catch (error) {
+            throw new ErrorResponse(error);
+        }
+    }
+
+    public async deleteVoid(path: string, options?: {}): Promise<void> {
         try {
             const resp = await this.httpClient.delete(path, this.setDefaultOptions(options)) as AxiosResponse<ModelInterface>;
             return

@@ -22,6 +22,6 @@ export class RestGroupWall extends Rest {
 
     async deleteMessage(groupId: string, messageId: string): Promise<void> {
         let path = Rest.params("/group/{id}/wall/message/{messageId}", {id: groupId, messageId: messageId});
-        return this.conf.delete(path);
+        return this.conf.deleteVoid(path);
     }
 }

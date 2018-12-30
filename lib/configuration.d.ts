@@ -1,8 +1,9 @@
-import { AuthenticationToken } from "./models/authentication_token";
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Model, ModelInterface, Serializable } from "./models/model";
-import { InterfaceLanguage } from "./models/user_settings";
-import { GenericFormData } from "./models/generic_form_data";
+import {AuthenticationToken} from "./models/authentication_token";
+import {AxiosInstance, AxiosRequestConfig} from 'axios';
+import {Model, ModelInterface, Serializable} from "./models/model";
+import {InterfaceLanguage} from "./models/user_settings";
+import {GenericFormData} from "./models/generic_form_data";
+
 export declare class Configuration {
     appId: string;
     apiEndpointUrl: string;
@@ -19,5 +20,8 @@ export declare class Configuration {
     postVoid(path: string, body: Serializable, options?: {}): Promise<void>;
     postMultipart(model: Model, path: string, fd: GenericFormData, options?: {}): Promise<ModelInterface>;
     put(model: Model, path: string, body: Serializable, options?: {}): Promise<ModelInterface>;
-    delete(path: string, options?: {}): Promise<void>;
+
+    delete(model: Model, path: string, options?: {}): Promise<ModelInterface>;
+
+    deleteVoid(path: string, options?: {}): Promise<void>;
 }

@@ -73,4 +73,8 @@ export declare class User extends Model {
     listFollowings(page: number, size: number): Promise<User[]>;
     listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]>;
     sendPrivateMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
+
+    enable(): Promise<User>;
+
+    disable(): Promise<User>;
 }

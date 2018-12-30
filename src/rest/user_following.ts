@@ -16,6 +16,6 @@ export class RestUserFollowing extends Rest {
     }
 
     async delete(userId: string): Promise<void> {
-        return this.conf.delete(Rest.params("/user/{userId}/following?", {userId: userId}));
+        return this.conf.deleteVoid(Rest.params("/user/{userId}/following?", {userId: userId}));
     }
 }

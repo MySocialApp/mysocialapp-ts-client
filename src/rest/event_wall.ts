@@ -23,6 +23,6 @@ export class RestEventWall extends Rest {
 
     async deleteMessage(eventId: string, messageId: string): Promise<void> {
         let path = Rest.params("/event/{id}/wall/message/{messageId}", {id: eventId, messageId: messageId});
-        return this.conf.delete(path);
+        return this.conf.deleteVoid(path);
     }
 }

@@ -12,6 +12,6 @@ export class RestPhotoLike extends Rest {
     }
 
     async delete(id: string): Promise<void> {
-        return this.conf.delete(Rest.params("/photo/{id}/like", {id: id}));
+        return this.conf.deleteVoid(Rest.params("/photo/{id}/like", {id: id}));
     }
 }

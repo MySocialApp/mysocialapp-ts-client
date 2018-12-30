@@ -38,11 +38,13 @@ import {RestShadowEntityPhoto} from "./rest/shadow_entity_photo";
 import {RestUserFollowing} from "./rest/user_following";
 import {RestUserFollower} from "./rest/user_follower";
 import {RestUserStat} from "./rest/user_stat";
+import {RestAdminUserEnable} from "./rest/admin_user_enable";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
 
+    private restAdminUserEnable?: RestAdminUserEnable;
     private restAccount?: RestAccount;
     private restConversation?: RestConversation;
     private restConversationMessage?: RestConversationMessage;
@@ -90,6 +92,10 @@ export class ClientService {
     constructor(configuration: Configuration, clientConf?: ClientConfiguration) {
         this.configuration = configuration;
         this.clientConfiguration = clientConf;
+    }
+
+    get adminUserEnable(): RestAdminUserEnable {
+        return this.restAdminUserEnable !== undefined ? this.restAdminUserEnable : this.restAdminUserEnable = new RestAdminUserEnable(this.configuration);
     }
 
     get account(): RestAccount {

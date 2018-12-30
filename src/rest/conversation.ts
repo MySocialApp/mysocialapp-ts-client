@@ -28,7 +28,7 @@ export class RestConversation extends Rest {
     }
 
     async delete(id: string): Promise<void> {
-        return this.conf.delete("/conversation/" + id) as Promise<void>;
+        return this.conf.deleteVoid("/conversation/" + id) as Promise<void>;
     }
 
     async consume(id: string, page: number, size: number): Promise<ConversationMessage[]> {

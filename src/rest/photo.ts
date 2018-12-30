@@ -17,7 +17,7 @@ export class RestPhoto extends Rest {
     }
 
     async delete(photoId: string): Promise<void> {
-        return this.conf.delete("/photo/" + photoId);
+        return this.conf.deleteVoid("/photo/" + photoId);
     }
 
     async create(photo: FileData, message?: string, tagEntities?: TagEntities, albumName?: string, visibility: AccessControl = AccessControl.Friend, payload?: {}): Promise<Feed> {

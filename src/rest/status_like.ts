@@ -12,6 +12,6 @@ export class RestStatusLike extends Rest {
     }
 
     async delete(statusId: string): Promise<void> {
-        return this.conf.delete(Rest.params("status/{id}/like", {id: statusId}));
+        return this.conf.deleteVoid(Rest.params("status/{id}/like", {id: statusId}));
     }
 }

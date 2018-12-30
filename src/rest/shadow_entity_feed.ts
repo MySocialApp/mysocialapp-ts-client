@@ -12,6 +12,6 @@ export class RestShadowEntityFeed extends Rest {
     }
 
     async delete(id: string): Promise<void> {
-        return this.conf.delete("shadow/entity/" + id);
+        return this.conf.deleteVoid("shadow/entity/" + id);
     }
 }

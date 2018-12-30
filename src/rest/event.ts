@@ -79,7 +79,7 @@ export class RestEvent extends Rest {
     }
 
     async leave(eventId: string): Promise<void> {
-        return this.conf.delete(Rest.params("/event/{id}/member", {id: eventId}));
+        return this.conf.deleteVoid(Rest.params("/event/{id}/member", {id: eventId}));
     }
 
     async getPhotos(eventId: string, page?: number): Promise<Photo[]> {

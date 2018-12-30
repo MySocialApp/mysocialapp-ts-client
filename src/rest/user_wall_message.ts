@@ -19,7 +19,7 @@ export class RestUserWallMessage extends Rest {
     }
 
     async delete(userId: string, messageId: string): Promise<void> {
-        return this.conf.delete(Rest.params("/user/{userId}/wall/message/{messageId}", {
+        return this.conf.deleteVoid(Rest.params("/user/{userId}/wall/message/{messageId}", {
             userId: userId,
             messageId: messageId
         })) as Promise<void>;

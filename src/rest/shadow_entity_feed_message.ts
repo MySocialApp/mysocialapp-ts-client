@@ -22,7 +22,7 @@ export class RestShadowEntityFeedMessage extends Rest {
     }
 
     async delete(id: string, messageId: string): Promise<void> {
-        return this.conf.delete(Rest.params("shadow/entity/{id}/wall/message/{messageId}", {
+        return this.conf.deleteVoid(Rest.params("shadow/entity/{id}/wall/message/{messageId}", {
             id: id,
             messageId: messageId
         })) as Promise<void>;

@@ -68,11 +68,11 @@ export class RestGroup extends Rest {
     }
 
     async leave(groupId: string): Promise<void> {
-        return this.conf.delete(Rest.params("/group/{id}/member", {id: groupId}));
+        return this.conf.deleteVoid(Rest.params("/group/{id}/member", {id: groupId}));
     }
 
     async delete(groupId: string): Promise<void> {
-        return this.conf.delete("/group/" + groupId);
+        return this.conf.deleteVoid("/group/" + groupId);
     }
 
     async changeOwner(newOwnerId: string): Promise<Group> {

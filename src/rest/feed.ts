@@ -17,7 +17,7 @@ export class RestFeed extends Rest {
     }
 
     async delete(id: string): Promise<void> {
-        return this.conf.delete(Rest.params("/feed/{id}", {id: id})) as Promise<void>;
+        return this.conf.deleteVoid(Rest.params("/feed/{id}", {id: id})) as Promise<void>;
     }
 
     async addMessage(message: TextWallMessage): Promise<Feed> {

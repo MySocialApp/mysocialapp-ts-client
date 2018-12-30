@@ -15,7 +15,7 @@ export class RestAccount extends Rest {
     }
 
     async delete(loginCredentials: LoginCredentials): Promise<void> {
-        return this.conf.delete("/account", {data: loginCredentials.toJson()}) as Promise<void>;
+        return this.conf.deleteVoid("/account", {data: loginCredentials.toJson()}) as Promise<void>;
     }
 
     async getCover(): Promise<Photo> {

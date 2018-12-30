@@ -2,7 +2,6 @@ import {Rest} from "./rest";
 import {Feed} from "../models/feed";
 import {Empty} from "../models/empty";
 import {Like} from "../models/like";
-import {Model} from "../models/model";
 
 
 export class RestFeedLike extends Rest {
@@ -16,6 +15,6 @@ export class RestFeedLike extends Rest {
     }
 
     async delete(id: string): Promise<void> {
-        return this.conf.delete(Rest.params("feed/{id}/like", {id: id})) as Promise<void>;
+        return this.conf.deleteVoid(Rest.params("feed/{id}/like", {id: id})) as Promise<void>;
     }
 }
