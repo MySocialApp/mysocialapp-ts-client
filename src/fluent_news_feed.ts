@@ -28,6 +28,10 @@ export class FluentNewsFeed extends FluentAbstract {
         return this.session.clientService.feed.get(id);
     }
 
+    async getByExternalId(id: string): Promise<Feed> {
+        return this.session.clientService.feedExternal.get(id);
+    }
+
     async create(feedPost: FeedPost): Promise<Feed> {
         let account = await this.session.account.get(true);
         if (!feedPost.hasPhoto()) {
