@@ -1,9 +1,8 @@
-import {AuthenticationToken} from "./models/authentication_token";
-import {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {Model, ModelInterface, Serializable} from "./models/model";
-import {InterfaceLanguage} from "./models/user_settings";
-import {GenericFormData} from "./models/generic_form_data";
-
+import { AuthenticationToken } from "./models/authentication_token";
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Model, ModelInterface, Serializable } from "./models/model";
+import { InterfaceLanguage } from "./models/user_settings";
+import { GenericFormData } from "./models/generic_form_data";
 export declare class Configuration {
     appId: string;
     apiEndpointUrl: string;

@@ -12,6 +12,7 @@ import {RestConversation} from "./rest/conversation";
 import {RestEvent} from "./rest/event";
 import {RestEventWall} from "./rest/event_wall";
 import {RestFeedComment} from "./rest/feed_comment";
+import {RestFeedExternal} from "./rest/feed_external";
 import {RestFeedLike} from "./rest/feed_like";
 import {RestFriend} from "./rest/friend";
 import {RestGroup} from "./rest/group";
@@ -52,6 +53,7 @@ export class ClientService {
     private restEventWall?: RestEventWall;
     private restFeed?: RestFeed;
     private restFeedComment?: RestFeedComment;
+    private restFeedExternal?: RestFeedExternal;
     private restFeedLike?: RestFeedLike;
     private restFriend?: RestFriend;
     private restGroup?: RestGroup;
@@ -124,6 +126,10 @@ export class ClientService {
 
     get feedComment(): RestFeedComment {
         return this.restFeedComment !== undefined ? this.restFeedComment : this.restFeedComment = new RestFeedComment(this.configuration);
+    }
+
+    get feedExternal(): RestFeedExternal {
+        return this.restFeedExternal !== undefined ? this.restFeedExternal : this.restFeedExternal = new RestFeedExternal(this.configuration);
     }
 
     get feedLike(): RestFeedLike {
