@@ -13,6 +13,7 @@ const conversation_1 = require("./rest/conversation");
 const event_1 = require("./rest/event");
 const event_wall_1 = require("./rest/event_wall");
 const feed_comment_1 = require("./rest/feed_comment");
+const feed_external_1 = require("./rest/feed_external");
 const feed_like_1 = require("./rest/feed_like");
 const friend_1 = require("./rest/friend");
 const group_1 = require("./rest/group");
@@ -38,8 +39,8 @@ const shadow_entity_profile_cover_photo_1 = require("./rest/shadow_entity_profil
 const shadow_entity_photo_1 = require("./rest/shadow_entity_photo");
 const user_following_1 = require("./rest/user_following");
 const user_follower_1 = require("./rest/user_follower");
-        const user_stat_1 = require("./rest/user_stat");
-        const admin_user_enable_1 = require("./rest/admin_user_enable");
+const user_stat_1 = require("./rest/user_stat");
+const admin_user_enable_1 = require("./rest/admin_user_enable");
 class ClientService {
     /**
      *
@@ -50,7 +51,6 @@ class ClientService {
         this.configuration = configuration;
         this.clientConfiguration = clientConf;
     }
-
     get adminUserEnable() {
         return this.restAdminUserEnable !== undefined ? this.restAdminUserEnable : this.restAdminUserEnable = new admin_user_enable_1.RestAdminUserEnable(this.configuration);
     }
@@ -74,6 +74,9 @@ class ClientService {
     }
     get feedComment() {
         return this.restFeedComment !== undefined ? this.restFeedComment : this.restFeedComment = new feed_comment_1.RestFeedComment(this.configuration);
+    }
+    get feedExternal() {
+        return this.restFeedExternal !== undefined ? this.restFeedExternal : this.restFeedExternal = new feed_external_1.RestFeedExternal(this.configuration);
     }
     get feedLike() {
         return this.restFeedLike !== undefined ? this.restFeedLike : this.restFeedLike = new feed_like_1.RestFeedLike(this.configuration);
@@ -171,48 +174,7 @@ class ClientService {
 }
 exports.ClientService = ClientService;
 
-    }, {
-        "./rest/account": 88,
-        "./rest/admin_user_enable": 89,
-        "./rest/conversation": 90,
-        "./rest/conversation_message": 91,
-        "./rest/event": 93,
-        "./rest/event_wall": 94,
-        "./rest/feed": 95,
-        "./rest/feed_comment": 96,
-        "./rest/feed_like": 97,
-        "./rest/friend": 98,
-        "./rest/group": 99,
-        "./rest/group_wall": 100,
-        "./rest/login": 101,
-        "./rest/logout": 102,
-        "./rest/notification": 103,
-        "./rest/photo": 104,
-        "./rest/photo_album": 105,
-        "./rest/photo_comment": 106,
-        "./rest/photo_like": 107,
-        "./rest/register": 108,
-        "./rest/search": 110,
-        "./rest/shadow_entity_feed": 111,
-        "./rest/shadow_entity_feed_message": 112,
-        "./rest/shadow_entity_photo": 113,
-        "./rest/shadow_entity_profile_cover_photo": 114,
-        "./rest/shadow_entity_profile_photo": 115,
-        "./rest/status": 116,
-        "./rest/status_comment": 117,
-        "./rest/status_like": 118,
-        "./rest/user": 119,
-        "./rest/user_event": 121,
-        "./rest/user_external": 122,
-        "./rest/user_follower": 123,
-        "./rest/user_following": 124,
-        "./rest/user_friend": 125,
-        "./rest/user_group": 126,
-        "./rest/user_stat": 127,
-        "./rest/user_wall": 128,
-        "./rest/user_wall_message": 129
-    }],
-    2: [function (require, module, exports) {
+},{"./rest/account":88,"./rest/admin_user_enable":89,"./rest/conversation":90,"./rest/conversation_message":91,"./rest/event":93,"./rest/event_wall":94,"./rest/feed":95,"./rest/feed_comment":96,"./rest/feed_external":97,"./rest/feed_like":98,"./rest/friend":99,"./rest/group":100,"./rest/group_wall":101,"./rest/login":102,"./rest/logout":103,"./rest/notification":104,"./rest/photo":105,"./rest/photo_album":106,"./rest/photo_comment":107,"./rest/photo_like":108,"./rest/register":109,"./rest/search":111,"./rest/shadow_entity_feed":112,"./rest/shadow_entity_feed_message":113,"./rest/shadow_entity_photo":114,"./rest/shadow_entity_profile_cover_photo":115,"./rest/shadow_entity_profile_photo":116,"./rest/status":117,"./rest/status_comment":118,"./rest/status_like":119,"./rest/user":120,"./rest/user_event":122,"./rest/user_external":123,"./rest/user_follower":124,"./rest/user_following":125,"./rest/user_friend":126,"./rest/user_group":127,"./rest/user_stat":128,"./rest/user_wall":129,"./rest/user_wall_message":130}],2:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -331,19 +293,18 @@ class Configuration {
             }
         });
     }
-
     delete(model, path, options) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const resp = yield this.httpClient.delete(path, this.setDefaultOptions(options));
                 model.load(resp.data, this);
                 return model;
-            } catch (error) {
+            }
+            catch (error) {
                 throw new error_1.ErrorResponse(error);
             }
         });
     }
-
     deleteVoid(path, options) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -358,8 +319,7 @@ class Configuration {
 }
 exports.Configuration = Configuration;
 
-    }, {"./models/user_settings": 83, "./rest/error": 92, "axios": 137}],
-    3: [function (require, module, exports) {
+},{"./models/user_settings":83,"./rest/error":92,"axios":138}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // format ex : 2018-08-15T16:48:06Z
@@ -790,6 +750,11 @@ class FluentNewsFeed extends fluent_abstract_1.FluentAbstract {
             return this.session.clientService.feed.get(id);
         });
     }
+    getByExternalId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.session.clientService.feedExternal.get(id);
+        });
+    }
     create(feedPost) {
         return __awaiter(this, void 0, void 0, function* () {
             let account = yield this.session.account.get(true);
@@ -1097,75 +1062,7 @@ class models {
 }
 exports.models = models;
 
-    }, {
-        "./models/access_control": 18,
-        "./models/account": 19,
-        "./models/account_events": 20,
-        "./models/activity_type": 21,
-        "./models/app_platform": 23,
-        "./models/authentication_token": 24,
-        "./models/base": 25,
-        "./models/base_location": 26,
-        "./models/base_wall": 27,
-        "./models/comment": 28,
-        "./models/comment_blob": 29,
-        "./models/comment_post": 30,
-        "./models/conversation": 31,
-        "./models/conversation_message": 32,
-        "./models/conversation_message_post": 33,
-        "./models/conversation_messages": 34,
-        "./models/custom_field": 36,
-        "./models/entity_type": 38,
-        "./models/event_member": 40,
-        "./models/event_member_access_control": 41,
-        "./models/event_options": 42,
-        "./models/event_status": 43,
-        "./models/feed": 44,
-        "./models/feed_post": 45,
-        "./models/file": 46,
-        "./models/flag": 47,
-        "./models/friend_requests": 48,
-        "./models/gender": 49,
-        "./models/group": 51,
-        "./models/group_member": 52,
-        "./models/group_member_access_control": 53,
-        "./models/group_options": 54,
-        "./models/group_status": 55,
-        "./models/hash_tag": 56,
-        "./models/like": 57,
-        "./models/like_blob": 58,
-        "./models/login_credentials": 60,
-        "./models/model": 61,
-        "./models/notification": 62,
-        "./models/notification_ack": 63,
-        "./models/photo": 64,
-        "./models/photo_album": 65,
-        "./models/preview_notification": 66,
-        "./models/reset_identifier": 67,
-        "./models/search_query": 68,
-        "./models/search_result": 69,
-        "./models/search_result_types": 70,
-        "./models/search_results": 71,
-        "./models/search_type": 72,
-        "./models/simple_location": 73,
-        "./models/sort_order": 74,
-        "./models/status": 75,
-        "./models/tag_entities": 76,
-        "./models/tag_entity": 77,
-        "./models/tag_entity_abstract": 78,
-        "./models/text_wall_message": 79,
-        "./models/url_tag": 80,
-        "./models/user": 81,
-        "./models/user_mention_tag": 82,
-        "./models/user_settings": 83,
-        "./models/user_stat": 84,
-        "./models/users": 85,
-        "./search/event": 130,
-        "./search/feed": 131,
-        "./search/group": 132,
-        "./search/user": 134
-    }],
-    18: [function (require, module, exports) {
+},{"./models/access_control":18,"./models/account":19,"./models/account_events":20,"./models/activity_type":21,"./models/app_platform":23,"./models/authentication_token":24,"./models/base":25,"./models/base_location":26,"./models/base_wall":27,"./models/comment":28,"./models/comment_blob":29,"./models/comment_post":30,"./models/conversation":31,"./models/conversation_message":32,"./models/conversation_message_post":33,"./models/conversation_messages":34,"./models/custom_field":36,"./models/entity_type":38,"./models/event_member":40,"./models/event_member_access_control":41,"./models/event_options":42,"./models/event_status":43,"./models/feed":44,"./models/feed_post":45,"./models/file":46,"./models/flag":47,"./models/friend_requests":48,"./models/gender":49,"./models/group":51,"./models/group_member":52,"./models/group_member_access_control":53,"./models/group_options":54,"./models/group_status":55,"./models/hash_tag":56,"./models/like":57,"./models/like_blob":58,"./models/login_credentials":60,"./models/model":61,"./models/notification":62,"./models/notification_ack":63,"./models/photo":64,"./models/photo_album":65,"./models/preview_notification":66,"./models/reset_identifier":67,"./models/search_query":68,"./models/search_result":69,"./models/search_result_types":70,"./models/search_results":71,"./models/search_type":72,"./models/simple_location":73,"./models/sort_order":74,"./models/status":75,"./models/tag_entities":76,"./models/tag_entity":77,"./models/tag_entity_abstract":78,"./models/text_wall_message":79,"./models/url_tag":80,"./models/user":81,"./models/user_mention_tag":82,"./models/user_settings":83,"./models/user_stat":84,"./models/users":85,"./search/event":131,"./search/feed":132,"./search/group":133,"./search/user":135}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AccessControl;
@@ -1411,8 +1308,7 @@ class Base extends model_1.Model {
 }
 exports.Base = Base;
 
-    }, {"./model": 61, "./photo": 64, "./user": 81, "moment": 167}],
-    26: [function (require, module, exports) {
+},{"./model":61,"./photo":64,"./user":81,"moment":168}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -1501,8 +1397,7 @@ class BaseWall extends base_1.Base {
 }
 exports.BaseWall = BaseWall;
 
-    }, {"../rest/feed": 95, "../rest/feed_comment": 96, "../rest/feed_like": 97, "./base": 25, "./comment_blob": 29, "./like_blob": 58}],
-    28: [function (require, module, exports) {
+},{"../rest/feed":95,"../rest/feed_comment":96,"../rest/feed_like":98,"./base":25,"./comment_blob":29,"./like_blob":58}],28:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1550,8 +1445,7 @@ class Comment extends base_1.Base {
 }
 exports.Comment = Comment;
 
-    }, {"../rest/feed_comment": 96, "./base": 25, "./comment_post": 30, "./photo": 64, "./tag_entities": 76}],
-    29: [function (require, module, exports) {
+},{"../rest/feed_comment":96,"./base":25,"./comment_post":30,"./photo":64,"./tag_entities":76}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const comment_1 = require("./comment");
@@ -1686,15 +1580,7 @@ class Conversation extends base_1.Base {
 }
 exports.Conversation = Conversation;
 
-    }, {
-        "../rest/conversation": 90,
-        "../rest/conversation_message": 91,
-        "./base": 25,
-        "./conversation_messages": 34,
-        "./user": 81,
-        "./utils": 86
-    }],
-    32: [function (require, module, exports) {
+},{"../rest/conversation":90,"../rest/conversation_message":91,"./base":25,"./conversation_messages":34,"./user":81,"./utils":86}],32:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -1813,8 +1699,7 @@ class ConversationMessages extends model_1.Model {
 }
 exports.ConversationMessages = ConversationMessages;
 
-    }, {"../rest/conversation_message": 91, "./conversation_message": 32, "./model": 61}],
-    35: [function (require, module, exports) {
+},{"../rest/conversation_message":91,"./conversation_message":32,"./model":61}],35:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const text_wall_message_1 = require("./text_wall_message");
@@ -2009,8 +1894,7 @@ var CustomFieldType;
     CustomFieldType["InputCheckbox"] = "INPUT_CHECKBOX";
 })(CustomFieldType = exports.CustomFieldType || (exports.CustomFieldType = {}));
 
-    }, {"../constant": 3, "./model": 61, "./simple_location": 73, "moment": 167}],
-    37: [function (require, module, exports) {
+},{"../constant":3,"./model":61,"./simple_location":73,"moment":168}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2217,18 +2101,7 @@ class Event extends base_wall_1.BaseWall {
 }
 exports.Event = Event;
 
-    }, {
-        "../constant": 3,
-        "../rest/event": 93,
-        "../rest/event_wall": 94,
-        "./base_wall": 27,
-        "./custom_field": 36,
-        "./event_member": 40,
-        "./location": 59,
-        "./photo": 64,
-        "./utils": 86
-    }],
-    40: [function (require, module, exports) {
+},{"../constant":3,"../rest/event":93,"../rest/event_wall":94,"./base_wall":27,"./custom_field":36,"./event_member":40,"./location":59,"./photo":64,"./utils":86}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -2453,8 +2326,7 @@ class Feed extends model_1.Model {
 }
 exports.Feed = Feed;
 
-    }, {"../rest/feed": 95, "./convert": 35, "./model": 61, "./text_wall_message": 79, "./user": 81}],
-    45: [function (require, module, exports) {
+},{"../rest/feed":95,"./convert":35,"./model":61,"./text_wall_message":79,"./user":81}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const access_control_1 = require("./access_control");
@@ -2675,8 +2547,7 @@ class GenericFormDataValue {
 }
 
 }).call(this,require("buffer").Buffer)
-    }, {"buffer": 163}],
-    51: [function (require, module, exports) {
+},{"buffer":164}],51:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2838,17 +2709,7 @@ class Group extends base_wall_1.BaseWall {
 }
 exports.Group = Group;
 
-    }, {
-        "../rest/group": 99,
-        "../rest/group_wall": 100,
-        "./base_wall": 27,
-        "./custom_field": 36,
-        "./group_member": 52,
-        "./location": 59,
-        "./photo": 64,
-        "./utils": 86
-    }],
-    52: [function (require, module, exports) {
+},{"../rest/group":100,"../rest/group_wall":101,"./base_wall":27,"./custom_field":36,"./group_member":52,"./location":59,"./photo":64,"./utils":86}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const group_1 = require("./group");
@@ -3088,8 +2949,7 @@ class Model {
 }
 exports.Model = Model;
 
-    }, {"lodash": 166}],
-    62: [function (require, module, exports) {
+},{"lodash":167}],62:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3140,8 +3000,7 @@ class Notification extends model_1.Model {
 }
 exports.Notification = Notification;
 
-    }, {"../rest/notification": 103, "./model": 61, "./user": 81}],
-    63: [function (require, module, exports) {
+},{"../rest/notification":104,"./model":61,"./user":81}],63:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const base_location_1 = require("./base_location");
@@ -3249,8 +3108,7 @@ class PreviewNotification extends model_1.Model {
 }
 exports.PreviewNotification = PreviewNotification;
 
-    }, {"../rest/notification": 103, "./model": 61, "./notification": 62}],
-    67: [function (require, module, exports) {
+},{"../rest/notification":104,"./model":61,"./notification":62}],67:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -3511,8 +3369,7 @@ class Status extends base_wall_1.BaseWall {
 }
 exports.Status = Status;
 
-    }, {"../rest/status": 116, "../rest/status_comment": 117, "../rest/status_like": 118, "./base_wall": 27}],
-    76: [function (require, module, exports) {
+},{"../rest/status":117,"../rest/status_comment":118,"../rest/status_like":119,"./base_wall":27}],76:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -3691,8 +3548,8 @@ const conversation_1 = require("../rest/conversation");
 const conversation_2 = require("./conversation");
 const user_following_1 = require("../rest/user_following");
 const user_follower_1 = require("../rest/user_follower");
-        const user_stat_2 = require("../rest/user_stat");
-        const admin_user_enable_1 = require("../rest/admin_user_enable");
+const user_stat_2 = require("../rest/user_stat");
+const admin_user_enable_1 = require("../rest/admin_user_enable");
 class User extends model_1.Model {
     constructor() {
         super(...arguments);
@@ -3865,13 +3722,11 @@ class User extends model_1.Model {
             return conversation.sendMessage(message);
         });
     }
-
     enable() {
         return __awaiter(this, void 0, void 0, function* () {
             return new admin_user_enable_1.RestAdminUserEnable(this.conf).enable(this.id);
         });
     }
-
     disable() {
         return __awaiter(this, void 0, void 0, function* () {
             return new admin_user_enable_1.RestAdminUserEnable(this.conf).disable(this.id);
@@ -3880,26 +3735,7 @@ class User extends model_1.Model {
 }
 exports.User = User;
 
-    }, {
-        "../rest/admin_user_enable": 89,
-        "../rest/conversation": 90,
-        "../rest/user_album": 120,
-        "../rest/user_follower": 123,
-        "../rest/user_following": 124,
-        "../rest/user_friend": 125,
-        "../rest/user_stat": 127,
-        "../rest/user_wall": 128,
-        "../rest/user_wall_message": 129,
-        "./conversation": 31,
-        "./custom_field": 36,
-        "./flag": 47,
-        "./location": 59,
-        "./model": 61,
-        "./photo": 64,
-        "./status": 75,
-        "./user_stat": 84
-    }],
-    82: [function (require, module, exports) {
+},{"../rest/admin_user_enable":89,"../rest/conversation":90,"../rest/user_album":121,"../rest/user_follower":124,"../rest/user_following":125,"../rest/user_friend":126,"../rest/user_stat":128,"../rest/user_wall":129,"../rest/user_wall_message":130,"./conversation":31,"./custom_field":36,"./flag":47,"./location":59,"./model":61,"./photo":64,"./status":75,"./user_stat":84}],82:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tag_entity_abstract_1 = require("./tag_entity_abstract");
@@ -4009,16 +3845,12 @@ exports.UserStat = UserStat;
 class UserStatStatus extends model_1.Model {
 }
 exports.UserStatStatus = UserStatStatus;
-
-        class UserStatFriend extends model_1.Model {
-        }
-
-        exports.UserStatFriend = UserStatFriend;
-
-        class UserStatFollow extends model_1.Model {
-        }
-
-        exports.UserStatFollow = UserStatFollow;
+class UserStatFriend extends model_1.Model {
+}
+exports.UserStatFriend = UserStatFriend;
+class UserStatFollow extends model_1.Model {
+}
+exports.UserStatFollow = UserStatFollow;
 var UserState;
 (function (UserState) {
     UserState["Disabled"] = "DISABLED";
@@ -4171,18 +4003,7 @@ class MySocialApp {
 exports.MySocialApp = MySocialApp;
 exports.Models = new models_1.models();
 
-    }, {
-        "./client_service": 1,
-        "./configuration": 2,
-        "./models": 17,
-        "./models/account": 19,
-        "./models/app_config": 22,
-        "./models/authentication_token": 24,
-        "./rest/error": 92,
-        "./session": 135,
-        "axios": 137
-    }],
-    88: [function (require, module, exports) {
+},{"./client_service":1,"./configuration":2,"./models":17,"./models/account":19,"./models/app_config":22,"./models/authentication_token":24,"./rest/error":92,"./session":136,"axios":138}],88:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4210,7 +4031,7 @@ class RestAccount extends rest_1.Rest {
     }
     delete(loginCredentials) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid("/account", {data: loginCredentials.toJson()});
+            return this.conf.deleteVoid("/account", { data: loginCredentials.toJson() });
         });
     }
     getCover() {
@@ -4240,59 +4061,35 @@ class RestAccount extends rest_1.Rest {
 }
 exports.RestAccount = RestAccount;
 
-    }, {"../models/account": 19, "../models/generic_form_data": 50, "../models/photo": 64, "./rest": 109}],
-    89: [function (require, module, exports) {
-        "use strict";
-        var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-            return new (P || (P = Promise))(function (resolve, reject) {
-                function fulfilled(value) {
-                    try {
-                        step(generator.next(value));
-                    } catch (e) {
-                        reject(e);
-                    }
-                }
+},{"../models/account":19,"../models/generic_form_data":50,"../models/photo":64,"./rest":110}],89:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const rest_1 = require("./rest");
+const user_1 = require("../models/user");
+const empty_1 = require("../models/empty");
+class RestAdminUserEnable extends rest_1.Rest {
+    enable(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.post(new user_1.User(), `/admin/user/${userId}/enable`, new empty_1.Empty());
+        });
+    }
+    disable(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.delete(new user_1.User(), `/admin/user/${userId}/enable`);
+        });
+    }
+}
+exports.RestAdminUserEnable = RestAdminUserEnable;
 
-                function rejected(value) {
-                    try {
-                        step(generator["throw"](value));
-                    } catch (e) {
-                        reject(e);
-                    }
-                }
-
-                function step(result) {
-                    result.done ? resolve(result.value) : new P(function (resolve) {
-                        resolve(result.value);
-                    }).then(fulfilled, rejected);
-                }
-
-                step((generator = generator.apply(thisArg, _arguments || [])).next());
-            });
-        };
-        Object.defineProperty(exports, "__esModule", {value: true});
-        const rest_1 = require("./rest");
-        const user_1 = require("../models/user");
-        const empty_1 = require("../models/empty");
-
-        class RestAdminUserEnable extends rest_1.Rest {
-            enable(userId) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    return this.conf.post(new user_1.User(), `/admin/user/${userId}/enable`, new empty_1.Empty());
-                });
-            }
-
-            disable(userId) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    return this.conf.delete(new user_1.User(), `/admin/user/${userId}/enable`);
-                });
-            }
-        }
-
-        exports.RestAdminUserEnable = RestAdminUserEnable;
-
-    }, {"../models/empty": 37, "../models/user": 81, "./rest": 109}],
-    90: [function (require, module, exports) {
+},{"../models/empty":37,"../models/user":81,"./rest":110}],90:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4364,8 +4161,7 @@ class RestConversation extends rest_1.Rest {
 }
 exports.RestConversation = RestConversation;
 
-    }, {"../models/conversation": 31, "../models/conversation_message": 32, "../models/generic_form_data": 50, "./rest": 109}],
-    91: [function (require, module, exports) {
+},{"../models/conversation":31,"../models/conversation_message":32,"../models/generic_form_data":50,"./rest":110}],91:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4407,8 +4203,7 @@ class RestConversationMessage extends rest_1.Rest {
 }
 exports.RestConversationMessage = RestConversationMessage;
 
-    }, {"../models/conversation_message": 32, "../models/generic_form_data": 50, "./rest": 109}],
-    92: [function (require, module, exports) {
+},{"../models/conversation_message":32,"../models/generic_form_data":50,"./rest":110}],92:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ErrorResponse {
@@ -4430,8 +4225,7 @@ class ErrorResponse {
 }
 exports.ErrorResponse = ErrorResponse;
 
-    }, {}],
-    93: [function (require, module, exports) {
+},{}],93:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4529,7 +4323,7 @@ class RestEvent extends rest_1.Rest {
     }
     leave(eventId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("/event/{id}/member", {id: eventId}));
+            return this.conf.deleteVoid(rest_1.Rest.params("/event/{id}/member", { id: eventId }));
         });
     }
     getPhotos(eventId, page) {
@@ -4585,17 +4379,7 @@ class RestEvent extends rest_1.Rest {
 }
 exports.RestEvent = RestEvent;
 
-    }, {
-        "../models/custom_field": 36,
-        "../models/empty": 37,
-        "../models/event": 39,
-        "../models/event_member": 40,
-        "../models/feed": 44,
-        "../models/generic_form_data": 50,
-        "../models/photo": 64,
-        "./rest": 109
-    }],
-    94: [function (require, module, exports) {
+},{"../models/custom_field":36,"../models/empty":37,"../models/event":39,"../models/event_member":40,"../models/feed":44,"../models/generic_form_data":50,"../models/photo":64,"./rest":110}],94:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4638,8 +4422,7 @@ class RestEventWall extends rest_1.Rest {
 }
 exports.RestEventWall = RestEventWall;
 
-    }, {"../models/feed": 44, "./rest": 109}],
-    95: [function (require, module, exports) {
+},{"../models/feed":44,"./rest":110}],95:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4668,7 +4451,7 @@ class RestFeed extends rest_1.Rest {
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("/feed/{id}", {id: id}));
+            return this.conf.deleteVoid(rest_1.Rest.params("/feed/{id}", { id: id }));
         });
     }
     addMessage(message) {
@@ -4694,8 +4477,7 @@ class RestFeed extends rest_1.Rest {
 }
 exports.RestFeed = RestFeed;
 
-    }, {"../models/empty": 37, "../models/feed": 44, "./rest": 109}],
-    96: [function (require, module, exports) {
+},{"../models/empty":37,"../models/feed":44,"./rest":110}],96:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4752,8 +4534,28 @@ class RestFeedComment extends rest_1.Rest {
 }
 exports.RestFeedComment = RestFeedComment;
 
-    }, {"../models/comment": 28, "../models/generic_form_data": 50, "./rest": 109}],
-    97: [function (require, module, exports) {
+},{"../models/comment":28,"../models/generic_form_data":50,"./rest":110}],97:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const feed_1 = require("../models/feed");
+class RestFeedExternal extends feed_1.Feed {
+    get(externalId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.get(new feed_1.Feed(), "/feed/external/" + externalId);
+        });
+    }
+}
+exports.RestFeedExternal = RestFeedExternal;
+
+},{"../models/feed":44}],98:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4780,14 +4582,13 @@ class RestFeedLike extends rest_1.Rest {
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("feed/{id}/like", {id: id}));
+            return this.conf.deleteVoid(rest_1.Rest.params("feed/{id}/like", { id: id }));
         });
     }
 }
 exports.RestFeedLike = RestFeedLike;
 
-    }, {"../models/empty": 37, "../models/feed": 44, "./rest": 109}],
-    98: [function (require, module, exports) {
+},{"../models/empty":37,"../models/feed":44,"./rest":110}],99:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4816,8 +4617,7 @@ class RestFriend extends rest_1.Rest {
 }
 exports.RestFriend = RestFriend;
 
-    }, {"../models/friend_requests": 48, "../models/user": 81, "./rest": 109}],
-    99: [function (require, module, exports) {
+},{"../models/friend_requests":48,"../models/user":81,"./rest":110}],100:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -4902,7 +4702,7 @@ class RestGroup extends rest_1.Rest {
     }
     leave(groupId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("/group/{id}/member", {id: groupId}));
+            return this.conf.deleteVoid(rest_1.Rest.params("/group/{id}/member", { id: groupId }));
         });
     }
     delete(groupId) {
@@ -4968,17 +4768,7 @@ class RestGroup extends rest_1.Rest {
 }
 exports.RestGroup = RestGroup;
 
-    }, {
-        "../models/custom_field": 36,
-        "../models/empty": 37,
-        "../models/feed": 44,
-        "../models/generic_form_data": 50,
-        "../models/group": 51,
-        "../models/group_member": 52,
-        "../models/photo": 64,
-        "./rest": 109
-    }],
-    100: [function (require, module, exports) {
+},{"../models/custom_field":36,"../models/empty":37,"../models/feed":44,"../models/generic_form_data":50,"../models/group":51,"../models/group_member":52,"../models/photo":64,"./rest":110}],101:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5021,8 +4811,7 @@ class RestGroupWall extends rest_1.Rest {
 }
 exports.RestGroupWall = RestGroupWall;
 
-    }, {"../models/feed": 44, "./rest": 109}],
-    101: [function (require, module, exports) {
+},{"../models/feed":44,"./rest":110}],102:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5050,8 +4839,7 @@ class RestLogin extends rest_1.Rest {
 }
 exports.RestLogin = RestLogin;
 
-    }, {"../models/authentication_token": 24, "../models/empty": 37, "./rest": 109}],
-    102: [function (require, module, exports) {
+},{"../models/authentication_token":24,"../models/empty":37,"./rest":110}],103:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5079,8 +4867,7 @@ class RestLogout extends rest_1.Rest {
 }
 exports.RestLogout = RestLogout;
 
-    }, {"./error": 92, "./rest": 109}],
-    103: [function (require, module, exports) {
+},{"./error":92,"./rest":110}],104:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5126,8 +4913,7 @@ class RestNotification extends rest_1.Rest {
 }
 exports.RestNotification = RestNotification;
 
-    }, {"../models/notification_ack": 63, "../models/preview_notification": 66, "./rest": 109}],
-    104: [function (require, module, exports) {
+},{"../models/notification_ack":63,"../models/preview_notification":66,"./rest":110}],105:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5190,8 +4976,7 @@ class RestPhoto extends rest_1.Rest {
 }
 exports.RestPhoto = RestPhoto;
 
-    }, {"../models/access_control": 18, "../models/feed": 44, "../models/generic_form_data": 50, "../models/photo": 64, "./rest": 109}],
-    105: [function (require, module, exports) {
+},{"../models/access_control":18,"../models/feed":44,"../models/generic_form_data":50,"../models/photo":64,"./rest":110}],106:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5237,8 +5022,7 @@ class RestPhotoAlbum extends rest_1.Rest {
 }
 exports.RestPhotoAlbum = RestPhotoAlbum;
 
-    }, {"../models/photo_album": 65, "./rest": 109}],
-    106: [function (require, module, exports) {
+},{"../models/photo_album":65,"./rest":110}],107:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5282,8 +5066,7 @@ class RestPhotoComment extends rest_1.Rest {
 }
 exports.RestPhotoComment = RestPhotoComment;
 
-    }, {"../models/comment": 28, "../models/generic_form_data": 50, "./rest": 109}],
-    107: [function (require, module, exports) {
+},{"../models/comment":28,"../models/generic_form_data":50,"./rest":110}],108:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5310,14 +5093,13 @@ class RestPhotoLike extends rest_1.Rest {
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("/photo/{id}/like", {id: id}));
+            return this.conf.deleteVoid(rest_1.Rest.params("/photo/{id}/like", { id: id }));
         });
     }
 }
 exports.RestPhotoLike = RestPhotoLike;
 
-    }, {"../models/empty": 37, "../models/like": 57, "./rest": 109}],
-    108: [function (require, module, exports) {
+},{"../models/empty":37,"../models/like":57,"./rest":110}],109:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5339,8 +5121,7 @@ class RestRegister extends rest_1.Rest {
 }
 exports.RestRegister = RestRegister;
 
-    }, {"../models/account": 19, "./rest": 109}],
-    109: [function (require, module, exports) {
+},{"../models/account":19,"./rest":110}],110:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Rest {
@@ -5363,8 +5144,7 @@ class Rest {
 }
 exports.Rest = Rest;
 
-    }, {}],
-    110: [function (require, module, exports) {
+},{}],111:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5389,8 +5169,7 @@ class RestSearch extends rest_1.Rest {
 }
 exports.RestSearch = RestSearch;
 
-    }, {"../models/search_results": 71, "./rest": 109}],
-    111: [function (require, module, exports) {
+},{"../models/search_results":71,"./rest":110}],112:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5423,8 +5202,7 @@ class RestShadowEntityFeed extends rest_1.Rest {
 }
 exports.RestShadowEntityFeed = RestShadowEntityFeed;
 
-    }, {"../models/feed": 44, "./rest": 109}],
-    112: [function (require, module, exports) {
+},{"../models/feed":44,"./rest":110}],113:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5469,8 +5247,7 @@ class RestShadowEntityFeedMessage extends rest_1.Rest {
 }
 exports.RestShadowEntityFeedMessage = RestShadowEntityFeedMessage;
 
-    }, {"../models/feed": 44, "./rest": 109}],
-    113: [function (require, module, exports) {
+},{"../models/feed":44,"./rest":110}],114:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5513,8 +5290,7 @@ class RestShadowEntityPhoto extends rest_1.Rest {
 }
 exports.RestShadowEntityPhoto = RestShadowEntityPhoto;
 
-    }, {"../models/feed": 44, "../models/generic_form_data": 50, "./rest": 109}],
-    114: [function (require, module, exports) {
+},{"../models/feed":44,"../models/generic_form_data":50,"./rest":110}],115:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5545,8 +5321,7 @@ class RestShadowEntityProfileCoverPhoto extends rest_1.Rest {
 }
 exports.RestShadowEntityProfileCoverPhoto = RestShadowEntityProfileCoverPhoto;
 
-    }, {"../models/generic_form_data": 50, "../models/photo": 64, "./rest": 109}],
-    115: [function (require, module, exports) {
+},{"../models/generic_form_data":50,"../models/photo":64,"./rest":110}],116:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5577,8 +5352,7 @@ class RestShadowEntityProfilePhoto extends rest_1.Rest {
 }
 exports.RestShadowEntityProfilePhoto = RestShadowEntityProfilePhoto;
 
-    }, {"../models/generic_form_data": 50, "../models/photo": 64, "./rest": 109}],
-    116: [function (require, module, exports) {
+},{"../models/generic_form_data":50,"../models/photo":64,"./rest":110}],117:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5620,8 +5394,7 @@ class RestStatus extends rest_1.Rest {
 }
 exports.RestStatus = RestStatus;
 
-    }, {"../models/status": 75, "./rest": 109}],
-    117: [function (require, module, exports) {
+},{"../models/status":75,"./rest":110}],118:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5670,8 +5443,7 @@ class RestStatusComment extends rest_1.Rest {
 }
 exports.RestStatusComment = RestStatusComment;
 
-    }, {"../models/comment": 28, "../models/generic_form_data": 50, "../models/photo": 64, "./rest": 109}],
-    118: [function (require, module, exports) {
+},{"../models/comment":28,"../models/generic_form_data":50,"../models/photo":64,"./rest":110}],119:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5698,14 +5470,13 @@ class RestStatusLike extends rest_1.Rest {
     }
     delete(statusId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("status/{id}/like", {id: statusId}));
+            return this.conf.deleteVoid(rest_1.Rest.params("status/{id}/like", { id: statusId }));
         });
     }
 }
 exports.RestStatusLike = RestStatusLike;
 
-    }, {"../models/empty": 37, "../models/like": 57, "./rest": 109}],
-    119: [function (require, module, exports) {
+},{"../models/empty":37,"../models/like":57,"./rest":110}],120:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5757,8 +5528,7 @@ class RestUser extends rest_1.Rest {
 }
 exports.RestUser = RestUser;
 
-    }, {"../models/user": 81, "../models/users": 85, "./rest": 109}],
-    120: [function (require, module, exports) {
+},{"../models/user":81,"../models/users":85,"./rest":110}],121:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5784,8 +5554,7 @@ class RestUserAlbum extends rest_1.Rest {
 }
 exports.RestUserAlbum = RestUserAlbum;
 
-    }, {"../models/photo_album": 65, "./rest": 109}],
-    121: [function (require, module, exports) {
+},{"../models/photo_album":65,"./rest":110}],122:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5804,15 +5573,14 @@ class RestUserEvent extends rest_1.Rest {
             params = params !== undefined ? params : {};
             params['page'] = page;
             params['size'] = size;
-            let path = rest_1.Rest.params("/user/{id}/event?", {id: userId}) + rest_1.Rest.encodeQueryData(params);
+            let path = rest_1.Rest.params("/user/{id}/event?", { id: userId }) + rest_1.Rest.encodeQueryData(params);
             return this.conf.getList(new user_1.User(), path);
         });
     }
 }
 exports.RestUserEvent = RestUserEvent;
 
-    }, {"../models/user": 81, "./rest": 109}],
-    122: [function (require, module, exports) {
+},{"../models/user":81,"./rest":110}],123:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5833,8 +5601,7 @@ class RestUserExternal extends user_1.User {
 }
 exports.RestUserExternal = RestUserExternal;
 
-    }, {"../models/user": 81}],
-    123: [function (require, module, exports) {
+},{"../models/user":81}],124:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5860,8 +5627,7 @@ class RestUserFollower extends rest_1.Rest {
 }
 exports.RestUserFollower = RestUserFollower;
 
-    }, {"../models/user": 81, "./rest": 109}],
-    124: [function (require, module, exports) {
+},{"../models/user":81,"./rest":110}],125:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5892,14 +5658,13 @@ class RestUserFollowing extends rest_1.Rest {
     }
     delete(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("/user/{userId}/following?", {userId: userId}));
+            return this.conf.deleteVoid(rest_1.Rest.params("/user/{userId}/following?", { userId: userId }));
         });
     }
 }
 exports.RestUserFollowing = RestUserFollowing;
 
-    }, {"../models/empty": 37, "../models/user": 81, "./rest": 109}],
-    125: [function (require, module, exports) {
+},{"../models/empty":37,"../models/user":81,"./rest":110}],126:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5930,14 +5695,13 @@ class RestUserFriend extends rest_1.Rest {
     }
     delete(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.deleteVoid(rest_1.Rest.params("/user/{userId}/friend?", {userId: userId}));
+            return this.conf.deleteVoid(rest_1.Rest.params("/user/{userId}/friend?", { userId: userId }));
         });
     }
 }
 exports.RestUserFriend = RestUserFriend;
 
-    }, {"../models/empty": 37, "../models/user": 81, "./rest": 109}],
-    126: [function (require, module, exports) {
+},{"../models/empty":37,"../models/user":81,"./rest":110}],127:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5956,15 +5720,14 @@ class RestUserGroup extends rest_1.Rest {
             params = params !== undefined ? params : {};
             params['page'] = page;
             params['size'] = size;
-            let path = rest_1.Rest.params("/user/{userId}/group?", {userId: userId}) + rest_1.Rest.encodeQueryData(params);
+            let path = rest_1.Rest.params("/user/{userId}/group?", { userId: userId }) + rest_1.Rest.encodeQueryData(params);
             return this.conf.getList(new group_1.Group(), path);
         });
     }
 }
 exports.RestUserGroup = RestUserGroup;
 
-    }, {"../models/group": 51, "./rest": 109}],
-    127: [function (require, module, exports) {
+},{"../models/group":51,"./rest":110}],128:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -5974,51 +5737,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-        Object.defineProperty(exports, "__esModule", {value: true});
-        const rest_1 = require("./rest");
-        const user_1 = require("../models/user");
+Object.defineProperty(exports, "__esModule", { value: true });
+const rest_1 = require("./rest");
+const user_1 = require("../models/user");
+class RestUserStat extends rest_1.Rest {
+    get(userId, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            params = params !== undefined ? params : {};
+            let path = rest_1.Rest.params("/user/{id}/stat?", { id: userId }) + rest_1.Rest.encodeQueryData(params);
+            return this.conf.get(new user_1.User(), path);
+        });
+    }
+}
+exports.RestUserStat = RestUserStat;
 
-        class RestUserStat extends rest_1.Rest {
-            get(userId, params) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    params = params !== undefined ? params : {};
-                    let path = rest_1.Rest.params("/user/{id}/stat?", {id: userId}) + rest_1.Rest.encodeQueryData(params);
-                    return this.conf.get(new user_1.User(), path);
-                });
-            }
-        }
-
-        exports.RestUserStat = RestUserStat;
-
-    }, {"../models/user": 81, "./rest": 109}],
-    128: [function (require, module, exports) {
-        "use strict";
-        var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-            return new (P || (P = Promise))(function (resolve, reject) {
-                function fulfilled(value) {
-                    try {
-                        step(generator.next(value));
-                    } catch (e) {
-                        reject(e);
-                    }
-                }
-
-                function rejected(value) {
-                    try {
-                        step(generator["throw"](value));
-                    } catch (e) {
-                        reject(e);
-                    }
-                }
-
-                function step(result) {
-                    result.done ? resolve(result.value) : new P(function (resolve) {
-                        resolve(result.value);
-                    }).then(fulfilled, rejected);
-                }
-
-                step((generator = generator.apply(thisArg, _arguments || [])).next());
-            });
+},{"../models/user":81,"./rest":110}],129:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("./rest");
@@ -6034,8 +5775,7 @@ class RestUserWall extends rest_1.Rest {
 }
 exports.RestUserWall = RestUserWall;
 
-    }, {"../models/feed": 44, "./rest": 109}],
-    129: [function (require, module, exports) {
+},{"../models/feed":44,"./rest":110}],130:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -6078,8 +5818,7 @@ class RestUserWallMessage extends rest_1.Rest {
 }
 exports.RestUserWallMessage = RestUserWallMessage;
 
-    }, {"../models/feed": 44, "./rest": 109}],
-    130: [function (require, module, exports) {
+},{"../models/feed":44,"./rest":110}],131:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -6140,8 +5879,7 @@ class SearchEvent extends search_1.SearchBuilder {
 }
 exports.SearchEvent = SearchEvent;
 
-    }, {"../constant": 3, "../models/event_options": 42, "../models/search_type": 72, "./search": 133}],
-    131: [function (require, module, exports) {
+},{"../constant":3,"../models/event_options":42,"../models/search_type":72,"./search":134}],132:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -6191,8 +5929,7 @@ class SearchFeed extends search_1.SearchBuilder {
 }
 exports.SearchFeed = SearchFeed;
 
-    }, {"../models/search_type": 72, "./search": 133}],
-    132: [function (require, module, exports) {
+},{"../models/search_type":72,"./search":134}],133:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -6238,8 +5975,7 @@ class SearchGroup extends search_1.SearchBuilder {
 }
 exports.SearchGroup = SearchGroup;
 
-    }, {"../models/search_type": 72, "./search": 133}],
-    133: [function (require, module, exports) {
+},{"../models/search_type":72,"./search":134}],134:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class SearchBuilder {
@@ -6257,8 +5993,7 @@ class SearchBuilder {
 }
 exports.SearchBuilder = SearchBuilder;
 
-    }, {}],
-    134: [function (require, module, exports) {
+},{}],135:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const search_1 = require("./search");
@@ -6308,8 +6043,7 @@ class SearchUser extends search_1.SearchBuilder {
 }
 exports.SearchUser = SearchUser;
 
-    }, {"../models/search_type": 72, "./search": 133}],
-    135: [function (require, module, exports) {
+},{"../models/search_type":72,"./search":134}],136:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -6426,25 +6160,7 @@ class Session {
 }
 exports.Session = Session;
 
-    }, {
-        "./client_service": 1,
-        "./fluent_account": 5,
-        "./fluent_conversation": 6,
-        "./fluent_dynamic_feed": 7,
-        "./fluent_event": 8,
-        "./fluent_follow": 9,
-        "./fluent_friend": 10,
-        "./fluent_group": 11,
-        "./fluent_news_feed": 12,
-        "./fluent_notification": 13,
-        "./fluent_photo": 14,
-        "./fluent_photo_album": 15,
-        "./fluent_user": 16,
-        "./models/login_credentials": 60,
-        "./mysocialapp": 87,
-        "./websocket_service": 136
-    }],
-    136: [function (require, module, exports) {
+},{"./client_service":1,"./fluent_account":5,"./fluent_conversation":6,"./fluent_dynamic_feed":7,"./fluent_event":8,"./fluent_follow":9,"./fluent_friend":10,"./fluent_group":11,"./fluent_news_feed":12,"./fluent_notification":13,"./fluent_photo":14,"./fluent_photo_album":15,"./fluent_user":16,"./models/login_credentials":60,"./mysocialapp":87,"./websocket_service":137}],137:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const notification_1 = require("./models/notification");
@@ -6587,18 +6303,9 @@ class WebsocketService {
 }
 exports.WebsocketService = WebsocketService;
 
-    }, {
-        "./models/conversation_message": 32,
-        "./models/event": 39,
-        "./models/feed": 44,
-        "./models/notification": 62,
-        "./models/user": 81,
-        "websocket": 169
-    }],
-    137: [function (require, module, exports) {
+},{"./models/conversation_message":32,"./models/event":39,"./models/feed":44,"./models/notification":62,"./models/user":81,"websocket":170}],138:[function(require,module,exports){
 module.exports = require('./lib/axios');
-    }, {"./lib/axios": 139}],
-    138: [function (require, module, exports) {
+},{"./lib/axios":140}],139:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -6782,18 +6489,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-    }, {
-        "../core/createError": 145,
-        "./../core/settle": 148,
-        "./../helpers/btoa": 152,
-        "./../helpers/buildURL": 153,
-        "./../helpers/cookies": 155,
-        "./../helpers/isURLSameOrigin": 157,
-        "./../helpers/parseHeaders": 159,
-        "./../utils": 161,
-        "_process": 168
-    }],
-    139: [function (require, module, exports) {
+},{"../core/createError":146,"./../core/settle":149,"./../helpers/btoa":153,"./../helpers/buildURL":154,"./../helpers/cookies":156,"./../helpers/isURLSameOrigin":158,"./../helpers/parseHeaders":160,"./../utils":162,"_process":169}],140:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -6847,17 +6543,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-    }, {
-        "./cancel/Cancel": 140,
-        "./cancel/CancelToken": 141,
-        "./cancel/isCancel": 142,
-        "./core/Axios": 143,
-        "./defaults": 150,
-        "./helpers/bind": 151,
-        "./helpers/spread": 160,
-        "./utils": 161
-    }],
-    140: [function (require, module, exports) {
+},{"./cancel/Cancel":141,"./cancel/CancelToken":142,"./cancel/isCancel":143,"./core/Axios":144,"./defaults":151,"./helpers/bind":152,"./helpers/spread":161,"./utils":162}],141:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6878,8 +6564,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-    }, {}],
-    141: [function (require, module, exports) {
+},{}],142:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -6938,16 +6623,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-    }, {"./Cancel": 140}],
-    142: [function (require, module, exports) {
+},{"./Cancel":141}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-    }, {}],
-    143: [function (require, module, exports) {
+},{}],144:[function(require,module,exports){
 'use strict';
 
 var defaults = require('./../defaults');
@@ -7028,8 +6711,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-    }, {"./../defaults": 150, "./../utils": 161, "./InterceptorManager": 144, "./dispatchRequest": 146}],
-    144: [function (require, module, exports) {
+},{"./../defaults":151,"./../utils":162,"./InterceptorManager":145,"./dispatchRequest":147}],145:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7083,8 +6765,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-    }, {"./../utils": 161}],
-    145: [function (require, module, exports) {
+},{"./../utils":162}],146:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -7104,8 +6785,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-    }, {"./enhanceError": 147}],
-    146: [function (require, module, exports) {
+},{"./enhanceError":148}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7193,15 +6873,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-    }, {
-        "../cancel/isCancel": 142,
-        "../defaults": 150,
-        "./../helpers/combineURLs": 154,
-        "./../helpers/isAbsoluteURL": 156,
-        "./../utils": 161,
-        "./transformData": 149
-    }],
-    147: [function (require, module, exports) {
+},{"../cancel/isCancel":143,"../defaults":151,"./../helpers/combineURLs":155,"./../helpers/isAbsoluteURL":157,"./../utils":162,"./transformData":150}],148:[function(require,module,exports){
 'use strict';
 
 /**
@@ -7224,8 +6896,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-    }, {}],
-    148: [function (require, module, exports) {
+},{}],149:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -7253,8 +6924,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-    }, {"./createError": 145}],
-    149: [function (require, module, exports) {
+},{"./createError":146}],150:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7276,8 +6946,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-    }, {"./../utils": 161}],
-    150: [function (require, module, exports) {
+},{"./../utils":162}],151:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -7373,8 +7042,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-    }, {"./adapters/http": 138, "./adapters/xhr": 138, "./helpers/normalizeHeaderName": 158, "./utils": 161, "_process": 168}],
-    151: [function (require, module, exports) {
+},{"./adapters/http":139,"./adapters/xhr":139,"./helpers/normalizeHeaderName":159,"./utils":162,"_process":169}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -7387,8 +7055,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-    }, {}],
-    152: [function (require, module, exports) {
+},{}],153:[function(require,module,exports){
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -7426,8 +7093,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-    }, {}],
-    153: [function (require, module, exports) {
+},{}],154:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7497,8 +7163,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-    }, {"./../utils": 161}],
-    154: [function (require, module, exports) {
+},{"./../utils":162}],155:[function(require,module,exports){
 'use strict';
 
 /**
@@ -7514,8 +7179,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-    }, {}],
-    155: [function (require, module, exports) {
+},{}],156:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7570,8 +7234,7 @@ module.exports = (
   })()
 );
 
-    }, {"./../utils": 161}],
-    156: [function (require, module, exports) {
+},{"./../utils":162}],157:[function(require,module,exports){
 'use strict';
 
 /**
@@ -7587,8 +7250,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-    }, {}],
-    157: [function (require, module, exports) {
+},{}],158:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7658,8 +7320,7 @@ module.exports = (
   })()
 );
 
-    }, {"./../utils": 161}],
-    158: [function (require, module, exports) {
+},{"./../utils":162}],159:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -7673,8 +7334,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-    }, {"../utils": 161}],
-    159: [function (require, module, exports) {
+},{"../utils":162}],160:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -7729,8 +7389,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-    }, {"./../utils": 161}],
-    160: [function (require, module, exports) {
+},{"./../utils":162}],161:[function(require,module,exports){
 'use strict';
 
 /**
@@ -7759,8 +7418,7 @@ module.exports = function spread(callback) {
   };
 };
 
-    }, {}],
-    161: [function (require, module, exports) {
+},{}],162:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -8065,8 +7723,7 @@ module.exports = {
   trim: trim
 };
 
-    }, {"./helpers/bind": 151, "is-buffer": 165}],
-    162: [function (require, module, exports) {
+},{"./helpers/bind":152,"is-buffer":166}],163:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -8219,8 +7876,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-    }, {}],
-    163: [function (require, module, exports) {
+},{}],164:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -9999,8 +9655,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-    }, {"base64-js": 162, "ieee754": 164}],
-    164: [function (require, module, exports) {
+},{"base64-js":163,"ieee754":165}],165:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -10086,8 +9741,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-    }, {}],
-    165: [function (require, module, exports) {
+},{}],166:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -10110,8 +9764,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-    }, {}],
-    166: [function (require, module, exports) {
+},{}],167:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -27222,8 +26875,7 @@ function isSlowBuffer (obj) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-    }, {}],
-    167: [function (require, module, exports) {
+},{}],168:[function(require,module,exports){
 //! moment.js
 
 ;(function (global, factory) {
@@ -31736,8 +31388,7 @@ function isSlowBuffer (obj) {
 
 })));
 
-    }, {}],
-    168: [function (require, module, exports) {
+},{}],169:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -31923,8 +31574,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-    }, {}],
-    169: [function (require, module, exports) {
+},{}],170:[function(require,module,exports){
 var _global = (function() { return this; })();
 var NativeWebSocket = _global.WebSocket || _global.MozWebSocket;
 var websocket_version = require('./version');
@@ -31968,13 +31618,17 @@ module.exports = {
     'version'      : websocket_version
 };
 
-    }, {"./version": 170}],
-    170: [function (require, module, exports) {
+},{"./version":171}],171:[function(require,module,exports){
 module.exports = require('../package.json').version;
 
-    }, {"../package.json": 171}],
-    171: [function (require, module, exports) {
+},{"../package.json":172}],172:[function(require,module,exports){
 module.exports={
+  "_args": [
+    [
+      "websocket@1.0.28",
+      "/Users/aurelien/Documents/mysocialapp-ts-client"
+    ]
+  ],
   "_from": "websocket@1.0.28",
   "_id": "websocket@1.0.28",
   "_inBundle": false,
@@ -31994,13 +31648,11 @@ module.exports={
     "fetchSpec": "1.0.28"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/websocket/-/websocket-1.0.28.tgz",
-  "_shasum": "9e5f6fdc8a3fe01d4422647ef93abdd8d45a78d3",
-  "_spec": "websocket@1.0.28",
-  "_where": "/Users/evoxmusic/IdeaProjects/mysocialapp-ts-client",
+  "_spec": "1.0.28",
+  "_where": "/Users/aurelien/Documents/mysocialapp-ts-client",
   "author": {
     "name": "Brian McKelvey",
     "email": "theturtle32@gmail.com",
@@ -32010,7 +31662,6 @@ module.exports={
   "bugs": {
     "url": "https://github.com/theturtle32/WebSocket-Node/issues"
   },
-  "bundleDependencies": false,
   "config": {
     "verbose": false
   },
@@ -32027,7 +31678,6 @@ module.exports={
     "typedarray-to-buffer": "^3.1.5",
     "yaeti": "^0.0.6"
   },
-  "deprecated": false,
   "description": "Websocket Client & Server Library implementing the WebSocket protocol as specified in RFC 6455.",
   "devDependencies": {
     "buffer-equal": "^1.0.0",

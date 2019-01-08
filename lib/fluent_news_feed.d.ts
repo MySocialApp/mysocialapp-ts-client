@@ -8,6 +8,7 @@ export declare class FluentNewsFeed extends FluentAbstract {
     list(page: number, size?: number): Promise<Feed[]>;
     stream(): AsyncIterableIterator<Feed>;
     get(id: string): Promise<Feed>;
+    getByExternalId(id: string): Promise<Feed>;
     create(feedPost: FeedPost): Promise<Feed>;
     search(search: SearchFeed, page: number, size?: number): Promise<SearchResults>;
 }

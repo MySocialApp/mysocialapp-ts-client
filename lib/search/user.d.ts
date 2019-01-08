@@ -1,8 +1,7 @@
-import {SearchBuilder} from "./search";
-import {Gender} from "../models/gender";
-import {SortOrder} from "../models/sort_order";
-import {BaseLocation} from "../models/base_location";
-
+import { SearchBuilder } from "./search";
+import { Gender } from "../models/gender";
+import { SortOrder } from "../models/sort_order";
+import { BaseLocation } from "../models/base_location";
 export declare class SearchUser extends SearchBuilder {
     constructor();
     setFirstName(value: string): SearchUser;

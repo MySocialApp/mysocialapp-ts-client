@@ -1,8 +1,7 @@
-import {User} from "./user";
-import {UserSettings} from "./user_settings";
-import {Gender} from "./gender";
+import { User } from "./user";
+import { UserSettings } from "./user_settings";
+import { Gender } from "./gender";
 import moment = require('moment');
-
 export declare class Account extends User {
     private _user_settings?;
     password?: string;

@@ -1,6 +1,6 @@
 {
   "name": "mysocialapp-ts-client",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": " Official Typescript / Javascript client to interact with MySocialApp API - Seamless Social Networking features for your app",
   "main": "./lib/mysocialapp.js",
   "typings": "./lib/mysocialapp.d.ts",
@@ -49,8 +49,8 @@
     "testRegex": "(/src/.*\\.spec\\.ts)|(/test/.*\\.test\\.ts)$"
   },
   "dependencies": {
-    "@types/jest": "^23.3.10",
-    "@types/node": "^10.12.15",
+    "@types/jest": "^23.3.11",
+    "@types/node": "^10.12.18",
     "@types/websocket": "0.0.40",
     "axios": "^0.17.1",
     "es6-promise": "^4.2.5",
