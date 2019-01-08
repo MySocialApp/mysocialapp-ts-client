@@ -35,7 +35,7 @@ export class RestAccount extends Rest {
     async updateProfilePhoto(image: FileData): Promise<Photo> {
         let fd = new GenericFormData();
         fd.set("file", image.blob, 'image/png', "image.png");
-        return this.conf.postMultipart(new Photo(), "/account/profile/photo", fd) as Promise<Photo>;
+        return this.conf.postMultipart(new Photo(), "/account/profile/photo/base64", fd) as Promise<Photo>;
     }
 
 
