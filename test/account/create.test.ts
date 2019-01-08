@@ -1,7 +1,7 @@
 import {catchErrorFunc, createAccountAndGetSession} from "../common";
 
 jest.setTimeout(60000);
-describe("addMessage account", () => {
+describe("account", () => {
     it("user creation api", async () => {
         try {
             const client = await createAccountAndGetSession();

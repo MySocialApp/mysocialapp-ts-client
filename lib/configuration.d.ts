@@ -20,8 +20,6 @@ export declare class Configuration {
     postVoid(path: string, body: Serializable, options?: {}): Promise<void>;
     postMultipart(model: Model, path: string, fd: GenericFormData, options?: {}): Promise<ModelInterface>;
     put(model: Model, path: string, body: Serializable, options?: {}): Promise<ModelInterface>;
-
     delete(model: Model, path: string, options?: {}): Promise<ModelInterface>;
-
     deleteVoid(path: string, options?: {}): Promise<void>;
 }

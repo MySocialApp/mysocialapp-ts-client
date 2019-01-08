@@ -50,7 +50,6 @@ class ClientService {
         this.configuration = configuration;
         this.clientConfiguration = clientConf;
     }
-
     get adminUserEnable() {
         return this.restAdminUserEnable !== undefined ? this.restAdminUserEnable : this.restAdminUserEnable = new admin_user_enable_1.RestAdminUserEnable(this.configuration);
     }
@@ -331,7 +330,6 @@ class Configuration {
             }
         });
     }
-
     delete(model, path, options) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -343,7 +341,6 @@ class Configuration {
             }
         });
     }
-
     deleteVoid(path, options) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -3865,13 +3862,11 @@ class User extends model_1.Model {
             return conversation.sendMessage(message);
         });
     }
-
     enable() {
         return __awaiter(this, void 0, void 0, function* () {
             return new admin_user_enable_1.RestAdminUserEnable(this.conf).enable(this.id);
         });
     }
-
     disable() {
         return __awaiter(this, void 0, void 0, function* () {
             return new admin_user_enable_1.RestAdminUserEnable(this.conf).disable(this.id);

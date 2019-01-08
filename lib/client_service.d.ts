@@ -88,7 +88,6 @@ export declare class ClientService {
      * @param {ClientConfiguration} clientConf
      */
     constructor(configuration: Configuration, clientConf?: ClientConfiguration);
-
     readonly adminUserEnable: RestAdminUserEnable;
     readonly account: RestAccount;
     readonly conversation: RestConversation;
