@@ -5819,7 +5819,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
-class RestUserExternal extends user_1.User {
+        const rest_1 = require("./rest");
+
+        class RestUserExternal extends rest_1.Rest {
     get(externalId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.conf.get(new user_1.User(), "/user/external/" + externalId);
@@ -5828,7 +5830,7 @@ class RestUserExternal extends user_1.User {
 }
 exports.RestUserExternal = RestUserExternal;
 
-    }, {"../models/user": 81}],
+    }, {"../models/user": 81, "./rest": 109}],
     123: [function (require, module, exports) {
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {

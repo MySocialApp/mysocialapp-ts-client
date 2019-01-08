@@ -51,6 +51,7 @@ export class User extends Model {
     is_follower?: boolean;
     account_enabled?: boolean;
     account_expired?: boolean;
+    external_id?: string;
 
     getJsonParameters(): {} {
         return {

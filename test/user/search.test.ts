@@ -20,4 +20,23 @@ describe("Do user search", () => {
             catchErrorFunc(err);
         }
     });
+
+    it("get user by external_id", async () => {
+        try {
+            const client = await createAccountAndGetSession();
+            const userAccount = await client.account.get();
+
+            expect(userAccount.id != "").toBeTruthy();
+            expect(userAccount.displayed_name != "").toBeTruthy();
+
+            const externalId = `external_id__${userAccount.id}__`;
+            userAccount.setExternalId(externalId);
+            await userAccount.update();
+
+            let user = await client.user.getByExternalId(externalId);
+            expect(user.external_id).toEqual(externalId);
+        } catch (err) {
+            catchErrorFunc(err);
+        }
+    });
 });

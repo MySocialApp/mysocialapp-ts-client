@@ -41,6 +41,7 @@ export declare class User extends Model {
     is_follower?: boolean;
     account_enabled?: boolean;
     account_expired?: boolean;
+    external_id?: string;
     getJsonParameters(): {};
     id: any;
     displayed_photo: Photo;
