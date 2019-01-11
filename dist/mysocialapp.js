@@ -1450,6 +1450,7 @@ exports.Comment = Comment;
 Object.defineProperty(exports, "__esModule", { value: true });
 const comment_1 = require("./comment");
 const model_1 = require("./model");
+const moment = require("moment");
 class CommentBlob extends model_1.Model {
     get samples() {
         return this._samples;
@@ -1461,10 +1462,15 @@ class CommentBlob extends model_1.Model {
         }
         this._samples = list;
     }
+    get friendComments() {
+        if (this._friendComments != null) {
+            return this._friendComments.map(t => [t[0], moment(t[1])]);
+        }
+    }
 }
 exports.CommentBlob = CommentBlob;
 
-},{"./comment":28,"./model":61}],30:[function(require,module,exports){
+},{"./comment":28,"./model":61,"moment":168}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class CommentPost {
@@ -2241,6 +2247,9 @@ class Feed extends model_1.Model {
     get actor() {
         return this._actor;
     }
+    get stats() {
+        return this._stats;
+    }
     get created_date() {
         return this.object.created_date;
     }
@@ -2844,6 +2853,7 @@ exports.Like = Like;
 Object.defineProperty(exports, "__esModule", { value: true });
 const like_1 = require("./like");
 const model_1 = require("./model");
+const moment = require("moment");
 class LikeBlob extends model_1.Model {
     get samples() {
         return this._samples;
@@ -2854,10 +2864,15 @@ class LikeBlob extends model_1.Model {
             this._samples.push(new like_1.Like(l, this.conf));
         }
     }
+    get friendLikes() {
+        if (this._friendLikes != null) {
+            return this._friendLikes.map(t => [t[0], moment(t[1])]);
+        }
+    }
 }
 exports.LikeBlob = LikeBlob;
 
-},{"./like":57,"./model":61}],59:[function(require,module,exports){
+},{"./like":57,"./model":61,"moment":168}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -31624,6 +31639,12 @@ module.exports = require('../package.json').version;
 
 },{"../package.json":172}],172:[function(require,module,exports){
 module.exports={
+  "_args": [
+    [
+      "websocket@1.0.28",
+      "/Users/aurelien/Documents/mysocialapp-ts-client"
+    ]
+  ],
   "_from": "websocket@1.0.28",
   "_id": "websocket@1.0.28",
   "_inBundle": false,
@@ -31643,13 +31664,11 @@ module.exports={
     "fetchSpec": "1.0.28"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/websocket/-/websocket-1.0.28.tgz",
-  "_shasum": "9e5f6fdc8a3fe01d4422647ef93abdd8d45a78d3",
-  "_spec": "websocket@1.0.28",
-  "_where": "/Users/evoxmusic/IdeaProjects/mysocialapp-ts-client",
+  "_spec": "1.0.28",
+  "_where": "/Users/aurelien/Documents/mysocialapp-ts-client",
   "author": {
     "name": "Brian McKelvey",
     "email": "theturtle32@gmail.com",
@@ -31659,7 +31678,6 @@ module.exports={
   "bugs": {
     "url": "https://github.com/theturtle32/WebSocket-Node/issues"
   },
-  "bundleDependencies": false,
   "config": {
     "verbose": false
   },
@@ -31676,7 +31694,6 @@ module.exports={
     "typedarray-to-buffer": "^3.1.5",
     "yaeti": "^0.0.6"
   },
-  "deprecated": false,
   "description": "Websocket Client & Server Library implementing the WebSocket protocol as specified in RFC 6455.",
   "devDependencies": {
     "buffer-equal": "^1.0.0",

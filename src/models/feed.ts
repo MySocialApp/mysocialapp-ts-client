@@ -24,6 +24,7 @@ export class Feed extends Model implements Wallable {
     private _actor: User;
     private _object: BaseWall;
     private _target: BaseWall;
+    private _stats: Map<string,Map<any,any>>;
 
     set id(v: string) {
 
@@ -55,6 +56,10 @@ export class Feed extends Model implements Wallable {
 
     get actor(): User {
         return this._actor;
+    }
+
+    get stats(): Map<string,Map<any,any>>  {
+        return this._stats;
     }
 
     get created_date(): string {

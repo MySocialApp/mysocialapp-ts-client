@@ -18,10 +18,12 @@ export declare class Feed extends Model implements Wallable {
     private _actor;
     private _object;
     private _target;
+    private _stats;
     id: string;
     target: BaseWall;
     object: BaseWall;
     actor: User;
+    readonly stats: Map<string, Map<any, any>>;
     created_date: string;
     readonly createdDate: moment.Moment;
     readonly bodyMessage: string;
