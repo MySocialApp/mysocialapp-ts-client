@@ -10,10 +10,14 @@ export class RestFeed extends Rest {
         return this.conf.get(new Feed(), Rest.params('/feed/{id}', {id: id})) as Promise<Feed>;
     }
 
-    async list(page: number = 0, size: number = 10, params: {} = {}): Promise<Feed[]> {
+    async list(page: number = 0, size: number = 10, params: {} = {}, algorithm?: {}): Promise<Feed[]> {
         params['page'] = page;
         params['size'] = size;
-        return this.conf.getList(new Feed(), '/feed?' + Rest.encodeQueryData(params)) as Promise<Feed[]>;
+        if (algorithm == null) {
+            return this.conf.getList(new Feed(), '/feed?' + Rest.encodeQueryData(params)) as Promise<Feed[]>;
+        } else {
+            return this.conf.postList(new Feed(), '/feed?' + Rest.encodeQueryData(params), algorithm) as Promise<Feed[]>;
+        }
     }
 
     async delete(id: string): Promise<void> {

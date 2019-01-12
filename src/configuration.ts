@@ -75,6 +75,21 @@ export class Configuration {
         }
     }
 
+    public async postList(model: Model, path: string, body: {}, options?: any): Promise<ModelInterface[]> {
+        try {
+            const resp = await this.httpClient.post(path, JSON.stringify(body), this.setDefaultOptions(options, "application/json")) as AxiosResponse<ModelInterface[]>;
+            const list: ModelInterface[] = [];
+            for (let m of resp.data) {
+                let o = Object.create(model) as ModelInterface;
+                o.load(m, this);
+                list.push(o);
+            }
+            return list
+        } catch (error) {
+            throw new ErrorResponse(error);
+        }
+    }
+
     public async postVoid(path: string, body: Serializable, options?: {}): Promise<void> {
         try {
             const resp = await this.httpClient.post(path, body.toJson(), this.setDefaultOptions(options, "application/json")) as AxiosResponse<ModelInterface>;

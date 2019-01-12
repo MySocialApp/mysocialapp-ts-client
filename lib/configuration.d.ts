@@ -16,6 +16,7 @@ export declare class Configuration {
     get(model: Model, path: string, options?: any): Promise<ModelInterface>;
     getList(model: Model, path: string, options?: any): Promise<ModelInterface[]>;
     post(model: Model, path: string, body: Serializable, options?: {}): Promise<ModelInterface>;
+    postList(model: Model, path: string, body: {}, options?: any): Promise<ModelInterface[]>;
     postVoid(path: string, body: Serializable, options?: {}): Promise<void>;
     postMultipart(model: Model, path: string, fd: GenericFormData, options?: {}): Promise<ModelInterface>;
     put(model: Model, path: string, body: Serializable, options?: {}): Promise<ModelInterface>;

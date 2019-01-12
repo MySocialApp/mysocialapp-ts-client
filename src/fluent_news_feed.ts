@@ -7,14 +7,14 @@ import {SearchFeed} from "./search/feed";
 
 export class FluentNewsFeed extends FluentAbstract {
 
-    async list(page: number, size: number = 10): Promise<Feed[]> {
-        return this.session.clientService.feed.list(page, size);
+    async list(page: number, size: number = 10, params?: {}, algorithm?: {}): Promise<Feed[]> {
+        return this.session.clientService.feed.list(page, size, params, algorithm);
     }
 
-    async* stream() {
+    async* stream(params?: {}, algorithm?: {}) {
         let page = 0;
         while (true) {
-            let feeds = await this.list(page++);
+            let feeds = await this.list(page++, 10, params, algorithm);
             if (!feeds.length) {
                 return;
             }

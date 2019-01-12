@@ -257,6 +257,23 @@ class Configuration {
             }
         });
     }
+    postList(model, path, body, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const resp = yield this.httpClient.post(path, JSON.stringify(body), this.setDefaultOptions(options, "application/json"));
+                const list = [];
+                for (let m of resp.data) {
+                    let o = Object.create(model);
+                    o.load(m, this);
+                    list.push(o);
+                }
+                return list;
+            }
+            catch (error) {
+                throw new error_1.ErrorResponse(error);
+            }
+        });
+    }
     postVoid(path, body, options) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -726,16 +743,16 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
 Object.defineProperty(exports, "__esModule", { value: true });
 const fluent_abstract_1 = require("./fluent_abstract");
 class FluentNewsFeed extends fluent_abstract_1.FluentAbstract {
-    list(page, size = 10) {
+    list(page, size = 10, params, algorithm) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.session.clientService.feed.list(page, size);
+            return this.session.clientService.feed.list(page, size, params, algorithm);
         });
     }
-    stream() {
+    stream(params, algorithm) {
         return __asyncGenerator(this, arguments, function* stream_1() {
             let page = 0;
             while (true) {
-                let feeds = yield __await(this.list(page++));
+                let feeds = yield __await(this.list(page++, 10, params, algorithm));
                 if (!feeds.length) {
                     return yield __await(void 0);
                 }
@@ -4457,11 +4474,16 @@ class RestFeed extends rest_1.Rest {
             return this.conf.get(new feed_1.Feed(), rest_1.Rest.params('/feed/{id}', { id: id }));
         });
     }
-    list(page = 0, size = 10, params = {}) {
+    list(page = 0, size = 10, params = {}, algorithm) {
         return __awaiter(this, void 0, void 0, function* () {
             params['page'] = page;
             params['size'] = size;
-            return this.conf.getList(new feed_1.Feed(), '/feed?' + rest_1.Rest.encodeQueryData(params));
+            if (algorithm == null) {
+                return this.conf.getList(new feed_1.Feed(), '/feed?' + rest_1.Rest.encodeQueryData(params));
+            }
+            else {
+                return this.conf.postList(new feed_1.Feed(), '/feed?' + rest_1.Rest.encodeQueryData(params), algorithm);
+            }
         });
     }
     delete(id) {
