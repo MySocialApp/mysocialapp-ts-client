@@ -40,6 +40,7 @@ import { RestUserFollowing } from "./rest/user_following";
 import { RestUserFollower } from "./rest/user_follower";
 import { RestUserStat } from "./rest/user_stat";
 import { RestAdminUserEnable } from "./rest/admin_user_enable";
+import { RestUserNotify } from "./rest/user_notify";
 export declare class ClientService {
     clientConfiguration?: ClientConfiguration;
     configuration: Configuration;
@@ -76,6 +77,7 @@ export declare class ClientService {
     private restUserFollowing?;
     private restUserFollower?;
     private restUserGroup?;
+    private restUserNotify?;
     private restUserWall?;
     private restUserWallMessage?;
     private restShadowEntityFeed?;
@@ -122,6 +124,7 @@ export declare class ClientService {
     readonly userFollowing: RestUserFollowing;
     readonly userFollower: RestUserFollower;
     readonly userGroup: RestUserGroup;
+    readonly userNotify: RestUserNotify;
     readonly userWall: RestUserWall;
     readonly userWallMessage: RestUserWallMessage;
     readonly shadowEntityFeed: RestShadowEntityFeed;

@@ -38,6 +38,7 @@ export declare class User extends Model {
     is_requested_as_friend?: boolean;
     is_following?: boolean;
     is_follower?: boolean;
+    is_notified?: boolean;
     account_enabled?: boolean;
     account_expired?: boolean;
     external_id?: string;
@@ -71,6 +72,8 @@ export declare class User extends Model {
     unfollow(): Promise<void>;
     listFollowers(page: number, size: number): Promise<User[]>;
     listFollowings(page: number, size: number): Promise<User[]>;
+    beNotified(): Promise<User>;
+    noMoreNotified(): Promise<void>;
     listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]>;
     sendPrivateMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
     enable(): Promise<User>;

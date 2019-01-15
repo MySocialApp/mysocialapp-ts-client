@@ -21,6 +21,7 @@ import {RestUserFollowing} from "../rest/user_following";
 import {RestUserFollower} from "../rest/user_follower";
 import {RestUserStat} from "../rest/user_stat";
 import {RestAdminUserEnable} from "../rest/admin_user_enable";
+import {RestUserNotify} from "../rest/user_notify";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -49,6 +50,7 @@ export class User extends Model {
     is_requested_as_friend?: boolean;
     is_following?: boolean;
     is_follower?: boolean;
+    is_notified?: boolean;
     account_enabled?: boolean;
     account_expired?: boolean;
     external_id?: string;
@@ -213,6 +215,14 @@ export class User extends Model {
 
     async listFollowings(page: number, size: number): Promise<User[]> {
         return new RestUserFollowing(this.conf).list(this.id, page, size);
+    }
+
+    async beNotified(): Promise<User> {
+        return new RestUserNotify(this.conf).create(this.id);
+    }
+
+    async noMoreNotified(): Promise<void> {
+        return new RestUserNotify(this.conf).delete(this.id);
     }
 
     async listPhotoAlbum(page: number, size: number): Promise<PhotoAlbum[]> {

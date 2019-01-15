@@ -40,6 +40,7 @@ import {RestUserFollowing} from "./rest/user_following";
 import {RestUserFollower} from "./rest/user_follower";
 import {RestUserStat} from "./rest/user_stat";
 import {RestAdminUserEnable} from "./rest/admin_user_enable";
+import {RestUserNotify} from "./rest/user_notify";
 
 export class ClientService {
     clientConfiguration?: ClientConfiguration;
@@ -78,6 +79,7 @@ export class ClientService {
     private restUserFollowing?: RestUserFollowing;
     private restUserFollower?: RestUserFollower;
     private restUserGroup?: RestUserGroup;
+    private restUserNotify?: RestUserNotify;
     private restUserWall?: RestUserWall;
     private restUserWallMessage?: RestUserWallMessage;
     private restShadowEntityFeed?: RestShadowEntityFeed;
@@ -226,6 +228,10 @@ export class ClientService {
 
     get userGroup(): RestUserGroup {
         return this.restUserGroup !== undefined ? this.restUserGroup : this.restUserGroup = new RestUserGroup(this.configuration);
+    }
+
+    get userNotify(): RestUserNotify {
+        return this.restUserNotify !== undefined ? this.restUserNotify : this.restUserNotify = new RestUserNotify(this.configuration);
     }
 
     get userWall(): RestUserWall {
