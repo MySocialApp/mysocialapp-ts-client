@@ -2273,9 +2273,6 @@ class Feed extends model_1.Model {
     get actor() {
         return this._actor;
     }
-    get stats() {
-        return this._stats;
-    }
     get created_date() {
         return this.object.created_date;
     }
