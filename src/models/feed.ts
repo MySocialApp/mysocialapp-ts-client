@@ -10,6 +10,7 @@ import {Comment} from "./comment";
 import {TextWallMessage} from "./text_wall_message";
 import {convertModel} from "./convert";
 import moment = require('moment');
+import Set = jest.Set;
 
 export enum ActionType {
     Publish = 'PUBLISH',
@@ -24,6 +25,7 @@ export class Feed extends Model implements Wallable {
     private _actor: User;
     private _object: BaseWall;
     private _target: BaseWall;
+    matchs: Set<string>;
     stats: Map<string,Map<any,any>>;
 
     set id(v: string) {

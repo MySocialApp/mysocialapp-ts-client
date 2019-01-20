@@ -1,3 +1,4 @@
+/// <reference types="jest" />
 import { Model } from "./model";
 import { User } from "./user";
 import { BaseWall } from "./base_wall";
@@ -7,6 +8,7 @@ import { Like } from "./like";
 import { CommentPost } from "./comment_post";
 import { Comment } from "./comment";
 import moment = require('moment');
+import Set = jest.Set;
 export declare enum ActionType {
     Publish = "PUBLISH"
 }
@@ -18,6 +20,7 @@ export declare class Feed extends Model implements Wallable {
     private _actor;
     private _object;
     private _target;
+    matchs: Set<string>;
     stats: Map<string, Map<any, any>>;
     id: string;
     target: BaseWall;
