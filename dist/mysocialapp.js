@@ -1575,10 +1575,13 @@ class Conversation extends base_1.Base {
         }
     }
     get messages() {
-        return this._messages;
+        var m = this._messages == null ? (this._messages = new conversation_messages_1.ConversationMessages(null, this.conf)) : this._messages;
+        m.conversation_id = this.id_str;
+        return m;
     }
     set messages(o) {
         this._messages = new conversation_messages_1.ConversationMessages(o, this.conf);
+        this._messages.conversation_id = this.id_str;
     }
     sendMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2971,10 +2974,7 @@ class Model {
         });
     }
     constructor(o, conf) {
-        if (o !== undefined) {
-            this.load(o, conf);
-        }
-        if (conf !== undefined) {
+        if (o !== undefined || conf !== undefined) {
             this.load(o, conf);
         }
     }

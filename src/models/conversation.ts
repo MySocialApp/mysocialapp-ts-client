@@ -51,11 +51,14 @@ export class Conversation extends Base {
     }
 
     get messages(): ConversationMessages {
-        return this._messages;
+        var m = this._messages == null ? (this._messages = new ConversationMessages(null, this.conf)) : this._messages;
+        m.conversation_id = this.id_str;
+        return m;
     }
 
     set messages(o: ConversationMessages) {
         this._messages = new ConversationMessages(o, this.conf);
+        this._messages.conversation_id = this.id_str;
     }
 
     async sendMessage(message: ConversationMessagePost): Promise<ConversationMessage> {

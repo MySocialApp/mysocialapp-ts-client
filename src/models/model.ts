@@ -24,10 +24,7 @@ export class Model implements ModelInterface, Serializable {
     }
 
     constructor(o?: {}, conf?: Configuration) {
-        if (o !== undefined) {
-            this.load(o, conf);
-        }
-        if (conf !== undefined) {
+        if (o !== undefined || conf !== undefined) {
             this.load(o, conf);
         }
     }
