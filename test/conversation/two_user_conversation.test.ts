@@ -14,7 +14,7 @@ describe("addMessage account", () => {
 
             const user2 = await session1.user.get(account2.id);
 
-            // create conversation
+            // create concversation
             let conversation1 = await session1.conversation.create(new Conversation().setName("test").addMember(user2));
             let message1 = await conversation1.sendMessage(new ConversationMessagePost().setMessage("ping"));
 
@@ -31,6 +31,11 @@ describe("addMessage account", () => {
             let newConversation1 = await conversation1.setName("changed title").update();
             expect(newConversation1.name == conversation1.name).toBeTruthy();
 
+            let samples = conversation1.messages.samples;
+            expect(samples.length > 0).toBeTruthy();
+
+            let messages = await conversation1.messages.list(0, 20);
+            expect(messages.length > 0).toBeTruthy();
 
             /* NOT YET IMPLEMENTED
             message2.message = "pingpong";

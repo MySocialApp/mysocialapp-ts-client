@@ -26,7 +26,6 @@ export class RestConversationMessage extends Rest {
         return this.conf.postMultipart(new ConversationMessage(), path, fd) as Promise<ConversationMessage>;
     }
 
-
     /* NOT YET IMPLEMENTED
     update(id: string, messageId: string, message: ConversationMessage): Promise<ConversationMessage> {
         let path = Rest.params("/conversation/{id}/message/{messageId}", {id: id, messageId: messageId});

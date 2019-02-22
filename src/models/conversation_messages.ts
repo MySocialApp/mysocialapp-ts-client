@@ -1,6 +1,7 @@
 import {Model} from "./model";
 import {ConversationMessage} from "./conversation_message";
 import {RestConversationMessage} from "../rest/conversation_message";
+import {RestConversationMessageConsume} from "../rest/conversation_message_consume";
 
 export class ConversationMessages extends Model {
     total_unreads: number;
@@ -22,4 +23,9 @@ export class ConversationMessages extends Model {
     async list(page: number, size?: number): Promise<ConversationMessage[]> {
         return (new RestConversationMessage(this.conf)).list(this.conversation_id, page, size);
     }
+
+    async listAndConsume(page: number, size?: number): Promise<ConversationMessage[]> {
+        return (new RestConversationMessageConsume(this.conf)).list(this.conversation_id, page, size);
+    }
+
 }
