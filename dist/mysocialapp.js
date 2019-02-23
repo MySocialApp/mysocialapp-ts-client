@@ -6287,7 +6287,6 @@ exports.Session = Session;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const notification_1 = require("./models/notification");
-const websocket_1 = require("websocket");
 const feed_1 = require("./models/feed");
 const conversation_message_1 = require("./models/conversation_message");
 const event_1 = require("./models/event");
@@ -6310,78 +6309,64 @@ class WebsocketService {
         this.session = session;
     }
     connect() {
-        this.client = new websocket_1.client();
-        this.client.on('connectFailed', (error) => {
-            console.log('Connect Error: ' + error.toString());
-        });
-        this.client.on('connect', (connection) => {
-            this.connection = connection;
-            console.log('WebSocket Client Connected');
-            this.connection.on('error', (error) => {
-                console.log("Connection Error: " + error.toString());
-            });
-            this.connection.on('close', () => {
-                console.log('echo-protocol Connection Closed');
-            });
-            this.connection.on('message', (message) => {
-                if (message.type === 'utf8') {
+        const thisService = this;
+        this.client = new WebSocket(this.session.clientService.configuration.websocketEndpointUrl + "/notification", [
+            'Authorization' + this.session.clientService.configuration.token
+        ]);
+        this.client.onerror = function error(error) {
+        };
+        this.client.onopen = function open() {
+        };
+        this.client.onclose = function close() {
+            // Auto reconnect
+            thisService.connect();
+        };
+        this.client.onmessage = function message(message) {
+            let j = JSON.parse(message.data);
+            if (j) {
+                let notif = new notification_1.Notification(j, thisService.session.clientService.configuration);
+                for (let l of thisService.listeners) {
+                    l(notif);
                 }
-                let j = JSON.parse(message.utf8Data);
-                if (j) {
-                    let notif = new notification_1.Notification(j, this.session.clientService.configuration);
-                    for (let l of this.listeners) {
-                        l(notif);
-                    }
-                    let listenerForType = this.listenersByType.get(notif.type);
-                    if (listenerForType !== undefined) {
-                        for (let l of listenerForType) {
-                            switch (notif.type) {
-                                case notificationType.Feed:
-                                    l(new feed_1.Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.UserMentionTag:
-                                    l(new feed_1.Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.ConversationMessage:
-                                    l(new conversation_message_1.ConversationMessage(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.Like:
-                                    l(new feed_1.Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.NewEvent:
-                                    l(new event_1.Event(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.Comment:
-                                    l(new feed_1.Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.Friend:
-                                    l(new user_1.User(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.FriendRequest:
-                                    l(new user_1.User(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                default:
-                                    console.info("unknown notification type", notif);
-                            }
+                let listenerForType = thisService.listenersByType.get(notif.type);
+                if (listenerForType !== undefined) {
+                    for (let l of listenerForType) {
+                        switch (notif.type) {
+                            case notificationType.Feed:
+                                l(new feed_1.Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.UserMentionTag:
+                                l(new feed_1.Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.ConversationMessage:
+                                l(new conversation_message_1.ConversationMessage(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.Like:
+                                l(new feed_1.Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.NewEvent:
+                                l(new event_1.Event(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.Comment:
+                                l(new feed_1.Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.Friend:
+                                l(new user_1.User(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.FriendRequest:
+                                l(new user_1.User(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
-            });
-        });
-        this.client.connect(this.session.clientService.configuration.websocketEndpointUrl + "/notification", null, null, {
-            "Authorization": this.session.clientService.configuration.token
-        });
+            }
+        };
         return this;
     }
     close() {
-        if (this.connection) {
-            this.connection.close();
-        }
-    }
-    send(message) {
-        if (this.connection.connected) {
-            this.connection.sendUTF(message);
-        }
+        this.client.close();
     }
     onNotification(callback) {
         this.listeners.push(callback);
@@ -6426,7 +6411,7 @@ class WebsocketService {
 }
 exports.WebsocketService = WebsocketService;
 
-},{"./models/conversation_message":32,"./models/event":39,"./models/feed":44,"./models/notification":62,"./models/user":81,"websocket":172}],140:[function(require,module,exports){
+},{"./models/conversation_message":32,"./models/event":39,"./models/feed":44,"./models/notification":62,"./models/user":81}],140:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":142}],141:[function(require,module,exports){
 (function (process){
@@ -31696,152 +31681,6 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
-
-},{}],172:[function(require,module,exports){
-var _global = (function() { return this; })();
-var NativeWebSocket = _global.WebSocket || _global.MozWebSocket;
-var websocket_version = require('./version');
-
-
-/**
- * Expose a W3C WebSocket class with just one or two arguments.
- */
-function W3CWebSocket(uri, protocols) {
-	var native_instance;
-
-	if (protocols) {
-		native_instance = new NativeWebSocket(uri, protocols);
-	}
-	else {
-		native_instance = new NativeWebSocket(uri);
-	}
-
-	/**
-	 * 'native_instance' is an instance of nativeWebSocket (the browser's WebSocket
-	 * class). Since it is an Object it will be returned as it is when creating an
-	 * instance of W3CWebSocket via 'new W3CWebSocket()'.
-	 *
-	 * ECMAScript 5: http://bclary.com/2004/11/07/#a-13.2.2
-	 */
-	return native_instance;
-}
-if (NativeWebSocket) {
-	['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'].forEach(function(prop) {
-		Object.defineProperty(W3CWebSocket, prop, {
-			get: function() { return NativeWebSocket[prop]; }
-		});
-	});
-}
-
-/**
- * Module exports.
- */
-module.exports = {
-    'w3cwebsocket' : NativeWebSocket ? W3CWebSocket : null,
-    'version'      : websocket_version
-};
-
-},{"./version":173}],173:[function(require,module,exports){
-module.exports = require('../package.json').version;
-
-},{"../package.json":174}],174:[function(require,module,exports){
-module.exports={
-  "_from": "websocket@1.0.28",
-  "_id": "websocket@1.0.28",
-  "_inBundle": false,
-  "_integrity": "sha512-00y/20/80P7H4bCYkzuuvvfDvh+dgtXi5kzDf3UcZwN6boTYaKvsrtZ5lIYm1Gsg48siMErd9M4zjSYfYFHTrA==",
-  "_location": "/websocket",
-  "_phantomChildren": {
-    "ms": "2.0.0"
-  },
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "websocket@1.0.28",
-    "name": "websocket",
-    "escapedName": "websocket",
-    "rawSpec": "1.0.28",
-    "saveSpec": null,
-    "fetchSpec": "1.0.28"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/websocket/-/websocket-1.0.28.tgz",
-  "_shasum": "9e5f6fdc8a3fe01d4422647ef93abdd8d45a78d3",
-  "_spec": "websocket@1.0.28",
-  "_where": "/Users/evoxmusic/IdeaProjects/mysocialapp-ts-client",
-  "author": {
-    "name": "Brian McKelvey",
-    "email": "theturtle32@gmail.com",
-    "url": "https://github.com/theturtle32"
-  },
-  "browser": "lib/browser.js",
-  "bugs": {
-    "url": "https://github.com/theturtle32/WebSocket-Node/issues"
-  },
-  "bundleDependencies": false,
-  "config": {
-    "verbose": false
-  },
-  "contributors": [
-    {
-      "name": "Iñaki Baz Castillo",
-      "email": "ibc@aliax.net",
-      "url": "http://dev.sipdoc.net"
-    }
-  ],
-  "dependencies": {
-    "debug": "^2.2.0",
-    "nan": "^2.11.0",
-    "typedarray-to-buffer": "^3.1.5",
-    "yaeti": "^0.0.6"
-  },
-  "deprecated": false,
-  "description": "Websocket Client & Server Library implementing the WebSocket protocol as specified in RFC 6455.",
-  "devDependencies": {
-    "buffer-equal": "^1.0.0",
-    "faucet": "^0.0.1",
-    "gulp": "git+https://github.com/gulpjs/gulp.git#4.0",
-    "gulp-jshint": "^2.0.4",
-    "jshint": "^2.0.0",
-    "jshint-stylish": "^2.2.1",
-    "tape": "^4.9.1"
-  },
-  "directories": {
-    "lib": "./lib"
-  },
-  "engines": {
-    "node": ">=0.10.0"
-  },
-  "homepage": "https://github.com/theturtle32/WebSocket-Node",
-  "keywords": [
-    "websocket",
-    "websockets",
-    "socket",
-    "networking",
-    "comet",
-    "push",
-    "RFC-6455",
-    "realtime",
-    "server",
-    "client"
-  ],
-  "license": "Apache-2.0",
-  "main": "index",
-  "name": "websocket",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/theturtle32/WebSocket-Node.git"
-  },
-  "scripts": {
-    "gulp": "gulp",
-    "install": "(node-gyp rebuild 2> builderror.log) || (exit 0)",
-    "test": "faucet test/unit"
-  },
-  "version": "1.0.28"
-}
 
 },{}]},{},[87])(87)
 });

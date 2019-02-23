@@ -1,6 +1,5 @@
 import {Session} from "./session";
 import {Notification} from "./models/notification";
-import {client as WebSocketClient, connection} from 'websocket';
 import {Feed} from "./models/feed";
 import {ConversationMessage} from "./models/conversation_message";
 import {Event} from "./models/event";
@@ -19,8 +18,7 @@ export enum notificationType {
 
 export class WebsocketService {
     private session: Session;
-    private client: WebSocketClient;
-    private connection: connection;
+    private client: WebSocket;
     private listeners: any[] = [];
     private listenersByType = new Map();
 
@@ -29,83 +27,72 @@ export class WebsocketService {
     }
 
     connect(): WebsocketService {
-        this.client = new WebSocketClient();
 
-        this.client.on('connectFailed', (error) => {
-            console.log('Connect Error: ' + error.toString());
-        });
+        const thisService = this;
 
+        this.client = new WebSocket(this.session.clientService.configuration.websocketEndpointUrl + "/notification", [
+            'Authorization' + this.session.clientService.configuration.token
+        ]);
 
-        this.client.on('connect', (connection) => {
-            this.connection = connection;
-            console.log('WebSocket Client Connected');
-            this.connection.on('error', (error) => {
-                console.log("Connection Error: " + error.toString());
-            });
-            this.connection.on('close', () => {
-                console.log('echo-protocol Connection Closed');
-            });
-            this.connection.on('message', (message) => {
-                if (message.type === 'utf8') {
+        this.client.onerror = function error(error) {
+        }
+
+        this.client.onopen = function open() {
+        }
+
+        this.client.onclose = function close() {
+            // Auto reconnect
+            thisService.connect();
+        }
+
+        this.client.onmessage = function message(message) {
+            let j = JSON.parse(message.data);
+            if (j) {
+                let notif = new Notification(j, thisService.session.clientService.configuration);
+                for (let l of thisService.listeners) {
+                    l(notif);
                 }
-                let j = JSON.parse(message.utf8Data);
-                if (j) {
-                    let notif = new Notification(j, this.session.clientService.configuration);
-                    for (let l of this.listeners) {
-                        l(notif);
-                    }
-                    let listenerForType = this.listenersByType.get(notif.type);
-                    if (listenerForType !== undefined) {
-                        for (let l of listenerForType) {
-                            switch (notif.type) {
-                                case notificationType.Feed:
-                                    l(new Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.UserMentionTag:
-                                    l(new Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.ConversationMessage:
-                                    l(new ConversationMessage(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.Like:
-                                    l(new Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.NewEvent:
-                                    l(new Event(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.Comment:
-                                    l(new Feed(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.Friend:
-                                    l(new User(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                case notificationType.FriendRequest:
-                                    l(new User(notif.payload, this.session.clientService.configuration));
-                                    break;
-                                default:
-                                    console.info("unknown notification type", notif);
-                            }
+                let listenerForType = thisService.listenersByType.get(notif.type);
+                if (listenerForType !== undefined) {
+                    for (let l of listenerForType) {
+                        switch (notif.type) {
+                            case notificationType.Feed:
+                                l(new Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.UserMentionTag:
+                                l(new Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.ConversationMessage:
+                                l(new ConversationMessage(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.Like:
+                                l(new Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.NewEvent:
+                                l(new Event(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.Comment:
+                                l(new Feed(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.Friend:
+                                l(new User(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            case notificationType.FriendRequest:
+                                l(new User(notif.payload, thisService.session.clientService.configuration));
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
-            });
-        });
-        this.client.connect(this.session.clientService.configuration.websocketEndpointUrl + "/notification", null, null, {
-            "Authorization": this.session.clientService.configuration.token
-        });
+            }
+        }
+
         return this;
     }
 
     close() {
-        if (this.connection) {
-            this.connection.close()
-        }
-    }
-
-    private send(message: string) {
-        if (this.connection.connected) {
-            this.connection.sendUTF(message);
-        }
+        this.client.close();
     }
 
     onNotification(callback) {

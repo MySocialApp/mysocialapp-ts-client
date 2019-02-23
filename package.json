@@ -52,10 +52,13 @@
     "@types/jest": "^23.3.10",
     "@types/node": "^10.12.15",
     "@types/websocket": "0.0.40",
+    "@types/ws": "^6.0.1",
     "axios": "^0.17.1",
     "es6-promise": "^4.2.5",
     "form-data": "^2.3.3",
+    "isomorphic-ws": "^4.0.1",
     "moment": "^2.23.0",
-    "websocket": "^1.0.28"
+    "websocket": "^1.0.28",
+    "ws": "^6.1.4"
   }
 }

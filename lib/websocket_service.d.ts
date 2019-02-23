@@ -12,13 +12,11 @@ export declare enum notificationType {
 export declare class WebsocketService {
     private session;
     private client;
-    private connection;
     private listeners;
     private listenersByType;
     constructor(session: Session);
     connect(): WebsocketService;
     close(): void;
-    private send;
     onNotification(callback: any): void;
     private onMessageByType;
     onComment(callback: any): void;
