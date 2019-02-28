@@ -4797,7 +4797,7 @@ class RestGroup extends rest_1.Rest {
     }
     changeOwner(groupId, newOwnerId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.put(new group_1.Group(), rest_1.Rest.params("/group/{id}/owner/{ownerId}", { id: groupId, ownerId: newOwnerId }), new empty_1.Empty());
+            return this.conf.post(new group_1.Group(), rest_1.Rest.params("/group/{id}/owner/{ownerId}", { id: groupId, ownerId: newOwnerId }), new empty_1.Empty());
         });
     }
     getPhotos(eventId, page) {
