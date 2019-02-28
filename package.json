@@ -1,6 +1,6 @@
 {
   "name": "mysocialapp-ts-client",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": " Official Typescript / Javascript client to interact with MySocialApp API - Seamless Social Networking features for your app",
   "main": "./lib/mysocialapp.js",
   "typings": "./lib/mysocialapp.d.ts",
