@@ -75,8 +75,8 @@ export class RestGroup extends Rest {
         return this.conf.deleteVoid("/group/" + groupId);
     }
 
-    async changeOwner(newOwnerId: string): Promise<Group> {
-        return this.conf.put(new Group(), Rest.params("/group/{id}/owner", {id: newOwnerId}), new Group({owner: {id_str: newOwnerId}})) as Promise<Group>;
+    async changeOwner(groupId: string, newOwnerId: string): Promise<Group> {
+        return this.conf.put(new Group(), Rest.params("/group/{id}/owner/{ownerId}", {id: groupId, ownerId: newOwnerId}), new Empty()) as Promise<Group>;
     }
 
     async getPhotos(eventId: string, page?: number): Promise<Photo[]> {

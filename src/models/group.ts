@@ -73,7 +73,7 @@ export class Group extends BaseWall {
     }
 
     async changeOwner(newOwnerId: string): Promise<Group> {
-        return (new RestGroup(this.conf)).changeOwner(newOwnerId);
+        return (new RestGroup(this.conf)).changeOwner(this.id, newOwnerId);
     }
 
     async addMessage(message: TextWallMessage): Promise<Feed> {

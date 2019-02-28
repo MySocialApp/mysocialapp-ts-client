@@ -20,7 +20,7 @@ export declare class RestGroup extends Rest {
     join(groupId: string): Promise<GroupMember>;
     leave(groupId: string): Promise<void>;
     delete(groupId: string): Promise<void>;
-    changeOwner(newOwnerId: string): Promise<Group>;
+    changeOwner(groupId: string, newOwnerId: string): Promise<Group>;
     getPhotos(eventId: string, page?: number): Promise<Photo[]>;
     createPhoto(eventId: string, photo: FileData, message?: string, accessControl?: AccessControl, tagEntities?: TagEntities, payload?: {}): Promise<Feed>;
     getProfilePhoto(eventId: string): Promise<Photo>;

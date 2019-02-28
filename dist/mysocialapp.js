@@ -2659,7 +2659,7 @@ class Group extends base_wall_1.BaseWall {
     }
     changeOwner(newOwnerId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return (new group_1.RestGroup(this.conf)).changeOwner(newOwnerId);
+            return (new group_1.RestGroup(this.conf)).changeOwner(this.id, newOwnerId);
         });
     }
     addMessage(message) {
@@ -4795,9 +4795,9 @@ class RestGroup extends rest_1.Rest {
             return this.conf.deleteVoid("/group/" + groupId);
         });
     }
-    changeOwner(newOwnerId) {
+    changeOwner(groupId, newOwnerId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.conf.put(new group_1.Group(), rest_1.Rest.params("/group/{id}/owner", { id: newOwnerId }), new group_1.Group({ owner: { id_str: newOwnerId } }));
+            return this.conf.put(new group_1.Group(), rest_1.Rest.params("/group/{id}/owner/{ownerId}", { id: groupId, ownerId: newOwnerId }), new empty_1.Empty());
         });
     }
     getPhotos(eventId, page) {
