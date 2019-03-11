@@ -4251,7 +4251,7 @@ class RestConversationMessage extends rest_1.Rest {
             let fd = new generic_form_data_1.GenericFormData();
             fd.set("file", message.image.blob, 'image/png', "image.png");
             fd.set("message", message.message);
-            let path = rest_1.Rest.params("/conversation/{id}/message", { id: id });
+            let path = rest_1.Rest.params("/conversation/{id}/message/photo/base64", { id: id });
             return this.conf.postMultipart(new conversation_message_1.ConversationMessage(), path, fd);
         });
     }
