@@ -22,7 +22,7 @@ export class RestConversationMessage extends Rest {
         let fd = new GenericFormData();
         fd.set("file", message.image.blob, 'image/png', "image.png");
         fd.set("message", message.message);
-        let path = Rest.params("/conversation/{id}/message", {id: id});
+        let path = Rest.params("/conversation/{id}/message/photo/base64", {id: id});
         return this.conf.postMultipart(new ConversationMessage(), path, fd) as Promise<ConversationMessage>;
     }
 
