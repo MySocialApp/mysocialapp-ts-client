@@ -1,19 +1,19 @@
-import {BaseWall} from "./base_wall";
-import {EventMember} from "./event_member";
-import {EventMemberAccessControl} from "./event_member_access_control";
-import {Photo} from "./photo";
-import {Location} from "./location";
-import {apiDateFormat} from "../constant";
-import {RestEvent} from "../rest/event";
-import {TextWallMessage} from "./text_wall_message";
-import {Feed} from "./feed";
-import {RestEventWall} from "../rest/event_wall";
-import {CustomField} from "./custom_field";
-import {listToParameters} from "./utils";
-import {FileData} from "./file";
-import moment = require("moment");
-import {FeedPost} from "./feed_post";
+import {BaseWall} from './base_wall';
+import {EventMember} from './event_member';
+import {EventMemberAccessControl} from './event_member_access_control';
+import {Photo} from './photo';
+import {Location} from './location';
+import {apiDateFormat} from '../constant';
+import {RestEvent} from '../rest/event';
+import {TextWallMessage} from './text_wall_message';
+import {Feed} from './feed';
+import {RestEventWall} from '../rest/event_wall';
+import {CustomField} from './custom_field';
+import {listToParameters} from './utils';
+import {FileData} from './file';
+import {FeedPost} from './feed_post';
 import {RestGroup} from '../rest/group';
+import moment = require('moment');
 
 export class Event extends BaseWall {
     private _custom_fields: CustomField[];
@@ -209,5 +209,12 @@ export class Event extends BaseWall {
             list.push(new CustomField(m, this.conf))
         }
         this._custom_fields = list;
+    }
+
+    async getMembers(): Promise<EventMember[]> {
+        if (this.members !== undefined) {
+            return this.members;
+        }
+        return new RestEvent(this.conf).getMembers(this.id);
     }
 }

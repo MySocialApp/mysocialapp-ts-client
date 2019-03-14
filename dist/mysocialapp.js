@@ -2153,6 +2153,14 @@ class Event extends base_wall_1.BaseWall {
         }
         this._custom_fields = list;
     }
+    getMembers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.members !== undefined) {
+                return this.members;
+            }
+            return new event_1.RestEvent(this.conf).getMembers(this.id);
+        });
+    }
 }
 exports.Event = Event;
 

@@ -1,14 +1,14 @@
-import { BaseWall } from "./base_wall";
-import { EventMember } from "./event_member";
-import { EventMemberAccessControl } from "./event_member_access_control";
-import { Photo } from "./photo";
-import { Location } from "./location";
-import { TextWallMessage } from "./text_wall_message";
-import { Feed } from "./feed";
-import { CustomField } from "./custom_field";
-import { FileData } from "./file";
-import moment = require("moment");
-import { FeedPost } from "./feed_post";
+import { BaseWall } from './base_wall';
+import { EventMember } from './event_member';
+import { EventMemberAccessControl } from './event_member_access_control';
+import { Photo } from './photo';
+import { Location } from './location';
+import { TextWallMessage } from './text_wall_message';
+import { Feed } from './feed';
+import { CustomField } from './custom_field';
+import { FileData } from './file';
+import { FeedPost } from './feed_post';
+import moment = require('moment');
 export declare class Event extends BaseWall {
     private _custom_fields;
     private _profile_photo?;
@@ -63,4 +63,5 @@ export declare class Event extends BaseWall {
     setLocation(l: Location): Event;
     setAccessControl(ac: EventMemberAccessControl): Event;
     custom_fields: CustomField[];
+    getMembers(): Promise<EventMember[]>;
 }
