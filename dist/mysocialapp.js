@@ -1990,6 +1990,7 @@ const event_1 = require("../rest/event");
 const event_wall_1 = require("../rest/event_wall");
 const custom_field_1 = require("./custom_field");
 const utils_1 = require("./utils");
+const group_1 = require("../rest/group");
 class Event extends base_wall_1.BaseWall {
     getJsonParameters() {
         let o = {
@@ -2043,6 +2044,19 @@ class Event extends base_wall_1.BaseWall {
     cancel() {
         return __awaiter(this, void 0, void 0, function* () {
             return (new event_1.RestEvent(this.conf)).cancel(this.id);
+        });
+    }
+    /**
+     * only for owner or moderator
+     */
+    delete() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (new group_1.RestGroup(this.conf)).delete(this.id);
+        });
+    }
+    changeOwner(newOwnerId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (new event_1.RestEvent(this.conf)).changeOwner(this.id, newOwnerId);
         });
     }
     update() {
@@ -2142,7 +2156,7 @@ class Event extends base_wall_1.BaseWall {
 }
 exports.Event = Event;
 
-},{"../constant":3,"../rest/event":94,"../rest/event_wall":95,"./base_wall":27,"./custom_field":36,"./event_member":40,"./location":59,"./photo":64,"./utils":86}],40:[function(require,module,exports){
+},{"../constant":3,"../rest/event":94,"../rest/event_wall":95,"../rest/group":101,"./base_wall":27,"./custom_field":36,"./event_member":40,"./location":59,"./photo":64,"./utils":86}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const model_1 = require("./model");
@@ -4404,6 +4418,16 @@ class RestEvent extends rest_1.Rest {
     leave(eventId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.conf.deleteVoid(rest_1.Rest.params("/event/{id}/member", { id: eventId }));
+        });
+    }
+    delete(eventId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.deleteVoid("/event/" + eventId);
+        });
+    }
+    changeOwner(eventId, newOwnerId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.conf.post(new event_1.Event(), rest_1.Rest.params("/event/{id}/owner/{ownerId}", { id: eventId, ownerId: newOwnerId }), new empty_1.Empty());
         });
     }
     getPhotos(eventId, page) {

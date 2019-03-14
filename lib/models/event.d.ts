@@ -40,6 +40,11 @@ export declare class Event extends BaseWall {
      * must be creator of the event
      */
     cancel(): Promise<void>;
+    /**
+     * only for owner or moderator
+     */
+    delete(): Promise<void>;
+    changeOwner(newOwnerId: string): Promise<Event>;
     update(): Promise<Event>;
     addMessage(message: TextWallMessage): Promise<Feed>;
     profile_photo: Photo;

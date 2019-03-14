@@ -13,6 +13,7 @@ import {listToParameters} from "./utils";
 import {FileData} from "./file";
 import moment = require("moment");
 import {FeedPost} from "./feed_post";
+import {RestGroup} from '../rest/group';
 
 export class Event extends BaseWall {
     private _custom_fields: CustomField[];
@@ -84,6 +85,17 @@ export class Event extends BaseWall {
      */
     async cancel(): Promise<void> {
         return (new RestEvent(this.conf)).cancel(this.id);
+    }
+
+    /**
+     * only for owner or moderator
+     */
+    async delete(): Promise<void> {
+        return (new RestGroup(this.conf)).delete(this.id);
+    }
+
+    async changeOwner(newOwnerId: string): Promise<Event> {
+        return (new RestEvent(this.conf)).changeOwner(this.id, newOwnerId);
     }
 
     async update(): Promise<Event> {

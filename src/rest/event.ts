@@ -1,15 +1,15 @@
-import {Rest} from "./rest";
-import {SimpleLocation} from "../models/simple_location";
-import {Event} from "../models/event";
-import {CustomField} from "../models/custom_field";
-import {EventMember} from "../models/event_member";
-import {Empty} from "../models/empty";
-import {Photo} from "../models/photo";
-import {AccessControl} from "../models/access_control";
-import {Feed} from "../models/feed";
-import {TagEntities} from "../models/tag_entities";
-import {FileData} from "../models/file";
-import {GenericFormData} from "../models/generic_form_data";
+import {Rest} from './rest';
+import {SimpleLocation} from '../models/simple_location';
+import {Event} from '../models/event';
+import {CustomField} from '../models/custom_field';
+import {EventMember} from '../models/event_member';
+import {Empty} from '../models/empty';
+import {Photo} from '../models/photo';
+import {AccessControl} from '../models/access_control';
+import {Feed} from '../models/feed';
+import {TagEntities} from '../models/tag_entities';
+import {FileData} from '../models/file';
+import {GenericFormData} from '../models/generic_form_data';
 
 export class RestEvent extends Rest {
     async list(page: number, limited?: boolean, size?: number, location?: SimpleLocation, params?: {}): Promise<Event[]> {
@@ -80,6 +80,14 @@ export class RestEvent extends Rest {
 
     async leave(eventId: string): Promise<void> {
         return this.conf.deleteVoid(Rest.params("/event/{id}/member", {id: eventId}));
+    }
+
+    async delete(eventId: string): Promise<void> {
+        return this.conf.deleteVoid("/event/" + eventId);
+    }
+
+    async changeOwner(eventId: string, newOwnerId: string): Promise<Event> {
+        return this.conf.post(new Event(), Rest.params("/event/{id}/owner/{ownerId}", {id: eventId, ownerId: newOwnerId}), new Empty()) as Promise<Event>;
     }
 
     async getPhotos(eventId: string, page?: number): Promise<Photo[]> {
