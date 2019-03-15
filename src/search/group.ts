@@ -38,7 +38,7 @@ export class SearchGroup extends SearchBuilder {
     }
 
     setLocationMaximumDistanceInMeters(distance: number): SearchGroup {
-        this.params.set('maximum_distance_in_meters', String(distance));
+        this.params.set('maximum_distance', String(distance));
         return this;
     }
 

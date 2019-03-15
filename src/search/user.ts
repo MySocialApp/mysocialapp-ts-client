@@ -38,7 +38,7 @@ export class SearchUser extends SearchBuilder {
     }
 
     setLivingLocationMaximumDistanceInMeters(distance: number): SearchUser {
-        this.params.set('maximum_distance_in_meters', String(distance));
+        this.params.set('maximum_distance', String(distance));
         return this;
     }
 
