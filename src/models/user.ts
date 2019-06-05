@@ -22,6 +22,10 @@ import {RestUserFollower} from "../rest/user_follower";
 import {RestUserStat} from "../rest/user_stat";
 import {RestAdminUserEnable} from "../rest/admin_user_enable";
 import {RestUserNotify} from "../rest/user_notify";
+import {Group} from "./group";
+import {Event} from "./event";
+import {RestUserGroup} from "../rest/user_group";
+import {RestUserEvent} from "../rest/user_event";
 
 export class User extends Model {
     private _profile_photo?: Photo;
@@ -183,6 +187,14 @@ export class User extends Model {
 
     async listFriends(page: number, size: number): Promise<User[]> {
         return new RestUserFriend(this.conf).list(this.id, page, size);
+    }
+
+    async listGroups(page: number, size: number): Promise<Group[]> {
+        return new RestUserGroup(this.conf).list(this.id, page, size);
+    }
+
+    async listEvents(page: number, size: number): Promise<Event[]> {
+        return new RestUserEvent(this.conf).list(this.id, page, size);
     }
 
     async requestAsFriend(): Promise<User> {
