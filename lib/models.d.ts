@@ -31,6 +31,7 @@ import { GroupMember } from "./models/group_member";
 import { GroupMemberAccessControl } from "./models/group_member_access_control";
 import { GroupStatus } from "./models/group_status";
 import { HashTag } from "./models/hash_tag";
+import { Location } from "./models/location";
 import { Like } from "./models/like";
 import { LikeBlob } from "./models/like_blob";
 import { LoginCredentials } from "./models/login_credentials";
@@ -109,10 +110,7 @@ export declare class models {
     HashTag: typeof HashTag;
     Like: typeof Like;
     LikeBlob: typeof LikeBlob;
-    Location: {
-        new (): Location;
-        prototype: Location;
-    };
+    Location: typeof Location;
     LoginCredentials: typeof LoginCredentials;
     Model: typeof Model;
     Notification: typeof Notification;

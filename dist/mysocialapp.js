@@ -981,6 +981,7 @@ const group_member_1 = require("./models/group_member");
 const group_member_access_control_1 = require("./models/group_member_access_control");
 const group_status_1 = require("./models/group_status");
 const hash_tag_1 = require("./models/hash_tag");
+const location_1 = require("./models/location");
 const like_1 = require("./models/like");
 const like_blob_1 = require("./models/like_blob");
 const login_credentials_1 = require("./models/login_credentials");
@@ -1053,7 +1054,7 @@ class models {
         this.HashTag = hash_tag_1.HashTag;
         this.Like = like_1.Like;
         this.LikeBlob = like_blob_1.LikeBlob;
-        this.Location = Location;
+        this.Location = location_1.Location;
         this.LoginCredentials = login_credentials_1.LoginCredentials;
         this.Model = model_1.Model;
         this.Notification = notification_1.Notification;
@@ -1088,7 +1089,7 @@ class models {
 }
 exports.models = models;
 
-},{"./models/access_control":18,"./models/account":19,"./models/account_events":20,"./models/activity_type":21,"./models/app_platform":23,"./models/authentication_token":24,"./models/base":25,"./models/base_location":26,"./models/base_wall":27,"./models/comment":28,"./models/comment_blob":29,"./models/comment_post":30,"./models/conversation":31,"./models/conversation_message":32,"./models/conversation_message_post":33,"./models/conversation_messages":34,"./models/custom_field":36,"./models/entity_type":38,"./models/event_member":40,"./models/event_member_access_control":41,"./models/event_options":42,"./models/event_status":43,"./models/feed":44,"./models/feed_post":45,"./models/file":46,"./models/flag":47,"./models/friend_requests":48,"./models/gender":49,"./models/group":51,"./models/group_member":52,"./models/group_member_access_control":53,"./models/group_options":54,"./models/group_status":55,"./models/hash_tag":56,"./models/like":57,"./models/like_blob":58,"./models/login_credentials":60,"./models/model":61,"./models/notification":62,"./models/notification_ack":63,"./models/photo":64,"./models/photo_album":65,"./models/preview_notification":66,"./models/reset_identifier":67,"./models/search_query":68,"./models/search_result":69,"./models/search_result_types":70,"./models/search_results":71,"./models/search_type":72,"./models/simple_location":73,"./models/sort_order":74,"./models/status":75,"./models/tag_entities":76,"./models/tag_entity":77,"./models/tag_entity_abstract":78,"./models/text_wall_message":79,"./models/url_tag":80,"./models/user":81,"./models/user_mention_tag":82,"./models/user_settings":83,"./models/user_stat":84,"./models/users":85,"./search/event":133,"./search/feed":134,"./search/group":135,"./search/user":137}],18:[function(require,module,exports){
+},{"./models/access_control":18,"./models/account":19,"./models/account_events":20,"./models/activity_type":21,"./models/app_platform":23,"./models/authentication_token":24,"./models/base":25,"./models/base_location":26,"./models/base_wall":27,"./models/comment":28,"./models/comment_blob":29,"./models/comment_post":30,"./models/conversation":31,"./models/conversation_message":32,"./models/conversation_message_post":33,"./models/conversation_messages":34,"./models/custom_field":36,"./models/entity_type":38,"./models/event_member":40,"./models/event_member_access_control":41,"./models/event_options":42,"./models/event_status":43,"./models/feed":44,"./models/feed_post":45,"./models/file":46,"./models/flag":47,"./models/friend_requests":48,"./models/gender":49,"./models/group":51,"./models/group_member":52,"./models/group_member_access_control":53,"./models/group_options":54,"./models/group_status":55,"./models/hash_tag":56,"./models/like":57,"./models/like_blob":58,"./models/location":59,"./models/login_credentials":60,"./models/model":61,"./models/notification":62,"./models/notification_ack":63,"./models/photo":64,"./models/photo_album":65,"./models/preview_notification":66,"./models/reset_identifier":67,"./models/search_query":68,"./models/search_result":69,"./models/search_result_types":70,"./models/search_results":71,"./models/search_type":72,"./models/simple_location":73,"./models/sort_order":74,"./models/status":75,"./models/tag_entities":76,"./models/tag_entity":77,"./models/tag_entity_abstract":78,"./models/text_wall_message":79,"./models/url_tag":80,"./models/user":81,"./models/user_mention_tag":82,"./models/user_settings":83,"./models/user_stat":84,"./models/users":85,"./search/event":133,"./search/feed":134,"./search/group":135,"./search/user":137}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AccessControl;
@@ -6016,7 +6017,7 @@ class SearchEvent extends search_1.SearchBuilder {
         return this;
     }
     setLocationMaximumDistanceInMeters(distance) {
-        this.params.set('maximum_distance_in_meters', String(distance));
+        this.params.set('maximum_distance', String(distance));
         return this;
     }
     setLocationMaximumDistanceInKilometers(distance) {
@@ -6066,7 +6067,7 @@ class SearchFeed extends search_1.SearchBuilder {
         return this;
     }
     setOwnerLivingLocationMaximumDistanceInMeters(distance) {
-        this.params.set('maximum_distance_in_meters', String(distance));
+        this.params.set('maximum_distance', String(distance));
         return this;
     }
     setOwnerLivingLocationMaximumDistanceInKilometers(distance) {
@@ -6116,7 +6117,7 @@ class SearchGroup extends search_1.SearchBuilder {
         return this;
     }
     setLocationMaximumDistanceInMeters(distance) {
-        this.params.set('maximum_distance_in_meters', String(distance));
+        this.params.set('maximum_distance', String(distance));
         return this;
     }
     setLocationMaximumDistanceInKilometers(distance) {
@@ -6180,7 +6181,7 @@ class SearchUser extends search_1.SearchBuilder {
         return this;
     }
     setLivingLocationMaximumDistanceInMeters(distance) {
-        this.params.set('maximum_distance_in_meters', String(distance));
+        this.params.set('maximum_distance', String(distance));
         return this;
     }
     setLivingLocationMaximumDistanceInKilometers(distance) {

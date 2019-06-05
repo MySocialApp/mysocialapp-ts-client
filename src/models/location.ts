@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import {Model, Serializable} from "./model";
 import {SimpleLocation} from "./simple_location";
 
