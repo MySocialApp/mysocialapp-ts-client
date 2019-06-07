@@ -11,6 +11,8 @@ import { FeedPost } from "./feed_post";
 import { PhotoAlbum } from "./photo_album";
 import { ConversationMessagePost } from "./conversation_message_post";
 import { ConversationMessage } from "./conversation_message";
+import { Group } from "./group";
+import { Event } from "./event";
 export declare class User extends Model {
     private _profile_photo?;
     private _custom_fields?;
@@ -64,6 +66,8 @@ export declare class User extends Model {
     createFeedPost(post: FeedPost): Promise<Feed>;
     removeFriend(): Promise<void>;
     listFriends(page: number, size: number): Promise<User[]>;
+    listGroups(page: number, size: number): Promise<Group[]>;
+    listEvents(page: number, size: number): Promise<Event[]>;
     requestAsFriend(): Promise<User>;
     cancelFriendRequest(): Promise<void>;
     acceptFriendRequest(): Promise<User>;
