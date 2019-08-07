@@ -1557,17 +1557,21 @@ class Conversation extends base_1.Base {
         return this;
     }
     addMember(user) {
-        if (this.members == undefined) {
-            this.members = [];
-        }
-        this.members.push(user);
-        return this;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.members == undefined) {
+                this.members = [];
+            }
+            this.members.push(user);
+            return this.update();
+        });
     }
     addMembers(users) {
-        for (let user of users) {
-            this.addMember(user);
-        }
-        return this;
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let user of users) {
+                this.addMember(user);
+            }
+            return this.update();
+        });
     }
     set members(members) {
         this._members = [];
@@ -3807,7 +3811,8 @@ class User extends model_1.Model {
     }
     sendPrivateMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            let conversation = new conversation_2.Conversation().addMember(this);
+            let conversation = new conversation_2.Conversation();
+            conversation.members = [this];
             conversation = yield new conversation_1.RestConversation(this.conf).create(conversation);
             return conversation.sendMessage(message);
         });

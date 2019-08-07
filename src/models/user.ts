@@ -242,7 +242,8 @@ export class User extends Model {
     }
 
     async sendPrivateMessage(message: ConversationMessagePost): Promise<ConversationMessage> {
-        let conversation = new Conversation().addMember(this);
+        let conversation = new Conversation();
+        conversation.members = [this];
         conversation = await new RestConversation(this.conf).create(conversation);
         return conversation.sendMessage(message);
     }

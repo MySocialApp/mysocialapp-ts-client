@@ -28,19 +28,19 @@ export class Conversation extends Base {
         return this;
     }
 
-    addMember(user: User): Conversation {
+    async addMember(user: User): Promise<Conversation> {
         if (this.members == undefined) {
             this.members = [] as User[];
         }
         this.members.push(user);
-        return this;
+        return this.update();
     }
 
-    addMembers(users: User[]): Conversation {
+    async addMembers(users: User[]): Promise<Conversation> {
         for (let user of users) {
             this.addMember(user);
         }
-        return this;
+        return this.update();
     }
 
     set members(members: User[]) {

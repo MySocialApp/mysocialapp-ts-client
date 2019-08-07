@@ -10,8 +10,8 @@ export declare class Conversation extends Base {
     getJsonParameters(): {};
     members: User[];
     setName(name: string): Conversation;
-    addMember(user: User): Conversation;
-    addMembers(users: User[]): Conversation;
+    addMember(user: User): Promise<Conversation>;
+    addMembers(users: User[]): Promise<Conversation>;
     messages: ConversationMessages;
     sendMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
     update(): Promise<Conversation>;
