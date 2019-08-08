@@ -11,6 +11,7 @@ export class Conversation extends Base {
     private _members: User[];
     private _messages: ConversationMessages;
     name?: string;
+    silent: boolean;
 
     getJsonParameters(): {} {
         return {
@@ -28,19 +29,19 @@ export class Conversation extends Base {
         return this;
     }
 
-    async addMember(user: User): Promise<Conversation> {
+    addMember(user: User): Conversation {
         if (this.members == undefined) {
             this.members = [] as User[];
         }
         this.members.push(user);
-        return this.update();
+        return this;
     }
 
-    async addMembers(users: User[]): Promise<Conversation> {
+    addMembers(users: User[]): Conversation {
         for (let user of users) {
             this.addMember(user);
         }
-        return this.update();
+        return this;
     }
 
     set members(members: User[]) {
@@ -84,5 +85,12 @@ export class Conversation extends Base {
 
     async leave(): Promise<void> {
         return new RestConversation(this.conf).delete(this.id);
+    }
+
+    async makeSilent(silent: boolean): Promise<Conversation> {
+        return (new RestConversation(this.conf)).silent(this.id, silent).then(() => {
+            this.silent = silent;
+            return this;
+        });
     }
 }

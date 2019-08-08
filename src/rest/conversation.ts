@@ -51,4 +51,13 @@ export class RestConversation extends Rest {
         let path = Rest.params("/conversation/{id}/message/photo", {id: id});
         return this.conf.postMultipart(new ConversationMessage(), path, f) as Promise<ConversationMessage>;
     }
+
+    async silent(id: string, enabled: boolean): Promise<void> {
+        let path = Rest.params("/conversation/{id}/silent", {id: id});
+        if (enabled) {
+            return this.conf.postVoid(path, new Conversation());
+        } else {
+            return this.conf.deleteVoid(path);
+        }
+    }
 }

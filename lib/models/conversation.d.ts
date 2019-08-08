@@ -7,14 +7,16 @@ export declare class Conversation extends Base {
     private _members;
     private _messages;
     name?: string;
+    silent: boolean;
     getJsonParameters(): {};
     members: User[];
     setName(name: string): Conversation;
-    addMember(user: User): Promise<Conversation>;
-    addMembers(users: User[]): Promise<Conversation>;
+    addMember(user: User): Conversation;
+    addMembers(users: User[]): Conversation;
     messages: ConversationMessages;
     sendMessage(message: ConversationMessagePost): Promise<ConversationMessage>;
     update(): Promise<Conversation>;
     kickMember(userId: string): Promise<Conversation>;
     leave(): Promise<void>;
+    makeSilent(silent: boolean): Promise<Conversation>;
 }

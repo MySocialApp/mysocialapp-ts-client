@@ -11,4 +11,5 @@ export declare class RestConversation extends Rest {
     delete(id: string): Promise<void>;
     consume(id: string, page: number, size: number): Promise<ConversationMessage[]>;
     addPhoto(id: string, photo: FileData, message?: string, tagEntities?: TagEntities): Promise<ConversationMessage>;
+    silent(id: string, enabled: boolean): Promise<void>;
 }

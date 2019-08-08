@@ -1557,21 +1557,17 @@ class Conversation extends base_1.Base {
         return this;
     }
     addMember(user) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.members == undefined) {
-                this.members = [];
-            }
-            this.members.push(user);
-            return this.update();
-        });
+        if (this.members == undefined) {
+            this.members = [];
+        }
+        this.members.push(user);
+        return this;
     }
     addMembers(users) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (let user of users) {
-                this.addMember(user);
-            }
-            return this.update();
-        });
+        for (let user of users) {
+            this.addMember(user);
+        }
+        return this;
     }
     set members(members) {
         this._members = [];
@@ -1615,6 +1611,14 @@ class Conversation extends base_1.Base {
     leave() {
         return __awaiter(this, void 0, void 0, function* () {
             return new conversation_1.RestConversation(this.conf).delete(this.id);
+        });
+    }
+    makeSilent(silent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (new conversation_1.RestConversation(this.conf)).silent(this.id, silent).then(() => {
+                this.silent = silent;
+                return this;
+            });
         });
     }
 }
@@ -4251,6 +4255,17 @@ class RestConversation extends rest_1.Rest {
             }
             let path = rest_1.Rest.params("/conversation/{id}/message/photo", { id: id });
             return this.conf.postMultipart(new conversation_message_1.ConversationMessage(), path, f);
+        });
+    }
+    silent(id, enabled) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let path = rest_1.Rest.params("/conversation/{id}/silent", { id: id });
+            if (enabled) {
+                return this.conf.postVoid(path, new conversation_1.Conversation());
+            }
+            else {
+                return this.conf.deleteVoid(path);
+            }
         });
     }
 }
